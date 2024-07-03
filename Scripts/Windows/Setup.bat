@@ -32,10 +32,11 @@ if not exist !binary_path!Python/Scripts/pip.exe (
     echo "pip is installed"
 )
 echo "Cleaning up"
-rmdir /s /q !binary_path!Temp
 
 .\!binary_path!\Python\python.exe .\Scripts\Python\Setup.py
+rmdir /s /q !binary_path!Temp
 
 
+.\Vendor\Binary\Premake\Premake5.exe %1
 
 popd
