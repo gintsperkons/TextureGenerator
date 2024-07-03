@@ -1,0 +1,1 @@
+exec(open('Scripts/Python/installDependencies.py').read())
