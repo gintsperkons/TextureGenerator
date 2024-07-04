@@ -1,5 +1,5 @@
-project "Editor"
-kind "ConsoleApp"
+project "Engine"
+kind "SharedLib"
 language "C++"
 cppdialect "C++20"
 targetdir "Binaries/%{cfg.buildcfg}"
@@ -10,16 +10,32 @@ targetdir("%{wks.location}/Binaries/" .. OutputDir .. "/%{prj.name}")
 objdir("%{wks.location}/Binaries/Intermediates/" .. OutputDir .. "/%{prj.name}")
 debugdir("%{wks.location}/Binaries/" .. OutputDir .. "/%{prj.name}")
 
-includedirs {"src",
-"%{wks.location}/Engine/src"}
+includedirs {"src"}
 
 links {
-    "Engine"
 }
 
 
 
 files {"src/**.h", "src/**.cpp"}
+
+
+
+-- prebuildcommands
+-- {
+--         "%{prj.location}\\Shaders\\CompileShaders.bat"
+-- }
+
+    postbuildcommands
+    {   
+        "{ECHO} %{prj.location}",
+        "{mkdir} %{wks.location}\\Binaries\\" .. OutputDir .. "\\Editor\\",
+        "{COPYFILE} %{cfg.buildtarget.relpath} %{wks.location}\\Binaries\\" .. OutputDir .. "\\Editor\\",
+    --     "{mkdir} %{wks.location}\\Binaries\\" .. OutputDir .. "\\TestBed\\Shaders\\",
+    --     "{COPYDIR} %{prj.location}\\Shaders %{wks.location}\\Binaries\\" .. OutputDir .. "\\TestBed\\Shaders\\"
+    }
+
+
 
 filter "system:windows"
 systemversion "latest"

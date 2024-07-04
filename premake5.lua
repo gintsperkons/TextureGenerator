@@ -6,6 +6,8 @@ startproject "TextureGenerator"
 
 OutputDir = "%{cfg.architecture}-%{cfg.system}-%{cfg.buildcfg}"
 
+include "Engine"
 include "Editor"
+
     
 
