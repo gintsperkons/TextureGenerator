@@ -10,9 +10,13 @@ targetdir("%{wks.location}/Binaries/" .. OutputDir .. "/%{prj.name}")
 objdir("%{wks.location}/Binaries/Intermediates/" .. OutputDir .. "/%{prj.name}")
 debugdir("%{wks.location}/Binaries/" .. OutputDir .. "/%{prj.name}")
 
-includedirs {"src"}
+includedirs {"src",
+"%{IncludeDir.GLFW}",
+"%{IncludeDir.GLM}"
+}
 
 links {
+    "GLFW",
 }
 
 
@@ -26,14 +30,14 @@ files {"src/**.h", "src/**.cpp"}
 --         "%{prj.location}\\Shaders\\CompileShaders.bat"
 -- }
 
-    postbuildcommands
-    {   
-        "{ECHO} %{prj.location}",
-        "{mkdir} %{wks.location}\\Binaries\\" .. OutputDir .. "\\Editor\\",
-        "{COPYFILE} %{cfg.buildtarget.relpath} %{wks.location}\\Binaries\\" .. OutputDir .. "\\Editor\\",
-    --     "{mkdir} %{wks.location}\\Binaries\\" .. OutputDir .. "\\TestBed\\Shaders\\",
-    --     "{COPYDIR} %{prj.location}\\Shaders %{wks.location}\\Binaries\\" .. OutputDir .. "\\TestBed\\Shaders\\"
-    }
+postbuildcommands
+{   
+    "{ECHO} \"%{prj.location}\"",
+    "{mkdir} \"%{wks.location}\\Binaries\\" .. OutputDir .. "\\Editor\\\"",
+    "{COPYFILE} \"%{cfg.buildtarget.relpath}\" \"%{wks.location}\\Binaries\\" .. OutputDir .. "\\Editor\\\"",
+--     "{mkdir} %{wks.location}\\Binaries\\" .. OutputDir .. "\\TestBed\\Shaders\\",
+--     "{COPYDIR} %{prj.location}\\Shaders %{wks.location}\\Binaries\\" .. OutputDir .. "\\TestBed\\Shaders\\"
+}
 
 
 
