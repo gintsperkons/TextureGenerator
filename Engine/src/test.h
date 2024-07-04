@@ -1,3 +1,3 @@
-
-void sayHello();
+#include "defines.h"
+TAPI void sayHello();
 
