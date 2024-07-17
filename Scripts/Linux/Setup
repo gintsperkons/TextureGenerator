@@ -1,0 +1,22 @@
+#!/bin/bash
+
+python_version="3.12.4"
+binary_path="Vendor/Binary/"
+python_path="${binary_path}Python/python"
+
+pushd "$(dirname "$0")/../../"
+echo "Setting up the project..."
+python3 ./Scripts/Python/Setup.py
+
+sudo apt-get install build-essential
+sudo apt-get install libx11-dev
+sudo apt-get install libxcursor-dev
+sudo apt-get install libxrandr-dev
+sudo apt-get install libxinerama-dev
+sudo apt-get install libxi-dev
+sudo apt-get install libgl1-mesa-dev
+
+
+./Vendor/Binary/Premake/premake5 $1
+
+popd
