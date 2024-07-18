@@ -2,12 +2,10 @@
 
 binary_path="Vendor/Binary"
 
-python ${binary_path}/Python/python Scripts/Python/Clean.py $1
+python3 Scripts/Python/Clean.py $1
 
 if [ "$1" == "all" ]; then
     echo "Cleaning up the project..."
-    echo "Cleaning up Python"
-    cleanPython
     rm -rf Scripts/Python/__pycache__
     rm -rf ${binary_path}
     echo "Project is cleaned up"
@@ -15,6 +13,3 @@ if [ "$1" == "all" ]; then
 fi
 exit 0
 
-cleanPython() {
-    rm -rf ${binary_path}/Python
-}
