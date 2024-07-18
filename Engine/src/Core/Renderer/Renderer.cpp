@@ -11,6 +11,7 @@ void TextureGen::Renderer::InitRenderer(RendererType type, GLFWwindow* window)
 	case RendererType::Vulkan:
 		printf("Vulkan renderer selected\n");
 		m_currentRenderer = new VulkanRenderer();
+		m_currentRenderer->Init();
 		break;
 	case RendererType::OpenGL:
 		printf("OpenGL renderer selected\n");
