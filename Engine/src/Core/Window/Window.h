@@ -11,6 +11,7 @@ namespace TextureGen
         TAPI Window(int width, int height, const char * title);
         TAPI void PollEvents();
         TAPI bool ShouldClose();
+        TAPI GLFWwindow *GetWindow();
         TAPI ~Window();
     };
 

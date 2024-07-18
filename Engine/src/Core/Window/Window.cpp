@@ -1,9 +1,9 @@
 #include <GLFW/glfw3.h>
 #include "Window.h"
 
-TextureGen::Window::Window(/* args */)
+TextureGen::Window::Window() : Window(800, 600, "Test Name")
 {
-    Window(800, 600, "Test Name");
+    // Constructor body, if needed
 }
 
 TextureGen::Window::Window(int width, int height, const char *title)
@@ -12,6 +12,8 @@ TextureGen::Window::Window(int width, int height, const char *title)
     {
         glfwTerminate();
     }
+    glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
+    glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
     m_window = glfwCreateWindow(width, height, title, NULL, NULL);
     if (!m_window)
     {
@@ -23,6 +25,11 @@ TextureGen::Window::Window(int width, int height, const char *title)
 bool TextureGen::Window::ShouldClose()
 {
     return glfwWindowShouldClose(m_window);
+}
+
+GLFWwindow *TextureGen::Window::GetWindow()
+{
+    return m_window;
 }
 
 void TextureGen::Window::PollEvents()

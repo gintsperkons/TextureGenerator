@@ -12,11 +12,13 @@ debugdir("%{wks.location}/Binaries/" .. OutputDir .. "/%{prj.name}")
 
 includedirs {"src",
 "%{IncludeDir.GLFW}",
-"%{IncludeDir.GLM}"
+"%{IncludeDir.GLM}",
+"%{IncludeDir.VulkanSDK}",
 }
 
 links {
     "GLFW",
+    "%{Library.Vulkan}"
 }
 
 
