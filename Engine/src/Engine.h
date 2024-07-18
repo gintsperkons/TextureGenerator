@@ -9,6 +9,7 @@ namespace TextureGen{
 		Renderer* m_renderer = nullptr;
 	public:
 		TAPI Engine();
+		TAPI Engine(Window* starterWindow);
 		TAPI void Run();
 		TAPI ~Engine();
 	};
