@@ -230,3 +230,8 @@ TextureGen::VulkanInstance::~VulkanInstance()
 	}
 	vkDestroyInstance(m_Instance, nullptr);
 }
+
+VkInstance TextureGen::VulkanInstance::GetInstance()
+{
+	return m_Instance;
+}

@@ -6,9 +6,11 @@
 namespace TextureGen
 {
 	class VulkanInstance;
+	class VulkanPhysicalDevice;
 	class VulkanRenderer: public BaseRenderer
 	{
 		VulkanInstance* m_instance;
+		VulkanPhysicalDevice* m_physicalDevice;
 	public:
 		VulkanRenderer();
 		~VulkanRenderer();

@@ -36,6 +36,7 @@ namespace TextureGen
 	public:
 		VulkanInstance();
 		~VulkanInstance();
+		VkInstance GetInstance();
 	};
 }
 
