@@ -1,7 +1,7 @@
 #include "VulkanInstance.h"
 #include <GLFW/glfw3.h>
 #include <stdexcept>
-#include <iostream>
+#include "Core/Logger/Logger.h"
 
 
 
@@ -197,7 +197,28 @@ VKAPI_ATTR VkBool32 VKAPI_CALL TextureGen::VulkanInstance::DebugCallback(
 	const VkDebugUtilsMessengerCallbackDataEXT *pCallbackData,
 	void *pUserData)
 {	
-	std::cerr << "validation layer: " << pCallbackData->pMessage << std::endl;
+	switch (messageSeverity)
+	{
+	case VK_DEBUG_UTILS_MESSAGE_SEVERITY_VERBOSE_BIT_EXT:
+		Logger::LOG_TRACE("validation layer: %s\n", pCallbackData->pMessage);
+		break;
+	case VK_DEBUG_UTILS_MESSAGE_SEVERITY_INFO_BIT_EXT:
+		Logger::LOG_INFO("validation layer: %s\n", pCallbackData->pMessage);
+		break;
+	case VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT:
+		Logger::LOG_WARN("validation layer: %s\n", pCallbackData->pMessage);
+		break;
+	case VK_DEBUG_UTILS_MESSAGE_SEVERITY_ERROR_BIT_EXT:
+		Logger::LOG_ERROR("validation layer: %s\n", pCallbackData->pMessage);
+		break;
+	case VK_DEBUG_UTILS_MESSAGE_SEVERITY_FLAG_BITS_MAX_ENUM_EXT:
+		Logger::LOG_FATAL("validation layer: %s\n", pCallbackData->pMessage);
+		break;
+	default:
+		break;
+	}
+
+
 	return VK_FALSE;
 }
 

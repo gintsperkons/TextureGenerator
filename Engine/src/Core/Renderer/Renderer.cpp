@@ -1,4 +1,5 @@
 #include "Renderer.h"
+#include "Core/Logger/Logger.h"
 #include <iostream>
 
 void TextureGen::Renderer::InitRenderer(RendererType type, GLFWwindow* window)
@@ -6,21 +7,21 @@ void TextureGen::Renderer::InitRenderer(RendererType type, GLFWwindow* window)
 	switch (type)
 	{
 	case RendererType::None:
-		printf("Renderer type not set\n");
+		Logger::LOG_WARN("Renderer type not set\n");
 		break;
 	case RendererType::Vulkan:
-		printf("Vulkan renderer selected\n");
+		Logger::LOG_INFO("Vulkan renderer selected\n");
 		m_currentRenderer = new VulkanRenderer();
 		m_currentRenderer->Init();
 		break;
 	case RendererType::OpenGL:
-		printf("OpenGL renderer selected\n");
+		Logger::LOG_INFO("OpenGL renderer selected\n");
 		break;
 	case RendererType::DirectX:
-		printf("DirectX renderer selected\n");
+		Logger::LOG_INFO("DirectX renderer selected\n");
 		break;
 	default:
-		printf("Renderer type not set\n");
+		Logger::LOG_WARN("Renderer type not set\n");
 		break;
 	}
 }
