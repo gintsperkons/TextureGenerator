@@ -5,7 +5,7 @@ project "Engine"
     cppdialect "C++20"
 
 
-    files {"Source\\**.h", "Source\\**.cpp"}
+    files {"Source\\**.h", "Source\\**.cpp", "Source\\glad.c"}
 
 
 
@@ -13,7 +13,8 @@ project "Engine"
     {
         "Source",
         IncludeDir["GLFW"],
-        IncludeDir["GLM"]
+        IncludeDir["GLM"],
+        IncludeDir["GLAD"]
     }
 
     links 
