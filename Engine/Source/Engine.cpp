@@ -19,6 +19,6 @@ void TextureGenEngine::Engine::Run()
 {
 	while (!m_window->ShouldClose())
 	{
-		m_window->PoolEvents();
+		m_window->Update();
 	}
 }
