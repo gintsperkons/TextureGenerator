@@ -7,6 +7,7 @@ namespace TextureGenEngine
 	public:
 		Renderer(int width, int height);
 		void Clear();
+		void UpdateViewport(int width, int height);
 		~Renderer();
 	};
 }

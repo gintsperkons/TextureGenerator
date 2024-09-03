@@ -3,11 +3,13 @@
 struct GLFWwindow;
 namespace TextureGenEngine
 {
+	class Input;
 	class Renderer;
 	class Window
 	{
 		Renderer* m_renderer;
 		GLFWwindow* m_window;
+		Input* m_input;
 		void SwapBuffers();
 		void PoolEvents();
 	public:
@@ -16,5 +18,7 @@ namespace TextureGenEngine
 		~Window();
 		bool ShouldClose();
 		void Update();
+		GLFWwindow * GetWindow() { return m_window; }
+		Renderer* GetRenderer() { return m_renderer; }
 	};
 }
