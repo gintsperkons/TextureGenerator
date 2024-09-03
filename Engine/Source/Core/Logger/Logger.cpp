@@ -16,7 +16,7 @@ void TextureGenEngine::Logger::Log(Logger::Level level, const char* format, ...)
 }
 
 
-void ReportAssertionFailure(const char* expression, const char* file, int line, const char* message)
+void TextureGenEngine::ReportAssertionFailure(const char* expression, const char* file, int line, const char* message)
 {
 	TextureGenEngine::Logger::Log(TextureGenEngine::Logger::Level::FATAL, "Assertion failed: %s\nFile: %s\nLine: %d\nMessage: %s\n", expression, file, line, message);
 }

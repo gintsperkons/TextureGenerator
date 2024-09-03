@@ -20,7 +20,7 @@ namespace TextureGenEngine {
 	if (expr) {} \
 	else \
 	{ \
-		ReportAssertionFailure(#expr, __FILE__, __LINE__); \
+		TextureGenEngine::ReportAssertionFailure(#expr, __FILE__, __LINE__); \
 		debugBreak(); \
 	} \
 }
@@ -30,7 +30,7 @@ namespace TextureGenEngine {
 	if (expr) {} \
 	else \
 	{ \
-		ReportAssertionFailure(#expr, __FILE__, __LINE__, msg); \
+		TextureGenEngine::ReportAssertionFailure(#expr, __FILE__, __LINE__, msg); \
 		debugBreak(); \
 	} \
 }
@@ -40,7 +40,7 @@ namespace TextureGenEngine {
 	if (expr) {} \
 	else \
 	{ \
-		ReportAssertionFailure(#expr, __FILE__, __LINE__); \
+		TextureGenEngine::ReportAssertionFailure(#expr, __FILE__, __LINE__); \
 		debugBreak(); \
 	} \
 }
