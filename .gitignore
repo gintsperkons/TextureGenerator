@@ -1,18 +1,1 @@
-#python
-__pycache__/
-#installed binaries
-Vendor/Binary
-#makefile
-Makefile
-*.make
-#compiled files
-/Binaries
-*.o
-*.d
-*.exe
-#vs
-.vs/
-*.vcxproj
-*.vcxproj.user
-*.vcxproj.filters
-*.sln
+Vendor/Binary/**/*
