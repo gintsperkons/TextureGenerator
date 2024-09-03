@@ -12,7 +12,8 @@ project "Engine"
     includedirs
     {
         "Source",
-        IncludeDir["GLFW"]
+        IncludeDir["GLFW"],
+        IncludeDir["GLM"]
     }
 
     links 
