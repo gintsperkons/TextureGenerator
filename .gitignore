@@ -1,1 +1,11 @@
 Vendor/Binary/**/*
+Binaries/
+
+#VisualStudio
+.vs
+*.vcxproj
+*.vcxproj.*
+*.sln
+
+#python
+__pycache__/
