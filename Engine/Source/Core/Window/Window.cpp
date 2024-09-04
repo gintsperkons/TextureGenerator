@@ -60,10 +60,10 @@ bool TextureGenEngine::Window::ShouldClose()
 
 void TextureGenEngine::Window::Update()
 {
+	SwapBuffers();
 	m_renderer->Clear();
 
 	PoolEvents();
-	SwapBuffers();
 }
 
 void TextureGenEngine::Window::SwapBuffers()
