@@ -1,6 +1,7 @@
 #include "Window.h"
 #include "Core/Window/Input.h"
 #include "Core/Renderer/Renderer.h"
+#include "Core/Renderer/Mesh.h"
 #include "Core/Logger/Logger.h"
 #include "Core/Asserts.h"
 #include "GLFW/glfw3.h"
@@ -14,6 +15,7 @@ void frameBufferResizeCallback(GLFWwindow* window, int width, int height)
 {
 	TextureGenEngine::Window* w = (TextureGenEngine::Window*)glfwGetWindowUserPointer(window);
 	w->GetRenderer()->UpdateViewport(width, height);
+	w->OnResize();
 	
 }
 
@@ -37,15 +39,18 @@ TextureGenEngine::Window::Window(int width, int height, const char* title) :
 	glfwMakeContextCurrent(m_window);
 	glfwSetFramebufferSizeCallback(m_window, frameBufferResizeCallback);
 	glfwSetWindowUserPointer(m_window, this);
+	glfwGetFramebufferSize(m_window, &width, &height);
 	m_renderer = new Renderer(width, height);
 	m_input = new Input(this);
 	THAUMA_ASSERT_DEBUG(m_renderer, "Failed to create renderer");
 	THAUMA_ASSERT_DEBUG(m_input, "Failed to create input");
+	m_mesh = new Mesh();
 }
 
 
 TextureGenEngine::Window::~Window()
 {
+	delete m_mesh;
 	delete m_input;
 	delete m_renderer;
 	glfwDestroyWindow(m_window);
@@ -61,10 +66,38 @@ bool TextureGenEngine::Window::ShouldClose()
 void TextureGenEngine::Window::Update()
 {
 	SwapBuffers();
+	PoolEvents();
 	m_renderer->Clear();
 
-	PoolEvents();
 }
+
+void TextureGenEngine::Window::Draw()
+{
+	m_mesh->Draw();
+}
+
+void TextureGenEngine::Window::OnResize()
+{
+	int width, height;
+	glfwGetFramebufferSize(m_window, &width, &height);
+	for (auto sub : m_resizeSubs)
+	{
+		ResizeEvent event;
+		event.width = width;
+		event.height = height;
+		sub.callback(event);
+	}
+}
+
+void TextureGenEngine::Window::AddResizeListener(std::function<void(ResizeEvent)> callback)
+{
+	ResizeSub sub;
+	sub.callback = callback;
+	m_resizeSubs.push_back(sub);
+}
+
+
+
 
 void TextureGenEngine::Window::SwapBuffers()
 {

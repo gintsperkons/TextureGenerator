@@ -2,12 +2,13 @@
 
 namespace TextureGenEngine
 {
+	struct ResizeEvent;
 	class Mesh;
 	class Window;
 	class Engine
 	{
-		Mesh* m_mesh;
 		Window* m_window;
+		void ResizeCallBack(ResizeEvent event);
 	public:
 		TAPI Engine();
 		TAPI Engine(Window * window);
