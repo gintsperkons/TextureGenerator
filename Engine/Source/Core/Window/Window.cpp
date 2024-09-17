@@ -1,5 +1,4 @@
 #include "Window.h"
-#include "Core/Window/Input.h"
 #include "Core/Renderer/Renderer.h"
 #include "Core/Renderer/Mesh.h"
 #include "Core/Logger/Logger.h"
@@ -41,9 +40,7 @@ TextureGenEngine::Window::Window(int width, int height, const char* title) :
 	glfwSetWindowUserPointer(m_window, this);
 	glfwGetFramebufferSize(m_window, &width, &height);
 	m_renderer = new Renderer(width, height);
-	m_input = new Input(this);
 	THAUMA_ASSERT_DEBUG(m_renderer, "Failed to create renderer");
-	THAUMA_ASSERT_DEBUG(m_input, "Failed to create input");
 	m_mesh = new Mesh();
 }
 
@@ -51,7 +48,6 @@ TextureGenEngine::Window::Window(int width, int height, const char* title) :
 TextureGenEngine::Window::~Window()
 {
 	delete m_mesh;
-	delete m_input;
 	delete m_renderer;
 	glfwDestroyWindow(m_window);
 	m_window = nullptr;
@@ -95,6 +91,8 @@ void TextureGenEngine::Window::AddResizeListener(std::function<void(ResizeEvent)
 	sub.callback = callback;
 	m_resizeSubs.push_back(sub);
 }
+
+
 
 
 

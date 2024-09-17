@@ -14,5 +14,10 @@ namespace TextureGenEngine
 		TAPI Engine(Window * window);
 		TAPI ~Engine();
 		TAPI void Run();
+		TAPI Window* GetWindow();
+		TAPI static Engine* Get();
+		TAPI bool IsRunning();
+		
 	};
+		inline static Engine* g_engine = nullptr;
 }

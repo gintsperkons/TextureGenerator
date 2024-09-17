@@ -7,4 +7,10 @@ namespace TextureGenEngine
 		int width;
 		int height;
 	};
+
+	struct MouseClick
+	{
+		int x;
+		int y;
+	};
 }

@@ -6,7 +6,6 @@
 struct GLFWwindow;
 namespace TextureGenEngine
 {
-	class Input;
 	class Renderer;
 	class Mesh;
 
@@ -19,7 +18,6 @@ namespace TextureGenEngine
 		Renderer* m_renderer;
 		GLFWwindow* m_window;
 		Mesh* m_mesh;
-		Input* m_input;
 		void SwapBuffers();
 		void PoolEvents();
 	public:
@@ -29,7 +27,7 @@ namespace TextureGenEngine
 		bool ShouldClose();
 		void Update();
 		void Draw();
-		GLFWwindow * GetWindow() { return m_window; }
+		GLFWwindow * GetNativeWindow() { return m_window; }
 		Renderer* GetRenderer() { return m_renderer; }
 
 		void OnResize();

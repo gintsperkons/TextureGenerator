@@ -10,8 +10,6 @@ TextureGenEngine::Engine::Engine():Engine(new Window())
 }
 
 void TextureGenEngine::Engine::ResizeCallBack(ResizeEvent event) {
-	printf("Resize event: %d, %d\n", event.width, event.height);
-
 	m_window->Update();
 	m_window->Draw();
 
@@ -21,6 +19,7 @@ void TextureGenEngine::Engine::ResizeCallBack(ResizeEvent event) {
 TextureGenEngine::Engine::Engine(Window* window):m_window(window)
 {
 	m_window->AddResizeListener([this](ResizeEvent event) { this->ResizeCallBack(event); });
+	TextureGenEngine::g_engine = this;
 }
 
 TextureGenEngine::Engine::~Engine()
@@ -30,10 +29,21 @@ TextureGenEngine::Engine::~Engine()
 
 void TextureGenEngine::Engine::Run()
 {
-	while (!m_window->ShouldClose())
-	{
 		m_window->Update();
 		m_window->Draw();
+}
 
-	}
+TextureGenEngine::Window* TextureGenEngine::Engine::GetWindow()
+{
+	return m_window;
+}
+
+TextureGenEngine::Engine* TextureGenEngine::Engine::Get()
+{
+	return g_engine;
+}
+
+TAPI bool TextureGenEngine::Engine::IsRunning()
+{
+	return !m_window->ShouldClose();
 }
