@@ -13,7 +13,7 @@ int main()
 	{
 		if (TextureGenEngine::Input::MouseButtonPressed(TextureGenEngine::Mouse::ButtonLeft))
 		{
-			LOG_DEBUG("Left mouse button pressed");
+			LOG_DEBUG("Left mouse button pressed\n");
 		}
 		engine.Run();
 	}
