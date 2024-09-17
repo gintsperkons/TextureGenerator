@@ -11,6 +11,7 @@ namespace TextureGenEngine
 
 	class Window
 	{
+
 		struct ResizeSub {
 			std::function<void(ResizeEvent)> callback;
 		};
@@ -20,6 +21,7 @@ namespace TextureGenEngine
 		Mesh* m_mesh;
 		void SwapBuffers();
 		void PoolEvents();
+		void UpdateMouseButtons();
 	public:
 		TAPI Window();
 		TAPI Window(int width, int height, const char* title);
@@ -29,7 +31,6 @@ namespace TextureGenEngine
 		void Draw();
 		GLFWwindow * GetNativeWindow() { return m_window; }
 		Renderer* GetRenderer() { return m_renderer; }
-
 		void OnResize();
 
 		void AddResizeListener(std::function<void(ResizeEvent)> callback);

@@ -7,6 +7,8 @@ namespace TextureGenEngine
 {
 	namespace Input
 	{
+		extern int g_mouseButtonStates[Mouse::ButtonLast+1];
 		TAPI bool MouseButtonPressed(TextureGenEngine::Mouse::MouseCode button);
+		bool MouseButtonHeld(TextureGenEngine::Mouse::MouseCode button);
 	};
 }

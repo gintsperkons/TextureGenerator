@@ -21,6 +21,15 @@ namespace TextureGenEngine
 			ButtonRight = Button1,
 			ButtonMiddle = Button2
 		};
+
+		enum MouseButtonState
+		{
+			Released = 0,
+			Pressed = 1,
+			Held = 2
+		};
+
+		
 	};
 
 }

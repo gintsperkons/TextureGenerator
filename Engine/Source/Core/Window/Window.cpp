@@ -4,6 +4,9 @@
 #include "Core/Logger/Logger.h"
 #include "Core/Asserts.h"
 #include "GLFW/glfw3.h"
+#include <Core/Input/MouseCodes.h>
+#include <Core/Input/Input.h>
+
 
 TextureGenEngine::Window::Window():Window(640, 480, "TextureGenEngine")
 {
@@ -17,6 +20,8 @@ void frameBufferResizeCallback(GLFWwindow* window, int width, int height)
 	w->OnResize();
 	
 }
+
+
 
 TextureGenEngine::Window::Window(int width, int height, const char* title) :
 	m_renderer(nullptr)
@@ -61,6 +66,8 @@ bool TextureGenEngine::Window::ShouldClose()
 
 void TextureGenEngine::Window::Update()
 {
+
+	UpdateMouseButtons();
 	SwapBuffers();
 	PoolEvents();
 	m_renderer->Clear();
@@ -71,6 +78,8 @@ void TextureGenEngine::Window::Draw()
 {
 	m_mesh->Draw();
 }
+
+
 
 void TextureGenEngine::Window::OnResize()
 {
@@ -105,4 +114,24 @@ void TextureGenEngine::Window::SwapBuffers()
 void TextureGenEngine::Window::PoolEvents()
 {
 	glfwPollEvents();
+}
+
+void TextureGenEngine::Window::UpdateMouseButtons()
+{
+	for (int i = 0; i < Mouse::ButtonLast + 1; i++)
+	{
+		int state = glfwGetMouseButton(m_window, i);
+		if (state == GLFW_PRESS && (Input::g_mouseButtonStates[i] == Mouse::Pressed || Input::g_mouseButtonStates[i] == Mouse::Held))
+		{
+			Input::g_mouseButtonStates[i] = 2;
+		}
+		else if (state == GLFW_PRESS)
+		{
+			Input::g_mouseButtonStates[i] = 1;
+		}
+		else
+		{
+			Input::g_mouseButtonStates[i] = 0;
+		}
+	}
 }
