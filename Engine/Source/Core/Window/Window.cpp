@@ -1,6 +1,7 @@
 #include "Window.h"
 #include "Core/Renderer/Renderer.h"
 #include "Core/Renderer/Mesh.h"
+#include "Core/World/ObjectFactory.h"
 #include "Core/Logger/Logger.h"
 #include "Core/Asserts.h"
 #include "GLFW/glfw3.h"
@@ -46,7 +47,7 @@ TextureGenEngine::Window::Window(int width, int height, const char* title) :
 	glfwGetFramebufferSize(m_window, &width, &height);
 	m_renderer = new Renderer(width, height);
 	THAUMA_ASSERT_DEBUG(m_renderer, "Failed to create renderer");
-	m_mesh = new Mesh();
+	m_mesh = ObjectFactory::CreateCircle();
 }
 
 
