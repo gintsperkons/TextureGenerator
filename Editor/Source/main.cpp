@@ -14,6 +14,7 @@ int main()
 		if (TextureGenEngine::Input::MouseButtonPressed(TextureGenEngine::Mouse::ButtonLeft))
 		{
 			LOG_DEBUG("Left mouse button pressed\n");
+			LOG_DEBUG("Mouse position: %d, %d\n", TextureGenEngine::Input::GetMousePosition()[0], TextureGenEngine::Input::GetMousePosition()[1]);
 		}
 		engine.Run();
 	}

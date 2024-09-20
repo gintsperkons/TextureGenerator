@@ -14,3 +14,24 @@ bool TextureGenEngine::Input::MouseButtonPressed(TextureGenEngine::Mouse::MouseC
 	}
 	return false;
 }
+
+bool TextureGenEngine::Input::MouseButtonHeld(TextureGenEngine::Mouse::MouseCode button)
+{
+	if (g_mouseButtonStates[button] == TextureGenEngine::Mouse::Held)
+	{
+		return true;
+	}
+	return false;
+}
+
+int* TextureGenEngine::Input::GetMousePosition()
+{
+	static int pos[2];
+	double x, y;
+	glfwGetCursorPos(TextureGenEngine::Engine::Get()->GetWindow()->GetNativeWindow(), &x, &y);
+	pos[0] = (int)x;
+	pos[1] = (int)y;
+	return pos;
+}
+
+
