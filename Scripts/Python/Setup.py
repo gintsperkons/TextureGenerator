@@ -17,6 +17,11 @@ def SetupPremake(enviroment):
 
 
 
+def CopyTemplate(system):
+    if system=="nt":
+        with open(f'{Defines.projectPath}/premake.bat', "w+") as file:
+            file.write(Defines.batchScriptPremake)
+             
 
 
 #vs2022 open
@@ -27,6 +32,8 @@ if __name__ == "__main__":
 
     if args[1] == '':
         print("Please provide the enviroment for cmake")
+
+    CopyTemplate(os.name)
 
     SetupPremake(args[1])
     

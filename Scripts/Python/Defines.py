@@ -27,3 +27,19 @@ premakeArchiveExtensions =  {
     "nt":".zip",
     "posix":".tar.gz"
 }
+
+
+batchScriptPremake = f"""
+@echo off
+setlocal enabledelayedexpansion
+set directory=Vendor\\Binary\\
+
+pushd %~dp0
+echo Calling Premake
+if exist !directory! (
+    echo Running Premake
+    call "!cd!\\!directory!Premake\\premake5.exe" %*
+)
+echo Done
+popd
+"""

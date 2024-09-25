@@ -12,7 +12,7 @@ if len(args) >=2 and (args[1] == "generated" or args[1] == "gen"):
     fileExtensions = [".pyc",".pyo",".sln",".vcxproj",".vcxproj.filters",".vcxproj.user","Makefile",".code-workspace","CMakeCache.txt","cmake_install.cmake"]
     folderNames = ["__pycache__","Binaries",".vs",".vscode","CMakeFiles"]
 else:
-    fileExtensions = []
+    fileExtensions = ["premake.bat"]
     folderNames = ["Binaries"]
 
 
