@@ -3,6 +3,7 @@
 #include <array>
 #include "Shader.h"
 #include "AABB.h"
+#include "Core/Logger/Logger.h"
 
 TextureGenEngine::Mesh::Mesh(float vertices[], unsigned int vertexCount, unsigned int indices[], unsigned int indexCount)
 :m_indexCount(indexCount) 
@@ -40,6 +41,18 @@ void TextureGenEngine::Mesh::Draw()
     glBindVertexArray(VAO);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
     glDrawElements(GL_TRIANGLES, m_indexCount, GL_UNSIGNED_INT, 0);
+}
+
+void TextureGenEngine::Mesh::CheckClickColision(float x, float y)
+{
+    if (m_aabb->CheckColision(x, y))
+	{
+		LOG_INFO("Colision detected\n");
+	}
+	else
+	{
+		LOG_INFO("No Colision detected\n");
+	}
 }
 
 TextureGenEngine::Mesh::~Mesh()

@@ -11,6 +11,8 @@ namespace TextureGenEngine
 
 	class Window
 	{
+		int m_width;
+		int m_height;
 
 		struct ResizeSub {
 			std::function<void(ResizeEvent)> callback;
@@ -32,7 +34,7 @@ namespace TextureGenEngine
 		GLFWwindow * GetNativeWindow() { return m_window; }
 		Renderer* GetRenderer() { return m_renderer; }
 		void OnResize();
-
+		void GetFramebufferSize(int& width, int& height);
 		void AddResizeListener(std::function<void(ResizeEvent)> callback);
 	};
 }

@@ -19,7 +19,11 @@ project "Engine"
 
     links 
     {
-        "GLFW"
+        "GLFW",
+        "opengl32.lib",
+    "gdi32.lib",
+    "user32.lib", 
+    "shell32.lib",
     }
 
     targetdir ("%{wks.location}\\Binaries\\" .. OutputDir .. "\\%{prj.name}")

@@ -12,6 +12,7 @@ namespace TextureGenEngine {
 	public:
 		Mesh(float vertices[], unsigned int vertexCount, unsigned int indices[], unsigned int indexCount);
 		void Draw();
+		void CheckClickColision(float x, float y);
 		~Mesh();
 	};
 }

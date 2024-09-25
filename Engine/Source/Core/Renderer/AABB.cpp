@@ -41,3 +41,12 @@ TextureGenEngine::AABB::AABB(float* verticies, int size)
 TextureGenEngine::AABB::~AABB()
 {
 }
+
+bool TextureGenEngine::AABB::CheckColision(float x, float y)
+{
+	if (x >= topLeft.x && x <= bottomRight.x && y >= bottomRight.y && y <= topLeft.y)
+	{
+		return true;
+	}
+	return false;
+}

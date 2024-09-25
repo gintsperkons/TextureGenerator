@@ -5,9 +5,11 @@ namespace TextureGenEngine
 	struct ResizeEvent;
 	class Mesh;
 	class Window;
+	class Screen;
 	class Engine
 	{
 		Window* m_window;
+		Screen* m_screen;
 		void ResizeCallBack(ResizeEvent event);
 	public:
 		TAPI Engine();

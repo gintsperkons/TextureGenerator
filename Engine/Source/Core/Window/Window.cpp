@@ -25,7 +25,7 @@ void frameBufferResizeCallback(GLFWwindow* window, int width, int height)
 
 
 TextureGenEngine::Window::Window(int width, int height, const char* title) :
-	m_renderer(nullptr)
+	m_renderer(nullptr),m_width(width),m_height(height)
 {
 	if (!glfwInit())
 	{
@@ -47,13 +47,11 @@ TextureGenEngine::Window::Window(int width, int height, const char* title) :
 	glfwGetFramebufferSize(m_window, &width, &height);
 	m_renderer = new Renderer(width, height);
 	THAUMA_ASSERT_MSG(m_renderer!=nullptr, "Failed to create renderer");
-	m_mesh = ObjectFactory::CreateCircle();
 }
 
 
 TextureGenEngine::Window::~Window()
 {
-	delete m_mesh;
 	delete m_renderer;
 	glfwDestroyWindow(m_window);
 	m_window = nullptr;
@@ -77,20 +75,19 @@ void TextureGenEngine::Window::Update()
 
 void TextureGenEngine::Window::Draw()
 {
-	m_mesh->Draw();
+	
 }
 
 
 
 void TextureGenEngine::Window::OnResize()
 {
-	int width, height;
-	glfwGetFramebufferSize(m_window, &width, &height);
+	glfwGetFramebufferSize(m_window, &m_width, &m_height);
 	for (auto sub : m_resizeSubs)
 	{
 		ResizeEvent event;
-		event.width = width;
-		event.height = height;
+		event.width = m_width;
+		event.height = m_height;
 		sub.callback(event);
 	}
 }
@@ -115,6 +112,12 @@ void TextureGenEngine::Window::SwapBuffers()
 void TextureGenEngine::Window::PoolEvents()
 {
 	glfwPollEvents();
+}
+
+void TextureGenEngine::Window::GetFramebufferSize(int& width, int& height)
+{
+	glfwGetFramebufferSize(m_window, &width, &height);
+
 }
 
 void TextureGenEngine::Window::UpdateMouseButtons()

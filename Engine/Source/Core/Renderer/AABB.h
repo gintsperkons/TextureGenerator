@@ -10,6 +10,7 @@ class AABB
 	public:
 	AABB(float* verticies, int size);
 	~AABB();
+	bool CheckColision(float x, float y);
 };
 
 
