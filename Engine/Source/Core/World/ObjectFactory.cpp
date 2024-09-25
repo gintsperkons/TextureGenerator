@@ -1,6 +1,6 @@
 #include "ObjectFactory.h"
 #include "Core/Renderer/Mesh.h"
-#include <corecrt_math.h>
+#include <cmath>
 #include "Core/Logger/Logger.h"
 
 TextureGenEngine::Mesh* TextureGenEngine::ObjectFactory::CreateTriangle()

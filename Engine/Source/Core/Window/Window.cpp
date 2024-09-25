@@ -46,7 +46,7 @@ TextureGenEngine::Window::Window(int width, int height, const char* title) :
 	glfwSetWindowUserPointer(m_window, this);
 	glfwGetFramebufferSize(m_window, &width, &height);
 	m_renderer = new Renderer(width, height);
-	THAUMA_ASSERT_DEBUG(m_renderer, "Failed to create renderer");
+	THAUMA_ASSERT_MSG(m_renderer!=nullptr, "Failed to create renderer");
 	m_mesh = ObjectFactory::CreateCircle();
 }
 

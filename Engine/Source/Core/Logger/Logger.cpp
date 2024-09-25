@@ -10,7 +10,7 @@ void TextureGenEngine::Logger::Log(Logger::Level level, const char* format, ...)
 	const char* levelStr[6] = { "[FATAL]: ", "[ERROR]: ", "[WARN]: ", "[INFO]: ", "[DEBUG]: ", "[TRACE]: " };
 	va_list args;
 	va_start(args, format);
-	printf(levelStr[(int)level]);
+	printf("%s",(levelStr[(int)level]));
 	vprintf(format, args);
 	va_end(args);
 }

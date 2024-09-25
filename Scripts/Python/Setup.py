@@ -21,6 +21,9 @@ def CopyTemplate(system):
     if system=="nt":
         with open(f'{Defines.projectPath}/premake.bat', "w+") as file:
             file.write(Defines.batchScriptPremake)
+    if system=="posix":
+        with open(f'{Defines.projectPath}/premake.sh', "w+") as file:
+            file.write(Defines.bashScriptPremake)
              
 
 
