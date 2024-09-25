@@ -9,3 +9,6 @@ Binaries/
 
 #python
 __pycache__/
+
+premake.bat
+premake.sh
