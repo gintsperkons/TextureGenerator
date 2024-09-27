@@ -5,30 +5,31 @@
 
 
 
-TextureGenEngine::AABB::AABB(float* verticies, int size)
+TextureGenEngine::AABB::AABB(Vertex2D* verticies, int size)
 {
-	float minX = verticies[0];
-	float minY = verticies[1];
-	float maxX = verticies[0];
-	float maxY = verticies[1];
+	float minX = verticies[0].Position.x;
+	float maxX = verticies[0].Position.x;
+	float minY = verticies[0].Position.y;
+	float maxY = verticies[0].Position.y;
 
-	for (int i = 0; i < size; i += 3)
+	
+	for (int i = 1; i < size; i++)
 	{
-		if (verticies[i] < minX)
+		if (verticies[i].Position.x < minX)
 		{
-			minX = verticies[i];
+			minX = verticies[i].Position.x;
 		}
-		if (verticies[i] > maxX)
+		if (verticies[i].Position.x > maxX)
 		{
-			maxX = verticies[i];
+			maxX = verticies[i].Position.x;
 		}
-		if (verticies[i + 1] < minY)
+		if (verticies[i].Position.y < minY)
 		{
-			minY = verticies[i + 1];
+			minY = verticies[i].Position.y;
 		}
-		if (verticies[i + 1] > maxY)
+		if (verticies[i].Position.y > maxY)
 		{
-			maxY = verticies[i + 1];
+			maxY = verticies[i].Position.y;
 		}
 	}
 

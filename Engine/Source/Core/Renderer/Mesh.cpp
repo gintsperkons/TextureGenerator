@@ -5,10 +5,19 @@
 #include "AABB.h"
 #include "Core/Logger/Logger.h"
 
-TextureGenEngine::Mesh::Mesh(float vertices[], unsigned int vertexCount, unsigned int indices[], unsigned int indexCount)
+bool TextureGenEngine::Mesh::IsPointInPolygon(float x, float y)
+{
+
+    //m_vertecies = m_vertices.data();
+    return false;
+}
+
+TextureGenEngine::Mesh::Mesh(Vertex2D vertices[], unsigned int vertexCount, unsigned int indices[], unsigned int indexCount)
 :m_indexCount(indexCount) 
 {
-    
+   m_vertices = std::vector<Vertex2D>(vertices, vertices + vertexCount);
+   m_indices = std::vector<unsigned int>(indices, indices + indexCount);
+
     glGenVertexArrays(1, &VAO);
     glGenBuffers(1, &VBO);
     glGenBuffers(1, &EBO);
@@ -16,13 +25,19 @@ TextureGenEngine::Mesh::Mesh(float vertices[], unsigned int vertexCount, unsigne
     glBindVertexArray(VAO);
 
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, vertexCount * sizeof(float), vertices, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, vertexCount * sizeof(Vertex2D), vertices, GL_STATIC_DRAW);
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, indexCount * sizeof(unsigned int), indices, GL_STATIC_DRAW);
 
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex2D), (void*)offsetof(Vertex2D, Position));
     glEnableVertexAttribArray(0);
+
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex2D), (void*)offsetof(Vertex2D, Color));
+    glEnableVertexAttribArray(1);
+
+    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex2D), (void*)offsetof(Vertex2D, TexCoords));
+    glEnableVertexAttribArray(2);
 
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
@@ -47,11 +62,15 @@ void TextureGenEngine::Mesh::CheckClickColision(float x, float y)
 {
     if (m_aabb->CheckColision(x, y))
 	{
-		LOG_INFO("Colision detected\n");
+		LOG_INFO("AABB Colision detected\n");
+        if (IsPointInPolygon(x, y))
+        {
+            LOG_INFO("Vertex Colision detected\n");
+        }
 	}
 	else
 	{
-		LOG_INFO("No Colision detected\n");
+		LOG_INFO("No AABB Colision detected\n");
 	}
 }
 
