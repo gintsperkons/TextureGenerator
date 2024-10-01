@@ -49,18 +49,21 @@ project "Engine"
         defines {"TEXPORT","TDEBUG"}
         runtime "Debug"
         symbols "On"
+        runtime "Debug"
 
     filter "configurations:Release"
         defines {"TEXPORT","TRELEASE"}
         runtime "Release"
         optimize "On"
         symbols "On"
+        runtime "Release"
 
     filter "configurations:Dist"
         defines {"TEXPORT","TDIST"}
         runtime "Release"
         optimize "On"
         symbols "Off"
+        runtime "Release"
 
     
     

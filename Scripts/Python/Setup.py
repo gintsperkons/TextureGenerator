@@ -34,7 +34,7 @@ if __name__ == "__main__":
     
 
     if args[1] == '':
-        print("Please provide the enviroment for cmake")
+        print("Please provide the enviroment for premake or use premake.bat or premake.sh")
 
     CopyTemplate(os.name)
 

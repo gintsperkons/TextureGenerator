@@ -90,5 +90,6 @@ TextureGenEngine::Mesh* TextureGenEngine::ObjectFactory::CreateCircle()
 
     //// Return the new Mesh object
     //return new Mesh(vertices, vertexCount, indices, indexCount);
+    return nullptr;
 }
 

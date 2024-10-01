@@ -8,7 +8,7 @@
 int main()
 {
 
-	TextureGenEngine::Engine engine(new TextureGenEngine::Window(800, 600, "Texture Generator"));
+	TextureGenEngine::Engine engine(new TextureGenEngine::Window(800, 600, "TexGen"));
 	while (engine.IsRunning())
 	{
 		if (TextureGenEngine::Input::MouseButtonPressed(TextureGenEngine::Mouse::ButtonLeft))
