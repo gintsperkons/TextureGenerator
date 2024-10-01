@@ -28,4 +28,4 @@ fi
 
 echo "Done"
 
-pop
+popd
