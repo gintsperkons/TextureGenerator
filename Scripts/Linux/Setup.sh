@@ -19,7 +19,7 @@ else
     sudo apt-get install -y python3 python3-pip
 fi
 
-python "Scripts/Python/Setup.py" "$1" "$2" "$3"
+python3 "Scripts/Python/Setup.py" "$1" "$2" "$3"
 
 if [[ -d "$binaryDir/Temp" ]]; then
     echo "Removing Temp"
