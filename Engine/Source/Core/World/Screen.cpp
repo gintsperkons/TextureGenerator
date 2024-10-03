@@ -34,6 +34,11 @@ void TextureGenEngine::Screen::Draw()
     m_mesh->Draw();
 }
 
+void TextureGenEngine::Screen::SetGUIController()
+{
+    //TODO implement
+}
+
 
 
 TextureGenEngine::Screen::~Screen()
