@@ -1,5 +1,6 @@
 Vendor/Binary/**/*
 Binaries/
+venv/   
 
 #VisualStudio
 .vs
