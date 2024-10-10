@@ -3,14 +3,12 @@
 #include <Core/Input/Input.h>
 #include <Core/Input/MouseCodes.h>
 #include <Core/Logger/Logger.h>
-#include <Core/World/Screen.h>
 
 
 int main()
 {
 
 	TextureGenEngine::Engine engine(new TextureGenEngine::Window(800, 600, "TexGen"));
-	engine.Get()->GetScreen()->SetGUIController();
 	while (engine.IsRunning())
 	{
 		if (TextureGenEngine::Input::MouseButtonPressed(TextureGenEngine::Mouse::ButtonLeft))

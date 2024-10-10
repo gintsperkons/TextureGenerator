@@ -17,6 +17,19 @@ project "Engine"
         IncludeDir["GLAD"]
     }
 
+
+    targetdir ("%{wks.location}\\Binaries\\" .. OutputDir .. "\\%{prj.name}")
+    objdir ("%{wks.location}\\Binaries\\Intermediates\\" .. OutputDir .. "\\%{prj.name}")
+    debugdir("%{wks.location}\\Binaries\\" .. OutputDir .. "\\%{prj.name}")
+
+    postbuildcommands
+    {   
+        "{ECHO} \"%{prj.location}\"",
+        "{MKDIR} \"%{wks.location}/Binaries/" .. OutputDir .. "/Editor/\"",
+        "{COPYFILE} \"%{cfg.buildtarget.relpath}\" \"%{wks.location}/Binaries/" .. OutputDir .. "/Editor/\""
+    }
+
+filter "system:windows"
     links 
     {
         "GLFW",
@@ -26,20 +39,25 @@ project "Engine"
     "shell32.lib",
     }
 
-    targetdir ("%{wks.location}\\Binaries\\" .. OutputDir .. "\\%{prj.name}")
-    objdir ("%{wks.location}\\Binaries\\Intermediates\\" .. OutputDir .. "\\%{prj.name}")
-    debugdir("%{wks.location}\\Binaries\\" .. OutputDir .. "\\%{prj.name}")
+filter "system:linux"
+
+   
+links 
+{                                   
+    "GL",
+    "GLFW",
+    "wayland-client", "wayland-egl", "EGL", "GL"
+
+}
+
+filter ""
+
 
     flags {
         "MultiProcessorCompile"
     }
 
-    postbuildcommands
-    {   
-        "{ECHO} \"%{prj.location}\"",
-        "{MKDIR} \"%{wks.location}/Binaries/" .. OutputDir .. "/Editor/\"",
-        "{COPYFILE} \"%{cfg.buildtarget.relpath}\" \"%{wks.location}/Binaries/" .. OutputDir .. "/Editor/\""
-    }
+
 
     filter "system:windows"
         systemversion "latest"

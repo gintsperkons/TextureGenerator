@@ -17,7 +17,6 @@ namespace TextureGenEngine
 		TAPI ~Engine();
 		TAPI void Run();
 		TAPI Window* GetWindow();
-		TAPI Screen* GetScreen();
 		TAPI static Engine* Get();
 		TAPI bool IsRunning();
 		

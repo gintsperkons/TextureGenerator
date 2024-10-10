@@ -7,7 +7,7 @@
 #include "GLFW/glfw3.h"
 #include <Core/Input/MouseCodes.h>
 #include <Core/Input/Input.h>
-
+#include <iostream>
 
 TextureGenEngine::Window::Window():Window(640, 480, "TextureGenEngine")
 {
@@ -23,10 +23,14 @@ void frameBufferResizeCallback(GLFWwindow* window, int width, int height)
 }
 
 
+void errorCallback(int error, const char* description) {
+    std::cerr << "Error " << error << ": " << description << std::endl;
+}
 
 TextureGenEngine::Window::Window(int width, int height, const char* title) :
 	m_renderer(nullptr),m_width(width),m_height(height)
 {
+	glfwSetErrorCallback(errorCallback);
 	if (!glfwInit())
 	{
 		LOG_FATAL("Failed to initialize GLFW\n");
