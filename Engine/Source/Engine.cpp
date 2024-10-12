@@ -45,6 +45,11 @@ TextureGenEngine::Window* TextureGenEngine::Engine::GetWindow()
 	return m_window;
 }
 
+TextureGenEngine::Screen* TextureGenEngine::Engine::GetScreen()
+{
+	return m_screen;
+}
+
 TextureGenEngine::Engine* TextureGenEngine::Engine::Get()
 {
 	return g_engine;

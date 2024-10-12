@@ -4,3 +4,6 @@
 [submodule "Vendor/Library/freetype"]
 	path = Vendor/Library/freetype
 	url = https://github.com/gintsperkons/freetype.git
+[submodule "Vendor/Library/GLFW"]
+	path = Vendor/Library/GLFW
+	url = https://github.com/gintsperkons/glfw.git
