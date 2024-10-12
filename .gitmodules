@@ -1,9 +1,9 @@
 [submodule "Vendor/Library/GLM"]
 	path = Vendor/Library/GLM
 	url = https://github.com/g-truc/glm.git
-[submodule "Vendor/Library/GLFW"]
-	path = Vendor/Library/GLFW
-	url = https://github.com/gintsperkons/glfw.git
 [submodule "Vendor/Library/freetype"]
 	path = Vendor/Library/freetype
 	url = https://github.com/gintsperkons/freetype.git
+[submodule "Vendor/Library/GLFW"]
+	path = Vendor/Library/GLFW
+	url = https://github.com/gintsperkons/glfw.git
