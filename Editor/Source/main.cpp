@@ -10,12 +10,14 @@
 int main()
 {
 
+
 	TextureGenEngine::Engine engine(new TextureGenEngine::Window(800, 600, "TexGen"));
-	//Make Gui label
+	// TODO Make Gui label
 	TextureGenEngine::GUIManager* guiManager = new TextureGenEngine::GUIManager;
 
 
 	TextureGenEngine::Engine::Get()->GetScreen()->SetGuiMananger(guiManager);
+	
 	while (engine.IsRunning())
 	{
 		if (TextureGenEngine::Input::MouseButtonPressed(TextureGenEngine::Mouse::ButtonLeft))
