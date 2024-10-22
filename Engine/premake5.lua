@@ -14,7 +14,8 @@ project "Engine"
         "Source",
         IncludeDir["GLFW"],
         IncludeDir["GLM"],
-        IncludeDir["GLAD"]
+        IncludeDir["GLAD"],
+        IncludeDir["FreeType"]
     }
 
 
@@ -22,16 +23,18 @@ project "Engine"
     objdir ("%{wks.location}\\Binaries\\Intermediates\\" .. OutputDir .. "\\%{prj.name}")
     debugdir("%{wks.location}\\Binaries\\" .. OutputDir .. "\\%{prj.name}")
 
-    postbuildcommands
-    {   
+    postbuildcommands {
         "{ECHO} \"%{prj.location}\"",
         "{MKDIR} \"%{wks.location}/Binaries/" .. OutputDir .. "/Editor/\"",
-        "{COPYFILE} \"%{cfg.buildtarget.relpath}\" \"%{wks.location}/Binaries/" .. OutputDir .. "/Editor/\""
+        "{COPYFILE} \"%{cfg.buildtarget.relpath}\" \"%{wks.location}/Binaries/" .. OutputDir .. "/Editor/\"",
+        "{COPY} \"%{wks.location}/Vendor/resources/\" \"%{wks.location}/Binaries/" .. OutputDir .. "/Editor/\"",
     }
+    
 
 filter "system:windows"
     links 
     {
+        "freetype",
         "GLFW",
         "opengl32.lib",
     "gdi32.lib",
@@ -43,7 +46,8 @@ filter "system:linux"
 
    
 links 
-{                                   
+{        
+    "freetype",                           
     "GL",
     "GLFW",
     "wayland-client", "wayland-egl", "EGL", "GL"

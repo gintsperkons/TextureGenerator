@@ -6,10 +6,11 @@
 #include "Core/Renderer/Mesh.h"
 #include <Engine.h>
 #include <Core/Window/Window.h>
+#include "Core/GUI/GUIManager.h"
 
 TextureGenEngine::Screen::Screen()
 {
-    m_mesh = ObjectFactory::CreateSquare();
+   // m_mesh = ObjectFactory::CreateSquare();
 }
 
 void TextureGenEngine::Screen::Update()
@@ -24,17 +25,21 @@ void TextureGenEngine::Screen::Update()
         LOG_DEBUG("Mouse Position: %d, %d\n", size[0], size[1]);
         float x = ((float)size[0] / (float)width)*2 -1;
         float y= ((float)size[1] / (float)height) * 2 - 1;
-        m_mesh->CheckClickColision(x,y);
+       // m_mesh->CheckClickColision(x,y);
         
     }
 }
 
 void TextureGenEngine::Screen::Draw()
 {
-    m_mesh->Draw();
+   // m_mesh->Draw();
+    
 }
 
-
+void TextureGenEngine::Screen::SetGUIManager(GUIManager* guiManager)
+{
+    m_guiManager = guiManager;
+}
 
 TextureGenEngine::Screen::~Screen()
 {

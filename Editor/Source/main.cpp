@@ -12,11 +12,13 @@ int main()
 
 
 	TextureGenEngine::Engine engine(new TextureGenEngine::Window(800, 600, "TexGen"));
-	// TODO Make Gui label
-	TextureGenEngine::GUIManager* guiManager = new TextureGenEngine::GUIManager;
+	int bWidth,bHeight;
+	TextureGenEngine::Engine::Get()->GetWindow()->GetFramebufferSize(bWidth,bHeight);
+	// TODO Make Gui labelma
+	TextureGenEngine::GUIManager* guiManager = new TextureGenEngine::GUIManager(bWidth,bHeight);
 
 
-	TextureGenEngine::Engine::Get()->GetScreen()->SetGuiMananger(guiManager);
+	TextureGenEngine::Engine::Get()->GetScreen()->SetGUIManager(guiManager);
 	
 	while (engine.IsRunning())
 	{

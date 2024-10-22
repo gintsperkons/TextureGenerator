@@ -26,6 +26,10 @@ def CopyTemplate(system):
             file.write(Defines.bashScriptPremake)
              
 
+def SetupResources():
+    Utils.DownloadFile("https://fontlibrary.org/assets/downloads/roboto-mono/fa85404374f790dace3a23ea31a1c175/roboto-mono.zip",Defines.TempPath+"/fonts/roboto-mono.zip")
+    Utils.ExtractZip(Defines.TempPath+"/fonts/roboto-mono.zip","Vendor/resources/fonts/")
+
 
 #vs2022 open
 if __name__ == "__main__":
@@ -39,6 +43,7 @@ if __name__ == "__main__":
     CopyTemplate(os.name)
 
     SetupPremake(args[1])
+    SetupResources()
     
     if len(args) > 2:
         if args[2] == "open":

@@ -4,6 +4,7 @@
 #include "Core/Renderer/Mesh.h"
 #include "Core/World/Screen.h"
 #include "Core/Window/WindowEvents.h"
+#include "Core/FontManager.h"
 
 TextureGenEngine::Engine::Engine():Engine(new Window())
 {
@@ -24,6 +25,7 @@ TextureGenEngine::Engine::Engine(Window* window):m_window(window)
 	m_window->AddResizeListener([this](ResizeEvent event) { this->ResizeCallBack(event); });
 	m_screen = new Screen();
 	TextureGenEngine::g_engine = this;
+	m_fontManager = new FontManager();
 }
 
 TextureGenEngine::Engine::~Engine()

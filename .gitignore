@@ -1,6 +1,9 @@
 Vendor/Binary/**/*
+Vendor/resources/**/*
 Binaries/
 venv/      
+
+run.sh
 
 #VisualStudio
 .vs

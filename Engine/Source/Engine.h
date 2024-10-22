@@ -5,9 +5,11 @@ namespace TextureGenEngine
 	struct ResizeEvent;
 	class Mesh;
 	class Window;
+	class FontManager;
 	class Screen;
 	class Engine
 	{
+		FontManager* m_fontManager;
 		Window* m_window;
 		Screen* m_screen;
 		void ResizeCallBack(ResizeEvent event);

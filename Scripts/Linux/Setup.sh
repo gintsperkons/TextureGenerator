@@ -19,15 +19,12 @@ else
     sudo apt-get install -y python3 python3-pip
 fi
 
-VENV_DIR="venv"
 
-if [[ ! -d "$VENV_DIR" ]]; then
-    echo "Creating a virtual environment..."
-    python3 -m venv "$VENV_DIR"
-fi
-
-# Activate the virtual environment
-source "$VENV_DIR/bin/activate"
+    python -m venv venv
+    chmod 744 venv/bin/activate
+    source venv/bin/activate
+    pip install -r Scripts/requirements.txt
+    python Scripts/Python/Setup.py
 
 
 python "Scripts/Python/Setup.py" "$1" "$2" "$3"
@@ -38,5 +35,5 @@ if [[ -d "$binaryDir/Temp" ]]; then
 fi
 
 echo "Done"
-
+deactivate
 popd
