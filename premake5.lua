@@ -10,6 +10,7 @@ OutputDir = "%{cfg.architecture}-%{cfg.system}-%{cfg.buildcfg}"
 
 group "Dependencies"
    include "Vendor/Library/GLFW"
+   include "Vendor/Library/freetype"
 
 group "TextureGenerator"
 include "Engine"
