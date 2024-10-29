@@ -1,9 +1,11 @@
 #include "Mesh.h"
 #include <glad/glad.h>
 #include <array>
-#include "Shader.h"
+#include "Engine.h"
 #include "AABB.h"
 #include "Core/Logger/Logger.h"
+#include "Core/Renderer/Renderer.h"
+#include "Core/Renderer/Shaders/Shader.h"
 
 bool TextureGenEngine::Mesh::IsPointInPolygon(float x, float y)
 {
@@ -42,7 +44,7 @@ TextureGenEngine::Mesh::Mesh(Vertex2D vertices[], unsigned int vertexCount, unsi
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
 
-    m_shader = new Shader();
+    m_shader = Engine::Get()->GetRenderer()->GetShader("base");
 
     m_aabb = new AABB(vertices, vertexCount);
 
@@ -77,7 +79,6 @@ void TextureGenEngine::Mesh::CheckClickColision(float x, float y)
 TextureGenEngine::Mesh::~Mesh()
 {
     delete m_aabb;
-    delete m_shader;
 	glDeleteVertexArrays(1, &VAO);
 	glDeleteBuffers(1, &VBO);
 }

@@ -3,6 +3,7 @@
 #include "WindowEvents.h"
 #include <vector>
 #include <functional>
+#include "Core/Asserts.h"
 struct GLFWwindow;
 namespace TextureGenEngine
 {
@@ -31,8 +32,12 @@ namespace TextureGenEngine
 		bool ShouldClose();
 		void Update();
 		void Draw();
-		GLFWwindow * GetNativeWindow() { return m_window; }
-		Renderer* GetRenderer() { return m_renderer; }
+		GLFWwindow * GetNativeWindow() {
+			return m_window;
+		}
+		Renderer* GetRenderer() {
+			return m_renderer;
+		}
 		void OnResize();
 		void GetFramebufferSize(int& width, int& height);
 		void AddResizeListener(std::function<void(ResizeEvent)> callback);

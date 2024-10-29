@@ -4,7 +4,6 @@ workspace("TextureGenerator")
 architecture "x64"
 configurations {"Debug", "Release", "Dist"}
 startproject "Editor"
-toolset "clang"
 
 OutputDir = "%{cfg.architecture}-%{cfg.system}-%{cfg.buildcfg}"
 

@@ -6,6 +6,7 @@ venv/
 run.sh
 
 #VisualStudio
+.vscode
 .vs
 *.vcxproj
 *.vcxproj.*

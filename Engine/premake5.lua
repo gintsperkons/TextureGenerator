@@ -28,6 +28,7 @@ project "Engine"
         "{MKDIR} \"%{wks.location}/Binaries/" .. OutputDir .. "/Editor/\"",
         "{COPYFILE} \"%{cfg.buildtarget.relpath}\" \"%{wks.location}/Binaries/" .. OutputDir .. "/Editor/\"",
         "{COPY} \"%{wks.location}/Vendor/resources/\" \"%{wks.location}/Binaries/" .. OutputDir .. "/Editor/\"",
+        "{COPY} \"%{wks.location}/Engine/Shaders/\" \"%{wks.location}/Binaries/" .. OutputDir .. "/Editor/\"",
     }
     
 

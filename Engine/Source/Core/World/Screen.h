@@ -5,7 +5,7 @@ namespace TextureGenEngine
     class GUIManager;
 class Screen
 {
-    //Mesh* m_mesh;
+    Mesh* m_mesh;
     GUIManager* m_guiManager;
     
     public:

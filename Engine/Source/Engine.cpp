@@ -5,6 +5,8 @@
 #include "Core/World/Screen.h"
 #include "Core/Window/WindowEvents.h"
 #include "Core/FontManager.h"
+#include "Core/Logger/Logger.h"
+#include "Core/Asserts.h"
 
 TextureGenEngine::Engine::Engine():Engine(new Window())
 {
@@ -22,9 +24,9 @@ void TextureGenEngine::Engine::ResizeCallBack(ResizeEvent event) {
 
 TextureGenEngine::Engine::Engine(Window* window):m_window(window)
 {
+	TextureGenEngine::g_engine = this;
 	m_window->AddResizeListener([this](ResizeEvent event) { this->ResizeCallBack(event); });
 	m_screen = new Screen();
-	TextureGenEngine::g_engine = this;
 	m_fontManager = new FontManager();
 }
 
@@ -45,6 +47,15 @@ void TextureGenEngine::Engine::Run()
 TextureGenEngine::Window* TextureGenEngine::Engine::GetWindow()
 {
 	return m_window;
+}
+
+TextureGenEngine::Renderer *TextureGenEngine::Engine::GetRenderer()
+{
+	if (!GetWindow()->GetRenderer())
+	{
+		LOG_ERROR("renderer is null");
+	}
+	return GetWindow()->GetRenderer();
 }
 
 TextureGenEngine::Screen* TextureGenEngine::Engine::GetScreen()

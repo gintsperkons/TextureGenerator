@@ -7,6 +7,7 @@ namespace TextureGenEngine
 	class Window;
 	class FontManager;
 	class Screen;
+	class Renderer;
 	class Engine
 	{
 		FontManager* m_fontManager;
@@ -19,6 +20,7 @@ namespace TextureGenEngine
 		TAPI ~Engine();
 		TAPI void Run();
 		TAPI Window* GetWindow();
+		Renderer* GetRenderer();
 		TAPI TextureGenEngine::Screen* GetScreen();
 		TAPI static Engine* Get();
 		TAPI bool IsRunning();

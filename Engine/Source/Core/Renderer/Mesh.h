@@ -11,7 +11,7 @@ namespace TextureGenEngine {
 		std::vector<Vertex2D> m_vertices;
 		std::vector<unsigned int> m_indices;
 		AABB* m_aabb;
-		Shader* m_shader;
+		Shader *m_shader;
 		unsigned int m_indexCount;
 		bool IsPointInPolygon(float x, float y);
 	public:
