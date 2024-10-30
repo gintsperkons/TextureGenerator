@@ -11,7 +11,6 @@
 
 TextureGenEngine::Screen::Screen()
 {
-   m_mesh = ObjectFactory::CreateSquare();
    m_textMesh = new Text();
 }
 
@@ -27,15 +26,14 @@ void TextureGenEngine::Screen::Update()
         LOG_DEBUG("Mouse Position: %d, %d\n", size[0], size[1]);
         float x = ((float)size[0] / (float)width)*2 -1;
         float y= ((float)size[1] / (float)height) * 2 - 1;
-        m_mesh->CheckClickColision(x,y);
         
     }
 }
 
 void TextureGenEngine::Screen::Draw()
 {
-    //m_mesh->Draw();
     m_textMesh->Draw("Hello World", 25.0f, 25.0f, 1.0f, glm::vec3(0.0f, 1.0f, 0.0f));
+    m_guiManager->Draw();
     
 }
 
@@ -46,6 +44,5 @@ void TextureGenEngine::Screen::SetGUIManager(GUIManager* guiManager)
 
 TextureGenEngine::Screen::~Screen()
 {
-    delete m_mesh;
     delete m_textMesh;
 }

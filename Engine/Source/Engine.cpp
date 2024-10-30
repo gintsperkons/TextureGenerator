@@ -46,6 +46,10 @@ void TextureGenEngine::Engine::Run()
 
 TextureGenEngine::Window* TextureGenEngine::Engine::GetWindow()
 {
+	if (!m_window)
+	{
+		LOG_ERROR("window is null");
+	}
 	return m_window;
 }
 

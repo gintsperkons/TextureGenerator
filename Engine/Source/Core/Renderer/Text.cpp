@@ -43,12 +43,10 @@ void TextureGenEngine::Text::Draw(std::string text, float x, float y, float scal
     glBindVertexArray(VAO);
 
     std::string::const_iterator c;
-    LOG_INFO("Text: %s\n", text.c_str());
     for (c = text.begin(); c != text.end(); c++)
     {
         Character ch = TextureGenEngine::Engine::Get()->GetFontManager()->GetCharacter(*c);
-        LOG_INFO("Character: %c, TextureID: %d, Size: (%d, %d), Bearing: (%d, %d), Advance: %d", *c, ch.TextureID, ch.Size.x, ch.Size.y, ch.Bearing.x, ch.Bearing.y, ch.Advance);
-
+        
         float xpos = x + ch.Bearing.x * scale;
         float ypos = y + (ch.Size.y - ch.Bearing.y) * scale; // Adjusted to flip vertically
 
@@ -56,18 +54,17 @@ void TextureGenEngine::Text::Draw(std::string text, float x, float y, float scal
         float h = ch.Size.y * scale;
         // update VBO for each character
         float vertices[6][4] = {
-            {xpos, ypos - h, 0.0f, 0.0f}, // Adjusted to flip vertically
+            {xpos, ypos + h, 0.0f, 0.0f},
             {xpos, ypos, 0.0f, 1.0f},
             {xpos + w, ypos, 1.0f, 1.0f},
 
-            {xpos, ypos - h, 0.0f, 0.0f}, // Adjusted to flip vertically
+            {xpos, ypos + h, 0.0f, 0.0f},
             {xpos + w, ypos, 1.0f, 1.0f},
-            {xpos + w, ypos - h, 1.0f, 0.0f} // Adjusted to flip vertically
+            {xpos + w, ypos + h, 1.0f, 0.0f}
         };
         // render glyph texture over quad
         glBindTexture(GL_TEXTURE_2D, ch.TextureID);
         if (glGetError() != GL_NO_ERROR) {
-            LOG_ERROR("Texture bind error for character: %c", *c);
         }
         // update content of VBO memory
         glBindBuffer(GL_ARRAY_BUFFER, VBO);

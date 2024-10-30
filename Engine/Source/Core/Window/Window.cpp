@@ -120,6 +120,10 @@ void TextureGenEngine::Window::PoolEvents()
 
 void TextureGenEngine::Window::GetFramebufferSize(int& width, int& height)
 {
+	if (m_window == nullptr)
+	{
+		LOG_ERROR("Window is null\n");
+	}
 	glfwGetFramebufferSize(m_window, &width, &height);
 
 }

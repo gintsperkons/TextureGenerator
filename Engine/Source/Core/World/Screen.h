@@ -7,7 +7,6 @@ namespace TextureGenEngine
     class Text;
 class Screen
 {
-    Mesh* m_mesh;
     Text* m_textMesh;
     GUIManager* m_guiManager;
     

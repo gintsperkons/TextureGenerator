@@ -5,6 +5,7 @@
 #include <Core/Input/MouseCodes.h>
 #include <Core/Logger/Logger.h>
 #include <Core/World/Screen.h>
+#include <Core/GUI/Elements/MenuBar.h>
 
 
 int main()
@@ -16,7 +17,8 @@ int main()
 	TextureGenEngine::Engine::Get()->GetWindow()->GetFramebufferSize(bWidth,bHeight);
 	
 	TextureGenEngine::GUIManager* guiManager = new TextureGenEngine::GUIManager(bWidth,bHeight);
-	
+	guiManager->AddChild(new TextureGenEngine::MenuBar());
+
 
 
 	TextureGenEngine::Engine::Get()->GetScreen()->SetGUIManager(guiManager);
