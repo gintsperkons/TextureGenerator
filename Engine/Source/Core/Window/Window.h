@@ -39,7 +39,7 @@ namespace TextureGenEngine
 			return m_renderer;
 		}
 		void OnResize();
-		void GetFramebufferSize(int& width, int& height);
+		TAPI void GetFramebufferSize(int& width, int& height);
 		void AddResizeListener(std::function<void(ResizeEvent)> callback);
 	};
 }

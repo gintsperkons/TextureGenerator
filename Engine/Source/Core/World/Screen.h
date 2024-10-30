@@ -1,4 +1,5 @@
 #pragma once
+#include "Defines.h"
 namespace TextureGenEngine
 {
     class Mesh;
@@ -12,7 +13,7 @@ class Screen
     Screen();
     void Update();
     void Draw();
-    void SetGUIManager(GUIManager* guiManager);
+    TAPI void SetGUIManager(GUIManager* guiManager);
     ~Screen();
 };
 } // namespace TextureGenEngine

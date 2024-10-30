@@ -3,6 +3,8 @@
 #include FT_FREETYPE_H
 #include "FontManager.h"
 #include "Core/Logger/Logger.h"
+#include "Core/FileHandler/FileHandler.h" 
+#include <string>
 
 TextureGenEngine::FontManager::FontManager()
 {
@@ -15,7 +17,10 @@ TextureGenEngine::FontManager::FontManager()
 
     FT_Face face;
 
-    FT_Error error = FT_New_Face(ft, "resources/fonts/RobotoMono-Regular.ttf", 0, &face);
+    std::string absolutePath = GetAbsolutePath("resources/fonts/RobotoMono-Regular.ttf");
+
+    LOG_DEBUG("Font Path: %s\n", absolutePath.c_str());
+    FT_Error error = FT_New_Face(ft, absolutePath.c_str(), 0, &face);
     if (error)
     {
         LOG_ERROR("FREETYPE: Failed to load font\n");
@@ -49,7 +54,7 @@ TextureGenEngine::FontManager::FontManager()
             GL_UNSIGNED_BYTE,
             face->glyph->bitmap.buffer);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_2D, GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 

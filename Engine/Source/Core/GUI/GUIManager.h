@@ -8,7 +8,7 @@ namespace TextureGenEngine
     private:
         /* data */
     public:
-        GUIManager(int width, int height);
+        TAPI GUIManager(int width, int height);
         void Draw();
         ~GUIManager();
     };
