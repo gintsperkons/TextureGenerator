@@ -4,9 +4,11 @@ namespace TextureGenEngine
 {
     class Mesh;
     class GUIManager;
+    class Text;
 class Screen
 {
     Mesh* m_mesh;
+    Text* m_textMesh;
     GUIManager* m_guiManager;
     
     public:

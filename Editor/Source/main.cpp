@@ -14,8 +14,9 @@ int main()
 	TextureGenEngine::Engine engine(new TextureGenEngine::Window(800, 600, "TexGen"));
 	int bWidth,bHeight;
 	TextureGenEngine::Engine::Get()->GetWindow()->GetFramebufferSize(bWidth,bHeight);
-	// TODO Make Gui labelma
+	
 	TextureGenEngine::GUIManager* guiManager = new TextureGenEngine::GUIManager(bWidth,bHeight);
+	
 
 
 	TextureGenEngine::Engine::Get()->GetScreen()->SetGUIManager(guiManager);

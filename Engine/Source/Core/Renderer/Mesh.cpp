@@ -7,12 +7,7 @@
 #include "Core/Renderer/Renderer.h"
 #include "Core/Renderer/Shaders/Shader.h"
 
-bool TextureGenEngine::Mesh::IsPointInPolygon(float x, float y)
-{
 
-    //m_vertecies = m_vertices.data();
-    return false;
-}
 
 TextureGenEngine::Mesh::Mesh(Vertex2D vertices[], unsigned int vertexCount, unsigned int indices[], unsigned int indexCount)
 :m_indexCount(indexCount) 
@@ -65,10 +60,7 @@ void TextureGenEngine::Mesh::CheckClickColision(float x, float y)
     if (m_aabb->CheckColision(x, y))
 	{
 		LOG_INFO("AABB Colision detected\n");
-        if (IsPointInPolygon(x, y))
-        {
-            LOG_INFO("Vertex Colision detected\n");
-        }
+
 	}
 	else
 	{

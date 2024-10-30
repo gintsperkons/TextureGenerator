@@ -17,5 +17,6 @@ struct Character {
     public:
         FontManager(/* args */);
         ~FontManager();
+        Character GetCharacter(char c){return m_characters[c];};
     };
 }

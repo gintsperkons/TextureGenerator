@@ -13,7 +13,6 @@ namespace TextureGenEngine {
 		AABB* m_aabb;
 		Shader *m_shader;
 		unsigned int m_indexCount;
-		bool IsPointInPolygon(float x, float y);
 	public:
 		Mesh(Vertex2D vertices[], unsigned int vertexCount, unsigned int indices[], unsigned int indexCount);
 		void Draw();

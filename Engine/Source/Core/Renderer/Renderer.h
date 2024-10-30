@@ -9,12 +9,14 @@ namespace TextureGenEngine
 	{
 		glm::vec4 m_clearColor;
 		ShaderManager *m_shaderManager;
+		glm::mat4 m_projectionMatrix;
 
 	public:
 		Renderer(int width, int height);
 		void Clear();
 		void UpdateViewport(int width, int height);
 		Shader *GetShader(std::string);
+		glm::mat4 GetProjectionMatrix() { return m_projectionMatrix; }
 		~Renderer();
 	};
 }

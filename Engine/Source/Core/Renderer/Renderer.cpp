@@ -1,3 +1,6 @@
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 #include "Renderer.h"
 #include "Core/Logger/Logger.h"
 #include <glad/glad.h>
@@ -11,7 +14,11 @@ TextureGenEngine::Renderer::Renderer(int width, int height) : m_clearColor(0.0f,
 	{
 		LOG_FATAL("Failed to initialize GLAD");
 	}
+
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glViewport(0, 0, width, height);
+	m_projectionMatrix = glm::ortho(0.0f, (float)width, (float)height, 0.0f, -1.0f, 1.0f);
 	m_shaderManager = new ShaderManager();
 }
 
@@ -24,6 +31,7 @@ void TextureGenEngine::Renderer::Clear()
 void TextureGenEngine::Renderer::UpdateViewport(int width, int height)
 {
 	glViewport(0, 0, width, height);
+	m_projectionMatrix = glm::ortho(0.0f, (float)width, (float)height, 0.0f, -1.0f, 1.0f);
 }
 
 TextureGenEngine::Shader* TextureGenEngine::Renderer::GetShader(std::string name)

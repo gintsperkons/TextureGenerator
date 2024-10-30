@@ -7,10 +7,12 @@
 #include <Engine.h>
 #include <Core/Window/Window.h>
 #include "Core/GUI/GUIManager.h"
+#include "Core/Renderer/Text.h"
 
 TextureGenEngine::Screen::Screen()
 {
    m_mesh = ObjectFactory::CreateSquare();
+   m_textMesh = new Text();
 }
 
 void TextureGenEngine::Screen::Update()
@@ -32,7 +34,8 @@ void TextureGenEngine::Screen::Update()
 
 void TextureGenEngine::Screen::Draw()
 {
-    m_mesh->Draw();
+    //m_mesh->Draw();
+    m_textMesh->Draw("Hello World", 25.0f, 25.0f, 1.0f, glm::vec3(0.0f, 1.0f, 0.0f));
     
 }
 
@@ -43,4 +46,6 @@ void TextureGenEngine::Screen::SetGUIManager(GUIManager* guiManager)
 
 TextureGenEngine::Screen::~Screen()
 {
+    delete m_mesh;
+    delete m_textMesh;
 }

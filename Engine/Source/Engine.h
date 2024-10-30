@@ -24,6 +24,7 @@ namespace TextureGenEngine
 		TAPI TextureGenEngine::Screen* GetScreen();
 		TAPI static Engine* Get();
 		TAPI bool IsRunning();
+		FontManager* GetFontManager(){return m_fontManager;};
 		
 	};
 		inline static Engine* g_engine = nullptr;

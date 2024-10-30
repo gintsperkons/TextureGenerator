@@ -11,6 +11,7 @@ namespace TextureGenEngine
         Shader(std::string vertexSource, std::string fragmentSource);
         void Use();
         ~Shader();
+        u32 GetID() { return ID; }
     };
 
 } // namespace TextureGenEngine
