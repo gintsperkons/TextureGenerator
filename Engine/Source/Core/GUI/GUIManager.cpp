@@ -26,6 +26,16 @@ TextureGenEngine::GUIManager::~GUIManager()
     m_children.clear();
 }
 
+void TextureGenEngine::GUIManager::Resize(int width, int height)
+{
+    for (BaseElement *child : m_children)
+    {
+        child->Resize(width, height, m_width, m_height);
+    }
+    m_width = width;
+    m_height = height;
+}
+
 void TextureGenEngine::GUIManager::AddChild(BaseElement* element)
 {
     m_children.push_back(element);

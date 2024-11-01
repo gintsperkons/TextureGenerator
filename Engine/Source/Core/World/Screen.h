@@ -16,6 +16,7 @@ class Screen
     void Draw();
     TAPI void SetGUIManager(GUIManager* guiManager);
     ~Screen();
+    void Resize(int width, int height);
 };
 } // namespace TextureGenEngine
 

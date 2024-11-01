@@ -7,6 +7,11 @@ namespace TextureGenEngine
     class BaseElement
     {
     protected:
+        static inline int m_menuBarHeight = 25;
+        bool lockX = true;
+        bool lockY = true;
+        bool lockWidth = true;
+        bool lockHeight = true;
         int m_x, m_y, m_width, m_height;
         std::vector<BaseElement*> m_children;
         Mesh *m_mesh;
@@ -21,5 +26,6 @@ namespace TextureGenEngine
                 delete child;
             }
         };
+        virtual void Resize(int width, int height,int oldWidth, int oldHeight);
     };
 } // namespace TextureGenEngine

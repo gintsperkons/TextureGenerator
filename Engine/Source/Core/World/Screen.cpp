@@ -46,3 +46,8 @@ TextureGenEngine::Screen::~Screen()
 {
     delete m_textMesh;
 }
+
+void TextureGenEngine::Screen::Resize(int width, int height)
+{
+    m_guiManager->Resize(width, height);
+}

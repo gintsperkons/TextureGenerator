@@ -39,6 +39,7 @@ TextureGenEngine::Mesh::Mesh(Vertex2D vertices[], unsigned int vertexCount, unsi
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
 
+    m_model = glm::mat4(1.0f);
     m_shader = Engine::Get()->GetRenderer()->GetShader("base");
 
     m_aabb = new AABB(vertices, vertexCount);
@@ -53,11 +54,10 @@ void TextureGenEngine::Mesh::Draw()
     }
 
     GLint projectionLoc = glGetUniformLocation(m_shader->GetID(), "projection");
-    if (projectionLoc == -1)
-    {
-        LOG_ERROR("Failed to get uniform location for projection");
-    }
-
+    GLint modelLoc = glGetUniformLocation(m_shader->GetID(), "model");
+    THAUMA_ASSERT_MSG(projectionLoc != -1, "Failed to get projection uniform location");
+    THAUMA_ASSERT_MSG(modelLoc != -1, "Failed to get model uniform location");
+    glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(m_model));
     glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(TextureGenEngine::Engine::Get()->GetRenderer()->GetProjectionMatrix()));
     if (glGetError() != GL_NO_ERROR)
     {
@@ -96,6 +96,16 @@ void TextureGenEngine::Mesh::CheckClickColision(float x, float y)
     {
         LOG_INFO("No AABB Colision detected\n");
     }
+}
+
+void TextureGenEngine::Mesh::Move(float x, float y)
+{
+    m_model = glm::translate(m_model, glm::vec3(x, -y, 0.0f));
+}
+
+void TextureGenEngine::Mesh::Scale(float x, float y)
+{
+    m_model = glm::scale(m_model, glm::vec3(x, y, 1.0f));
 }
 
 TextureGenEngine::Mesh::~Mesh()

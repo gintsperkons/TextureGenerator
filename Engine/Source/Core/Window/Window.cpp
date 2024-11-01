@@ -48,8 +48,8 @@ TextureGenEngine::Window::Window(int width, int height, const char* title) :
 	glfwMakeContextCurrent(m_window);
 	glfwSetFramebufferSizeCallback(m_window, frameBufferResizeCallback);
 	glfwSetWindowUserPointer(m_window, this);
-	glfwGetFramebufferSize(m_window, &width, &height);
-	m_renderer = new Renderer(width, height);
+	glfwGetFramebufferSize(m_window, &m_width, &m_height);
+	m_renderer = new Renderer(m_width, m_height);
 	THAUMA_ASSERT_MSG(m_renderer!=nullptr, "Failed to create renderer");
 }
 

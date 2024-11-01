@@ -14,6 +14,7 @@ TextureGenEngine::Engine::Engine():Engine(new Window())
 
 void TextureGenEngine::Engine::ResizeCallBack(ResizeEvent event) {
 
+	m_screen->Resize(event.width, event.height);
 	m_screen->Update();
 	m_window->Update();
 	m_window->Draw();
