@@ -3,6 +3,7 @@ project "Engine"
     language "C++"
     targetdir "Binaries\\%{cfg.buildcfg}"
     cppdialect "C++20"
+    visibility "Hidden"
 
 
     files {"Source\\**.h", "Source\\**.cpp", "Source\\glad.c"}
