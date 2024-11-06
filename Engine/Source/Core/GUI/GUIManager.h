@@ -16,6 +16,6 @@ namespace TextureGenEngine
         void Draw();
         ~GUIManager();
         void Resize(int width, int height);
-        void AddChild(BaseElement* element);
+        TAPI void AddChild(BaseElement* element);
     };
 } // namespace TextureGenEngine

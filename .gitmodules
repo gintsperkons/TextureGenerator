@@ -1,9 +1,12 @@
 [submodule "Vendor/Library/GLM"]
-	path = Vendor/Library/GLM
+	path = Vendor/Libraries/GLM
 	url = https://github.com/g-truc/glm.git
 [submodule "Vendor/Library/freetype"]
-	path = Vendor/Library/freetype
+	path = Vendor/Libraries/freetype
 	url = https://github.com/gintsperkons/freetype.git
 [submodule "Vendor/Library/GLFW"]
-	path = Vendor/Library/GLFW
+	path = Vendor/Libraries/GLFW
 	url = https://github.com/gintsperkons/glfw.git
+[submodule "Scripts"]
+	path = Scripts
+	url = https://github.com/gintsperkons/Scripts.git

@@ -23,8 +23,11 @@ debugdir("%{wks.location}/Binaries/" .. OutputDir .. "/%{prj.name}")
 
 postbuildcommands
 {
+    
+        "{MKDIR} %{wks.location}/Binaries/" .. RuntimeDir .. "/",
+    "{COPYFILE} %{cfg.buildtarget.relpath} %{wks.location}/Binaries/" .. RuntimeDir .. "/",
     "echo '#!/bin/bash' > %{wks.location}/run.sh",  -- Create run.sh
-    "echo 'pushd Binaries/" .. OutputDir .. "/%{prj.name}' >> %{wks.location}/run.sh", -- Change to script directory
+    "echo 'pushd Binaries/" .. RuntimeDir .. "/' >> %{wks.location}/run.sh", -- Change to script directory
     "echo './%{prj.name}' >> %{wks.location}/run.sh", -- Command to run the executable
     "chmod +x %{wks.location}/run.sh"          -- Make the script executable   
 }

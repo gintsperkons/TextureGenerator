@@ -25,11 +25,14 @@ project "Engine"
     debugdir("%{wks.location}\\Binaries\\" .. OutputDir .. "\\%{prj.name}")
 
     postbuildcommands {
-        "{ECHO} \"%{prj.location}\"",
-        "{MKDIR} \"%{wks.location}/Binaries/" .. OutputDir .. "/Editor/\"",
-        "{COPYFILE} \"%{cfg.buildtarget.relpath}\" \"%{wks.location}/Binaries/" .. OutputDir .. "/Editor/\"",
-        "{COPYDIR} \"%{wks.location}\\Vendor\\resources\" \"%{wks.location}\\Binaries\\" .. OutputDir .. "\\Editor\\"",
-        "{COPYDIR} \"%{wks.location}\\Engine\\Shaders\" \"%{wks.location}\\Binaries\\" .. OutputDir .. "\\Editor\\"",
+
+        "{MKDIR} %{wks.location}/Binaries/" .. RuntimeDir .. "/",
+        "{COPYFILE} %{cfg.buildtarget.relpath} %{wks.location}/Binaries/" .. RuntimeDir .. "/",
+        "{COPYDIR} \"%{wks.location}/Vendor/resources\" \"%{wks.location}/Binaries/" .. RuntimeDir .. "/\"",
+        "{COPYDIR} \"%{wks.location}/Engine/Shaders\" \"%{wks.location}/Binaries/" .. RuntimeDir .. "/\"",
+        -- "{ECHO} \"%{prj.location}\"",
+        -- "{MKDIR} \"%{wks.location}/Binaries/" .. OutputDir .. "/Editor/\"",
+        -- "{COPYFILE} \"%{cfg.buildtarget.relpath}\" \"%{wks.location}/Binaries/" .. OutputDir .. "/Editor/\"",
     }
     
 

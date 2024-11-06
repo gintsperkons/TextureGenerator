@@ -4,12 +4,17 @@ workspace("TextureGenerator")
 architecture "x64"
 configurations {"Debug", "Release", "Dist"}
 startproject "Editor"
+warnings "Extra"
+flags {"MultiProcessorCompile"}
+linkoptions { '-Wl,-rpath=\\$$ORIGIN' }
 
-OutputDir = "%{cfg.architecture}-%{cfg.system}-%{cfg.buildcfg}"
+
+OutputDir = "compiled-%{cfg.architecture}-%{cfg.system}-%{cfg.buildcfg}"
+RuntimeDir ="runtime-%{cfg.system}-%{cfg.architecture}-%{cfg.buildcfg}"
 
 group "Dependencies"
-   include "Vendor/Library/GLFW"
-   include "Vendor/Library/freetype"
+   include "Vendor/Libraries/GLFW"
+   include "Vendor/Libraries/freetype"
 
 group "TextureGenerator"
 include "Engine"
