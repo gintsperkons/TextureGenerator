@@ -4,6 +4,7 @@ Binaries/
 venv/      
 
 run.sh
+clean.sh
 
 #VisualStudio
 .vscode
