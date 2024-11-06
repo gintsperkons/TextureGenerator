@@ -9,16 +9,16 @@
 ## To Run
 
 # Setup
-+ Windows
-    1. Run ```./setup.bat```
-    2. Run ```./premake.bat vs2022``` or other supported action
-    3. Open Solution in Visual Studio Community 2022
-    4. Build and Run It (Should work VS2022)
-+ Linux
-    1. Run ```./setup.bat```
-    2. Run ```./premake.bat gmake2``` or other supported action
-    3. Run ```make```
-    4. Run ```./run.sh``` if not working the executable should be located in Binaries/runtime-...-...-.../
+### Windows
+1. Run ```./setup.bat```
+2. Run ```./premake.bat vs2022``` or other supported action
+3. Open Solution in Visual Studio Community 2022
+4. Build and Run It (Should work VS2022)
+### Linux
+1. Run ```./setup.bat```
+2. Run ```./premake.bat gmake2``` or other supported action
+3. Run ```make```
+4. Run ```./run.sh``` if not working the executable should be located in Binaries/runtime-...-...-.../
 
 ## Acknowledgements
 ### Used Libraries
