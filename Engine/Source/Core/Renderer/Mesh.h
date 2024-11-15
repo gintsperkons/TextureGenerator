@@ -22,6 +22,7 @@ namespace TextureGenEngine
 		void CheckClickColision(float x, float y);
 		void Move(float x, float y);
 		void Scale(float x, float y);
+		void ChangeColor(float r, float g, float b, float a);
 		~Mesh();
 	};
 }

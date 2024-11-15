@@ -5,16 +5,31 @@
 #include "Engine.h"
 #include "Core/Window/Window.h"
 
+
+
 TextureGenEngine::MenuBar::MenuBar()
-    : BaseElement(0, TextureGenEngine::Engine::Get()->GetWindow()->GetHeight()-m_menuBarHeight, TextureGenEngine::Engine::Get()->GetWindow()->GetWidth(), m_menuBarHeight)
+    : BaseElement(0, TextureGenEngine::Engine::Get()->GetWindow()->GetHeight() - m_menuBarHeight, TextureGenEngine::Engine::Get()->GetWindow()->GetWidth(), m_menuBarHeight)
 {
     lockWidth = false;
     m_mesh = ObjectFactory::CreateSquare(m_x, m_y, m_width, m_height);
+    m_mesh->ChangeColor(1.0f, 0.0f, 0.0f, 1.0f);
+
 }
 
 void TextureGenEngine::MenuBar::Draw()
 {
-    m_mesh->Draw();
+    if (m_mesh != nullptr)
+        m_mesh->Draw();
+    for (BaseElement *child : m_children)
+    {
+        if (child != nullptr)
+            child->Draw();
+    }
+}
+
+void TextureGenEngine::MenuBar::AddMenu(Menu *menu)
+{
+    AddChild((BaseElement*)(menu));
 }
 
 TextureGenEngine::MenuBar::~MenuBar()

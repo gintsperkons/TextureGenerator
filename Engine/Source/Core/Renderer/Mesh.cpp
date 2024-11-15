@@ -108,6 +108,25 @@ void TextureGenEngine::Mesh::Scale(float x, float y)
     m_model = glm::scale(m_model, glm::vec3(x, y, 1.0f));
 }
 
+void TextureGenEngine::Mesh::ChangeColor(float r, float g, float b, float a)
+{
+    // Iterate through all vertices and update the color
+    for (auto &vertex : m_vertices)
+    {
+        vertex.Color = glm::vec3(r, g, b); // Update color (you can modify this to fit your needs)
+    }
+
+    // Re-upload the vertex data to the GPU with the updated color
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glBufferSubData(GL_ARRAY_BUFFER, 0, m_vertices.size() * sizeof(Vertex2D), m_vertices.data());
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+    if (glGetError() != GL_NO_ERROR)
+    {
+        LOG_ERROR("Failed to update vertex buffer with new color");
+    }
+}
+
 TextureGenEngine::Mesh::~Mesh()
 {
     delete m_aabb;
