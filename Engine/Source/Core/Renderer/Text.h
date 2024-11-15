@@ -8,13 +8,15 @@ namespace TextureGenEngine
     class Text
     {
     private:
-    unsigned int VBO, VAO;
-    Shader *m_shader;
+        unsigned int VBO, VAO;
+        Shader *m_shader;
         /* data */
+        float CalculateScale(std::string text, int width, int height);
+
     public:
-        Text(/* args */);
-        void Draw(std::string text, float x, float y, float scale, glm::vec3 color);
+        Text();
+        void Draw(std::string text, float x, float y, int height, int width, glm::vec3 color);
         ~Text();
     };
-    
+
 } // namespace TextureGenEngine
