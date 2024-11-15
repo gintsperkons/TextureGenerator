@@ -3,7 +3,9 @@ Vendor/resources/**/*
 Binaries/
 venv/      
 
+run.bat
 run.sh
+clean.bat
 clean.sh
 
 #VisualStudio

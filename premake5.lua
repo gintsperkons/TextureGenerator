@@ -6,7 +6,11 @@ configurations {"Debug", "Release", "Dist"}
 startproject "Editor"
 warnings "Extra"
 flags {"MultiProcessorCompile"}
-linkoptions { '-Wl,-rpath=\\$$ORIGIN' }
+
+filter "system:linux"
+linkoptions {'-Wl,-rpath=\\$$ORIGIN'}
+filter ""
+
 
 
 OutputDir = "compiled-%{cfg.architecture}-%{cfg.system}-%{cfg.buildcfg}"
