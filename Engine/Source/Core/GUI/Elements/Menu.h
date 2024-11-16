@@ -10,6 +10,7 @@ namespace TextureGenEngine
     private:
         std::string m_title = "MenuPlaceholder";
         Text* m_text;
+        int m_textSize = 14;
 
     public:
         TAPI Menu(std::string title);

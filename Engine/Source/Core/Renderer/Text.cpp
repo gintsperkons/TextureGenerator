@@ -25,7 +25,7 @@ TextureGenEngine::Text::Text()
     m_shader = TextureGenEngine::Engine::Get()->GetRenderer()->GetShader("text");
 }
 
-float TextureGenEngine::Text::CalculateScale(std::string text, int width, int height)
+float TextureGenEngine::Text::CalculateScale(std::string text, int textSize, int &textHeight, int &textWidth, int &maxDescender)
 {
     float totalWidth = 0.0f;
     float totalHeight = 0.0f;
@@ -43,25 +43,21 @@ float TextureGenEngine::Text::CalculateScale(std::string text, int width, int he
             lineCount++;
             continue;
         }
-
-        totalWidth += (ch.Advance >> 6);                       // Advance is in 1/64th pixels, convert to pixels
+        
+        totalWidth += (ch.Advance >> 6);                               // Advance is in 1/64th pixels, convert to pixels
         hBelowBase = std::max((float)hBelowBase, (float)ch.Bearing.y); // Track the maximum height below the baseline
         hAboveBase = std::max((float)hAboveBase, (float)(ch.Size.y - ch.Bearing.y));
-        
+        maxDescender = std::min(maxDescender, (int)(ch.Bearing.y - ch.Size.y));
     }
-    totalHeight = hAboveBase + hBelowBase;
-
+    totalHeight = hBelowBase;
+    textHeight = hAboveBase + hBelowBase;
+    textWidth = totalWidth;
     // Calculate the maximum scale based on height (height constraint)
-    float scaleY = height / (lineCount * totalHeight);
+    return textSize / (lineCount * totalHeight);
 
-    // Now calculate the scale for the width
-    float scaleX = width / totalWidth;
-
-    // The final scale is the smaller of the two scales to ensure the text fits in both dimensions
-    return std::min(scaleX, scaleY);
 }
 
-void TextureGenEngine::Text::Draw(std::string text, float x, float y, int height, int width, glm::vec3 color) // width and height in pixels of text
+void TextureGenEngine::Text::Draw(std::string text, float x, float y, int frameHeight, int frameWidth, int textSize, glm::vec3 color) // width and height in pixels of text
 {
     m_shader->Use();
     if (glGetError() != GL_NO_ERROR)
@@ -76,25 +72,19 @@ void TextureGenEngine::Text::Draw(std::string text, float x, float y, int height
         LOG_ERROR("Failed to get uniform location");
     }
 
-
     glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(TextureGenEngine::Engine::Get()->GetRenderer()->GetProjectionMatrix()));
     glUniform3f(textColorLoc, color.x, color.y, color.z);
     glActiveTexture(GL_TEXTURE0);
     glBindVertexArray(VAO);
-    float scale = CalculateScale(text, width, height);
-    float maxDescender = 0.0f;
+    int textHeight = 0;
+    int textWidth = 0;
+    int maxDescender = 0;
+    float scale = CalculateScale(text, textSize, textHeight, textWidth, maxDescender);
     std::string::const_iterator c;
+    y += maxDescender * scale;
+    y = y-(frameHeight - textHeight)/2;
+    x = x+(frameWidth - textWidth*scale)/2;
 
-    // Calculate the maximum descent of the text to adjust the position
-    for (c = text.begin(); c != text.end(); ++c)
-    {
-        Character ch = TextureGenEngine::Engine::Get()->GetFontManager()->GetCharacter(*c);
-
-        // Calculate the descender height of this character
-        float descender = (ch.Bearing.y - ch.Size.y);
-        maxDescender = std::min(maxDescender, descender); // Keep track of the max descent
-    }
-    y -= maxDescender * scale;
     for (c = text.begin(); c != text.end(); c++)
     {
         Character ch = TextureGenEngine::Engine::Get()->GetFontManager()->GetCharacter(*c);

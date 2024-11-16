@@ -20,7 +20,7 @@ void TextureGenEngine::Menu::UpdatePosition(int x, int y)
 {
     m_x = x;
     m_y = y;
-    m_mesh->Move(x, 0);
+    m_mesh->Move(x, y);
     
 }
 
@@ -41,7 +41,7 @@ void TextureGenEngine::Menu::Draw()
         if (child != nullptr)
             child->Draw();
     }
-    m_text->Draw(m_title, m_x, m_y, m_height, m_width, glm::vec3(0.0f, 1.0f, 0.0f));
+    m_text->Draw(m_title, m_x, m_y, m_height, m_width, m_textSize, glm::vec3(0.0f, 1.0f, 0.0f));
 }
 
 TextureGenEngine::Menu::~Menu()
