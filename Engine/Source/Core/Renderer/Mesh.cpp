@@ -113,7 +113,7 @@ void TextureGenEngine::Mesh::SetPosition(float x, float y)
     glm::vec4 perspective;
     glm::decompose(m_model,scale,rotation,translation,skew,perspective);
 
-    translation = glm::vec3(x, 0, 0.0f);
+    translation = glm::vec3(x, y, 0.0f);
 
     m_model = glm::mat4(1.0);
     m_model = glm::translate(m_model,translation);

@@ -10,7 +10,8 @@ TextureGenEngine::Menu::Menu(std::string title)
     : BaseElement(0, TextureGenEngine::Engine::Get()->GetWindow()->GetHeight() - m_menuBarHeight, 100, m_menuBarHeight), m_title(title)
 {   
     LOG_DEBUG("Size: %d, %d\n", m_width, m_height);
-    m_mesh = ObjectFactory::CreateSquare(m_x, m_y, m_width, m_height);
+    LOG_DEBUG("x: %d y:%d", m_x, m_y);
+    m_mesh = ObjectFactory::CreateSquare(0, 0, m_width, m_height);
     m_mesh->ChangeColor(0.0f, 0.0f, 1.0f, 0.0f);
     m_text = new Text();
 }
@@ -19,7 +20,7 @@ void TextureGenEngine::Menu::UpdatePosition(int x, int y)
 {
     m_x = x;
     m_y = y;
-    m_mesh->Move(x, y);
+    m_mesh->Move(x, 0);
     
 }
 
@@ -28,7 +29,7 @@ void TextureGenEngine::Menu::UpdatePosition(int x)
     m_x = x;
     LOG_DEBUG("X: %d Y: %d\n", m_x, m_y);
 
-    m_mesh->SetPosition (x, m_y);
+    m_mesh->SetPosition(x, m_y);
 }
 
 void TextureGenEngine::Menu::Draw()
