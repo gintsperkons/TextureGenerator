@@ -21,7 +21,6 @@ void TextureGenEngine::BaseElement::Resize(int width, int height, int oldWidth, 
     if (lockX)
         newX = m_x;
 
-    LOG_DEBUG("Mesh: %p\n", m_mesh);
     if (m_mesh != nullptr)
         m_mesh->Move(m_x - newX, m_y - newY);
 

@@ -15,6 +15,22 @@ TextureGenEngine::Menu::Menu(std::string title)
     m_text = new Text();
 }
 
+void TextureGenEngine::Menu::UpdatePosition(int x, int y)
+{
+    m_x = x;
+    m_y = y;
+    m_mesh->Move(x, y);
+    
+}
+
+void TextureGenEngine::Menu::UpdatePosition(int x)
+{
+    m_x = x;
+    LOG_DEBUG("X: %d Y: %d\n", m_x, m_y);
+
+    m_mesh->SetPosition (x, m_y);
+}
+
 void TextureGenEngine::Menu::Draw()
 {
     if (m_mesh != nullptr)

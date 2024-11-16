@@ -19,8 +19,12 @@ int main()
 	
 	TextureGenEngine::GUIManager* guiManager = new TextureGenEngine::GUIManager(bWidth,bHeight);
 	TextureGenEngine::MenuBar* menuBar = new TextureGenEngine::MenuBar();
-	TextureGenEngine::Menu* fileMenu = new TextureGenEngine::Menu("Aqiuj");
+	TextureGenEngine::Menu *fileMenu = new TextureGenEngine::Menu("File");
+	TextureGenEngine::Menu *editMenu = new TextureGenEngine::Menu("Edit");
+	TextureGenEngine::Menu *confMenu = new TextureGenEngine::Menu("Options");
 	menuBar->AddMenu(fileMenu);
+	menuBar->AddMenu(editMenu);
+	menuBar->AddMenu(confMenu);
 	guiManager->AddChild(menuBar);
 
 

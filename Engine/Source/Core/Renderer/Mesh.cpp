@@ -1,4 +1,5 @@
 #include "Mesh.h"
+#define GLM_ENABLE_EXPERIMENTAL
 #include <glad/glad.h>
 #include <array>
 #include "Engine.h"
@@ -8,6 +9,7 @@
 #include "Core/Asserts.h"
 #include "Core/Renderer/Shaders/Shader.h"
 #include "glm/gtc/type_ptr.hpp"
+#include "glm/gtx/matrix_decompose.hpp"
 
 TextureGenEngine::Mesh::Mesh(Vertex2D vertices[], unsigned int vertexCount, unsigned int indices[], unsigned int indexCount)
     : m_indexCount(indexCount)
@@ -103,6 +105,21 @@ void TextureGenEngine::Mesh::Move(float x, float y)
     m_model = glm::translate(m_model, glm::vec3(x, -y, 0.0f));
 }
 
+void TextureGenEngine::Mesh::SetPosition(float x, float y)
+{
+    LOG_DEBUG("UpdatePosition");
+    glm::vec3 scale, translation, skew;
+    glm::quat rotation;
+    glm::vec4 perspective;
+    glm::decompose(m_model,scale,rotation,translation,skew,perspective);
+
+    translation = glm::vec3(x, 0, 0.0f);
+
+    m_model = glm::mat4(1.0);
+    m_model = glm::translate(m_model,translation);
+    m_model *= glm::mat4_cast(rotation);
+    m_model = glm::scale(m_model,scale);
+}
 void TextureGenEngine::Mesh::Scale(float x, float y)
 {
     m_model = glm::scale(m_model, glm::vec3(x, y, 1.0f));

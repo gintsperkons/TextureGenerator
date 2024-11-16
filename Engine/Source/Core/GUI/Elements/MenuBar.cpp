@@ -4,6 +4,7 @@
 #include "Core/Logger/Logger.h"
 #include "Engine.h"
 #include "Core/Window/Window.h"
+#include "Core/GUI/Elements/Menu.h"
 
 
 
@@ -29,7 +30,9 @@ void TextureGenEngine::MenuBar::Draw()
 
 void TextureGenEngine::MenuBar::AddMenu(Menu *menu)
 {
+    menu->UpdatePosition(m_children.size() * 100);
     AddChild((BaseElement*)(menu));
+
 }
 
 TextureGenEngine::MenuBar::~MenuBar()

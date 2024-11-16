@@ -13,7 +13,8 @@ namespace TextureGenEngine
 
     public:
         TAPI Menu(std::string title);
-        
+        void UpdatePosition(int x, int y); 
+        void UpdatePosition(int x);  
         void Draw() override;
         ~Menu();
     };

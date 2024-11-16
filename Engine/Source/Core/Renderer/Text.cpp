@@ -57,10 +57,6 @@ float TextureGenEngine::Text::CalculateScale(std::string text, int width, int he
     // Now calculate the scale for the width
     float scaleX = width / totalWidth;
 
-    LOG_DEBUG("ScaleX: %f, ScaleY: %f\n", scaleX, scaleY);
-    LOG_DEBUG("Total Width: %f, Total Height: %f\n", totalWidth, totalHeight);
-    LOG_DEBUG("Width: %d, Height: %d\n", width, height);
-
     // The final scale is the smaller of the two scales to ensure the text fits in both dimensions
     return std::min(scaleX, scaleY);
 }
@@ -86,7 +82,6 @@ void TextureGenEngine::Text::Draw(std::string text, float x, float y, int height
     glActiveTexture(GL_TEXTURE0);
     glBindVertexArray(VAO);
     float scale = CalculateScale(text, width, height);
-    LOG_DEBUG("Scale: %f\n", scale);
     float maxDescender = 0.0f;
     std::string::const_iterator c;
 
