@@ -1,6 +1,7 @@
 #include "Defines.h"
 #include <glm/glm.hpp>
 #include <string>
+#include <Core/GUI/Structures.h>
 
 namespace TextureGenEngine
 {
@@ -11,11 +12,11 @@ namespace TextureGenEngine
         unsigned int VBO, VAO;
         Shader *m_shader;
         /* data */
-        float CalculateScale(std::string text,int textSize,int &textHeight, int &textWidth, int &maxDescender);
+        float CalculateScale(std::string text, int textSize, int &textHeight, int &textWidth, int &maxDescender);
 
     public:
         Text();
-        void Draw(std::string text, float x, float y, int frameHeight, int frameWidth, int textSize, glm::vec3 color);
+        void Draw(std::string text, float x, float y, int frameHeight, int frameWidth, int textSize, glm::vec3 color, AlignmentHorizontal hAlign, AlignmentVertical vAlign);
         ~Text();
     };
 

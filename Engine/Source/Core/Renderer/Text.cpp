@@ -43,7 +43,7 @@ float TextureGenEngine::Text::CalculateScale(std::string text, int textSize, int
             lineCount++;
             continue;
         }
-        
+
         totalWidth += (ch.Advance >> 6);                               // Advance is in 1/64th pixels, convert to pixels
         hBelowBase = std::max((float)hBelowBase, (float)ch.Bearing.y); // Track the maximum height below the baseline
         hAboveBase = std::max((float)hAboveBase, (float)(ch.Size.y - ch.Bearing.y));
@@ -54,10 +54,9 @@ float TextureGenEngine::Text::CalculateScale(std::string text, int textSize, int
     textWidth = totalWidth;
     // Calculate the maximum scale based on height (height constraint)
     return textSize / (lineCount * totalHeight);
-
 }
 
-void TextureGenEngine::Text::Draw(std::string text, float x, float y, int frameHeight, int frameWidth, int textSize, glm::vec3 color) // width and height in pixels of text
+void TextureGenEngine::Text::Draw(std::string text, float x, float y, int frameHeight, int frameWidth, int textSize, glm::vec3 color, AlignmentHorizontal hAlign, AlignmentVertical vAlign) // width and height in pixels of text
 {
     m_shader->Use();
     if (glGetError() != GL_NO_ERROR)
@@ -81,9 +80,21 @@ void TextureGenEngine::Text::Draw(std::string text, float x, float y, int frameH
     int maxDescender = 0;
     float scale = CalculateScale(text, textSize, textHeight, textWidth, maxDescender);
     std::string::const_iterator c;
-    y += maxDescender * scale;
-    y = y-(frameHeight - textHeight)/2;
-    x = x+(frameWidth - textWidth*scale)/2;
+
+    if(vAlign == AlignmentVertical::CENTER)
+        y = y + maxDescender * scale - (frameHeight - textHeight) / 2; // VCenter
+    else if(vAlign == AlignmentVertical::BOTTOM)
+        y = y; //VBottom
+    else if(vAlign == AlignmentVertical::TOP)
+        y = y + (frameHeight - textHeight * scale) - maxDescender * scale; // Adjust for descenders VTop
+
+    if(hAlign == AlignmentHorizontal::CENTER)
+        x = x + (frameWidth - textWidth * scale) / 2; // HCenter
+    else if(hAlign == AlignmentHorizontal::LEFT)
+        x= x; //HLeft
+    else if(hAlign == AlignmentHorizontal::RIGHT)
+        x = x + (frameWidth - textWidth * scale); //HRight
+    
 
     for (c = text.begin(); c != text.end(); c++)
     {

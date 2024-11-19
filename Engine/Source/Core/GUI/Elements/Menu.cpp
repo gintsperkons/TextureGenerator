@@ -41,7 +41,7 @@ void TextureGenEngine::Menu::Draw()
         if (child != nullptr)
             child->Draw();
     }
-    m_text->Draw(m_title, m_x, m_y, m_height, m_width, m_textSize, glm::vec3(0.0f, 1.0f, 0.0f));
+    m_text->Draw(m_title, m_x, m_y, m_height, m_width, m_textSize, glm::vec3(0.0f, 1.0f, 0.0f), m_alignmentHorizontal, m_alignmentVertical);
 }
 
 TextureGenEngine::Menu::~Menu()

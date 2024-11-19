@@ -1,5 +1,6 @@
 #include "Defines.h"
 #include "BaseElement.h"
+#include "Core/GUI/Structures.h"
 #include <string>
 
 namespace TextureGenEngine
@@ -9,13 +10,15 @@ namespace TextureGenEngine
     {
     private:
         std::string m_title = "MenuPlaceholder";
-        Text* m_text;
+        Text *m_text;
+        AlignmentHorizontal m_alignmentHorizontal = AlignmentHorizontal::LEFT;
+        AlignmentVertical m_alignmentVertical = AlignmentVertical::CENTER;
         int m_textSize = 14;
 
     public:
         TAPI Menu(std::string title);
-        void UpdatePosition(int x, int y); 
-        void UpdatePosition(int x);  
+        void UpdatePosition(int x, int y);
+        void UpdatePosition(int x);
         void Draw() override;
         ~Menu();
     };

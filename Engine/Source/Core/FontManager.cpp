@@ -17,7 +17,7 @@ TextureGenEngine::FontManager::FontManager()
 
     FT_Face face;
 
-    std::string absolutePath = GetAbsolutePath("resources/fonts/RobotoMono-Regular.ttf");
+    std::string absolutePath = GetAbsolutePath("resources/fonts/RobotoMono-Medium.ttf");
 
     LOG_DEBUG("Font Path: %s\n", absolutePath.c_str());
     FT_Error error = FT_New_Face(ft, absolutePath.c_str(), 0, &face);
