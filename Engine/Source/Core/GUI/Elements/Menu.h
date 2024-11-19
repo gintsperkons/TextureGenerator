@@ -1,19 +1,16 @@
 #include "Defines.h"
-#include "BaseElement.h"
+#include "Core/GUI/SubElements/BaseElement.h"
 #include "Core/GUI/Structures.h"
 #include <string>
 
 namespace TextureGenEngine
 {
-    class Text;
+    class TextElement;
     class Menu : public BaseElement
     {
     private:
         std::string m_title = "MenuPlaceholder";
-        Text *m_text;
-        AlignmentHorizontal m_alignmentHorizontal = AlignmentHorizontal::LEFT;
-        AlignmentVertical m_alignmentVertical = AlignmentVertical::CENTER;
-        int m_textSize = 14;
+        TextElement *m_text;
 
     public:
         TAPI Menu(std::string title);

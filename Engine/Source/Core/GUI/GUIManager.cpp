@@ -1,5 +1,5 @@
 #include "GUIManager.h"
-#include "Core/GUI/Elements/BaseElement.h"
+#include "Core/GUI/SubElements/BaseElement.h"
 #include "Core/Logger/Logger.h"
 
 TextureGenEngine::GUIManager::GUIManager(int width, int height)
