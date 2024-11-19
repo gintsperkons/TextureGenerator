@@ -18,14 +18,11 @@ void TextureGenEngine::Screen::Update()
 {
     if (Input::MouseButtonPressed(Mouse::ButtonLeft))
     {
-        LOG_INFO("Left Mouse Button Pressed screen\n");
         int width, height;
         TextureGenEngine::Engine::Get()->GetWindow()->GetFramebufferSize(width, height);
         int* size = Input::GetMousePosition();
-        LOG_DEBUG("Screen Size: %d, %d\n", width, height);
-        LOG_DEBUG("Mouse Position: %d, %d\n", size[0], size[1]);
-        float x = ((float)size[0] / (float)width)*2 -1;
-        float y= ((float)size[1] / (float)height) * 2 - 1;
+        if (m_guiManager)
+            m_guiManager->Click(size[0], size[1]);
         
     }
 }
@@ -39,6 +36,8 @@ void TextureGenEngine::Screen::SetGUIManager(GUIManager* guiManager)
 {
     m_guiManager = guiManager;
 }
+
+
 
 TextureGenEngine::Screen::~Screen()
 {

@@ -4,7 +4,6 @@
 
 namespace TextureGenEngine
 {
-	class AABB;
 	class Shader;
 	class Mesh
 	{
@@ -12,14 +11,13 @@ namespace TextureGenEngine
 		std::vector<Vertex2D> m_vertices;
 		std::vector<unsigned int> m_indices;
 		glm::mat4 m_model;
-		AABB *m_aabb;
 		Shader *m_shader;
 		unsigned int m_indexCount;
 
 	public:
 		Mesh(Vertex2D vertices[], unsigned int vertexCount, unsigned int indices[], unsigned int indexCount);
 		void Draw();
-		void CheckClickColision(float x, float y);
+		bool CheckClickCollision(float x, float y);
 		void Move(float x, float y);
 		void SetPosition(float x, float y);
 		void Scale(float x, float y);

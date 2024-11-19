@@ -19,6 +19,7 @@ TextureGenEngine::Renderer::Renderer(int width, int height) : m_clearColor(0.0f,
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glViewport(0, 0, width, height);
 	m_projectionMatrix = glm::ortho(0.0f, (float)width,0.0f , (float)height, -1.0f, 1.0f);
+	m_viewMatrix = glm::mat4(1.0f);
 	m_shaderManager = new ShaderManager();
 }
 

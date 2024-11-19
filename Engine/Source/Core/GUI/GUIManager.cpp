@@ -26,6 +26,14 @@ TextureGenEngine::GUIManager::~GUIManager()
     m_children.clear();
 }
 
+void TextureGenEngine::GUIManager::Click(int x, int y)
+{
+    for (BaseElement *child : m_children)
+    {
+        child->CheckCollision(x, y);
+    }
+}
+
 void TextureGenEngine::GUIManager::Resize(int width, int height)
 {
     for (BaseElement *child : m_children)

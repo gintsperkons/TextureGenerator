@@ -6,7 +6,12 @@
 #include <Core/Logger/Logger.h>
 #include <Core/World/Screen.h>
 #include <Core/GUI/Elements/Elements.h>
+#include <Core/Logger/Logger.h>
 
+void testCallback()
+{
+	LOG_DEBUG("Callback called Clicked Test Element\n");
+}
 
 int main()
 {
@@ -21,6 +26,7 @@ int main()
 	TextureGenEngine::Menu *fileMenu = new TextureGenEngine::Menu("File");
 	TextureGenEngine::Menu *editMenu = new TextureGenEngine::Menu("Edit");
 	TextureGenEngine::Menu *confMenu = new TextureGenEngine::Menu("Options");
+	fileMenu->OnClick(testCallback);
 	menuBar->AddMenu(fileMenu);
 	menuBar->AddMenu(editMenu);
 	menuBar->AddMenu(confMenu);

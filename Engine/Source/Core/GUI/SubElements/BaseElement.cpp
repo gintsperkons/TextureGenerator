@@ -9,6 +9,20 @@ void TextureGenEngine::BaseElement::AddChild(BaseElement *child)
     
 }
 
+void TextureGenEngine::BaseElement::CheckCollision(int x, int y)
+{
+    if (m_mesh != nullptr && m_canClick)
+    {
+        if(m_mesh->CheckClickCollision(x, y)){
+            Click();
+        }
+    }
+    for (BaseElement *child : m_children)
+    {
+        child->CheckCollision(x, y);
+    }
+}
+
 void TextureGenEngine::BaseElement::Resize(int width, int height, int oldWidth, int oldHeight)
 {
 
