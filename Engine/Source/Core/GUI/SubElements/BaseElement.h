@@ -11,12 +11,14 @@ namespace TextureGenEngine
     protected:
         std::vector<std::function<void()>> m_subscribers;
         static inline int m_menuBarHeight = 25;
+        bool m_alignTop = false;
+        bool m_alignLeft = false;
         bool m_canClick = true;
-        bool lockX = true;
-        bool lockY = true;
-        bool lockWidth = true;
-        bool lockHeight = true;
-        int m_x, m_y, m_width, m_height;
+        bool m_scaleHeight = false;
+        bool m_scaleWidth = false;
+        bool m_resizeUpdateX = true;
+        bool m_resizeUpdateY = true;
+        float m_x, m_y, m_width, m_height;
         std::vector<BaseElement *> m_children;
         Mesh *m_mesh = nullptr;
         BaseElement *m_parent = nullptr;

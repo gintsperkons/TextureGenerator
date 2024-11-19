@@ -10,10 +10,12 @@
 TextureGenEngine::Menu::Menu(std::string title)
     : BaseElement(0, TextureGenEngine::Engine::Get()->GetWindow()->GetHeight() - m_menuBarHeight, 100, m_menuBarHeight), m_title(title)
 {   
+    m_alignTop = true;
+    m_resizeUpdateX = false;
     LOG_DEBUG("Size: %d, %d\n", m_width, m_height);
     LOG_DEBUG("x: %d y:%d", m_x, m_y);
     m_mesh = ObjectFactory::CreateSquare(0, 0, m_width, m_height);
-    m_mesh->ChangeColor(0.0f, 0.0f, 1.0f, 0.0f);
+    m_mesh->ChangeColor(0.1f, 0.1f, 0.1f, 0.0f);
     m_text = new TextElement();
 }
 
@@ -42,7 +44,7 @@ void TextureGenEngine::Menu::Draw()
         if (child != nullptr)
             child->Draw();
     }
-    m_text->Draw(m_title, m_x, m_y, m_height, m_width, glm::vec3(0.0f, 1.0f, 0.0f), AlignmentHorizontal::LEFT, AlignmentVertical::CENTER);
+    m_text->Draw(m_title, m_x, m_y, m_height, m_width, glm::vec3(1.0f, 1.0f, 1.0f), AlignmentHorizontal::LEFT, AlignmentVertical::CENTER);
 }
 
 TextureGenEngine::Menu::~Menu()

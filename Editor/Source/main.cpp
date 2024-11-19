@@ -6,6 +6,7 @@
 #include <Core/Logger/Logger.h>
 #include <Core/World/Screen.h>
 #include <Core/GUI/Elements/Elements.h>
+#include <Core/GUI/Canvas/Canvas2D.h>
 #include <Core/Logger/Logger.h>
 
 void testCallback()
@@ -15,8 +16,6 @@ void testCallback()
 
 int main()
 {
-
-
 	TextureGenEngine::Engine engine(new TextureGenEngine::Window(800, 600, "TexGen"));
 	int bWidth,bHeight;
 	TextureGenEngine::Engine::Get()->GetWindow()->GetFramebufferSize(bWidth,bHeight);
@@ -31,6 +30,10 @@ int main()
 	menuBar->AddMenu(editMenu);
 	menuBar->AddMenu(confMenu);
 	guiManager->AddChild(menuBar);
+
+	TextureGenEngine::Canvas2D *canvas = new TextureGenEngine::Canvas2D(200, 0, bWidth - 100, bHeight - menuBar->GetMenuBarHeight());
+	guiManager->AddChild(canvas);
+	
 
 
 

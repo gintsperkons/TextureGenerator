@@ -135,8 +135,7 @@ void TextureGenEngine::Mesh::Move(float x, float y)
 }
 
 void TextureGenEngine::Mesh::SetPosition(float x, float y)
-{
-    LOG_DEBUG("UpdatePosition");
+{    
     glm::vec3 scale, translation, skew;
     glm::quat rotation;
     glm::vec4 perspective;
