@@ -19,6 +19,7 @@ namespace TextureGenEngine
         void Click(int x, int y);
         void Drag(double x, double y);
         void GetDraggable(int x, int y);
+        void RemoveDraggable();
         void Resize(int width, int height);
         TAPI void AddChild(BaseElement* element);
     };

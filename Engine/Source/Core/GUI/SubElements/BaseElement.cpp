@@ -11,18 +11,47 @@ void TextureGenEngine::BaseElement::AddChild(BaseElement *child)
 TextureGenEngine::BaseElement *TextureGenEngine::BaseElement::GetDraggable(int x, int y)
 {
 
+    for (BaseElement *child : m_children)
+    {
+        BaseElement *temp = child->GetDraggable(x, y);
+        if (temp != nullptr)
+            return temp;
+    }
     if (m_mesh->CheckClickCollision(x, y) && m_draggable)
     {
         return this;
     }
-
-        for (BaseElement *child : m_children)
-        {
-            BaseElement *temp = child->GetDraggable(x, y);
-            if (temp != nullptr)
-                return temp;
-        }
     return nullptr;
+}
+
+void TextureGenEngine::BaseElement::Drag(double x, double y)
+{   float newX = m_x + x;
+    float newY = m_y - y;
+    float pX, pY;
+    int width, height;
+    m_parent->GetDimensions(width, height);
+    m_parent->GetPosition(pX, pY);
+    LOG_DEBUG("Parent X: %f, Parent Y: %f\n", pX, pY);
+    LOG_DEBUG("Parent Width: %d, Parent Height: %d\n", width, height);
+    LOG_DEBUG("Old X: %f, Old Y: %f\n", m_x, m_y);
+    LOG_DEBUG("New X: %f, New Y: %f\n", newX, newY);
+    LOG_DEBUG("Width: %f, Height: %f\n", m_width, m_height);
+
+    if (newY < pY)
+        y = newY - pY;
+    if (newX < pX)
+        x = pX - newX;
+    LOG_TRACE("Val1: %f, Val2: %f\n", newX + m_width, pX + width - m_width);
+    LOG_TRACE("X %f, Y %f\n", x, y);
+    LOG_TRACE("Val1: %f,%f,%f\n", (pX + width - m_width) , (newX + m_width),(pX + width - m_width) - (newX + width));
+    if (newX + m_width > pX + width-m_width)
+        x = (pX + width - m_width)-(newX + m_width);
+    LOG_TRACE("X %f, Y %f\n", x, y);
+    if (newY + m_height > pY + height)
+        y = (newY + m_height)-(pY + height) ;
+
+    UpdatePositionByMouseDelta(x, y);
+    //m_mesh->SetPosition(m_x, m_y);
 }
 
 void TextureGenEngine::BaseElement::CheckCollision(int x, int y)
@@ -57,7 +86,7 @@ void TextureGenEngine::BaseElement::Resize(int width, int height, int oldWidth, 
         yDiff = 1.0f;
 
     if (m_scaleWidth)
-       // xDiff = (float)width / (float)oldWidth;
+        // xDiff = (float)width / (float)oldWidth;
         if (m_resizeUpdateX)
             xDiff = (float)(width - (oldWidth - m_width)) / (float)m_width;
         else
@@ -78,7 +107,7 @@ void TextureGenEngine::BaseElement::Resize(int width, int height, int oldWidth, 
         newY = m_y;
     else if (m_alignTop)
         newY = height - m_height;
-//TODO: Fix this so the x stays in place so side bar is same size
+    // TODO: Fix this so the x stays in place so side bar is same size
     LOG_DEBUG("New X: %d, New Y: %d\n", newX, newY);
     if (m_mesh != nullptr)
     {
@@ -101,9 +130,15 @@ void TextureGenEngine::BaseElement::Resize(int width, int height, int oldWidth, 
 void TextureGenEngine::BaseElement::UpdatePositionByMouseDelta(double x, double y)
 {
 
-    
-        m_x += x;
-        m_y += y;
-        m_mesh->Move(x, y);
-    
+    m_x += x;
+    m_y -= y;
+    m_mesh->Move(x, y);
+}
+
+void TextureGenEngine::BaseElement::UpdatePositionRelativeToParent(int x, int y)
+{
+    m_x += x;
+    m_y += y;
+
+    m_mesh->SetPosition(m_x, m_y);
 }

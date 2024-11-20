@@ -42,6 +42,7 @@ void TextureGenEngine::Screen::Update()
     if (Input::MouseButtonReleased(Mouse::ButtonLeft))
     {
         m_isDragging = false;
+        m_guiManager->RemoveDraggable();
     }
 }
 

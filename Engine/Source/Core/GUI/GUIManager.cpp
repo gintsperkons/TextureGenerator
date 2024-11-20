@@ -40,9 +40,7 @@ void TextureGenEngine::GUIManager::Drag(double x, double y)
 {
     if (m_draggableElement != nullptr)
     {
-        double sensitivity = 1;
-        LOG_DEBUG("X: %f, Y: %f\n", x, y);
-        m_draggableElement->UpdatePositionByMouseDelta(x * sensitivity, y * sensitivity);
+        m_draggableElement->Drag(x, y);
     }
 }
 
@@ -59,6 +57,11 @@ void TextureGenEngine::GUIManager::GetDraggable(int x, int y)
             break;
         }
     }
+}
+
+void TextureGenEngine::GUIManager::RemoveDraggable()
+{
+    m_draggableElement = nullptr;
 }
 
 void TextureGenEngine::GUIManager::Resize(int width, int height)

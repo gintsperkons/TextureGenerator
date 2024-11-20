@@ -10,6 +10,8 @@ namespace TextureGenEngine
     public:
         TAPI Canvas2D(int x, int y, int width, int height);
         void Draw() override;
+        TAPI void AddElement(BaseElement* element);
+        void Drag(double x, double y) override;
         ~Canvas2D();
     };
 } // namespace TextureGenEngine
