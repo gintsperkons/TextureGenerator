@@ -13,10 +13,10 @@ TextureGenEngine::Canvas2D::Canvas2D(int x, int y, int width, int height)
     m_scaleWidth = true;
     LOG_DEBUG("X: %d Y: %d\n", x, y);
     LOG_DEBUG("Size: %d, %d\n", m_width, m_height);
-    m_mesh = ObjectFactory::CreateSquare(x, y, width, height);
+    m_mesh = ObjectFactory::CreateSquare(width, height);
+    m_mesh->SetPosition(x, y); 
     m_mesh->ChangeColor(0.1f, 1.0f, 0.1f, 1.0f);
 }
-
 
 void TextureGenEngine::Canvas2D::Draw()
 {
@@ -26,7 +26,6 @@ void TextureGenEngine::Canvas2D::Draw()
     {
         if (child != nullptr)
             child->Draw();
-            
     }
 }
 

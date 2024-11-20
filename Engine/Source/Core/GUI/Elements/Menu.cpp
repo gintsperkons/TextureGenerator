@@ -14,7 +14,7 @@ TextureGenEngine::Menu::Menu(std::string title)
     m_resizeUpdateX = false;
     LOG_DEBUG("Size: %d, %d\n", m_width, m_height);
     LOG_DEBUG("x: %d y:%d", m_x, m_y);
-    m_mesh = ObjectFactory::CreateSquare(0, 0, m_width, m_height);
+    m_mesh = ObjectFactory::CreateSquare(m_width, m_height);
     m_mesh->ChangeColor(0.1f, 0.1f, 0.1f, 0.0f);
     m_text = new TextElement();
 }

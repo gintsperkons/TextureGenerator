@@ -23,13 +23,13 @@ TextureGenEngine::Mesh* TextureGenEngine::ObjectFactory::CreateTriangle()
     return new Mesh(vertices, vertexCount, indices, indexCount);
 }
 
-TextureGenEngine::Mesh* TextureGenEngine::ObjectFactory::CreateSquare(int x, int y, int width, int height)
+TextureGenEngine::Mesh* TextureGenEngine::ObjectFactory::CreateSquare( int width, int height)
 {
     Vertex2D vertices[] = {
-        Vertex2D{glm::vec2(x + width, y), glm::vec3(0.5f, 0.5f, 0.0f), glm::vec2(1.0f, 1.0f)},   // top right
-        Vertex2D{glm::vec2(x + width, y+height), glm::vec3(0.5f, -0.5f, 0.0f), glm::vec2(1.0f, 0.0f)},  // bottom right
-        Vertex2D{glm::vec2(x, y+height), glm::vec3(-0.5f, -0.5f, 1.0f), glm::vec2(0.0f, 0.0f)}, // bottom left
-        Vertex2D{glm::vec2(x, y), glm::vec3(-0.5f, 0.5f, 0.0f), glm::vec2(0.0f, 1.0f)}   // top left
+        Vertex2D{glm::vec2(width, 0), glm::vec3(0.5f, 0.5f, 0.0f), glm::vec2(1.0f, 1.0f)},   // top right
+        Vertex2D{glm::vec2(width, height), glm::vec3(0.5f, -0.5f, 0.0f), glm::vec2(1.0f, 0.0f)},  // bottom right
+        Vertex2D{glm::vec2(0, height), glm::vec3(-0.5f, -0.5f, 1.0f), glm::vec2(0.0f, 0.0f)}, // bottom left
+        Vertex2D{glm::vec2(0, 0), glm::vec3(-0.5f, 0.5f, 0.0f), glm::vec2(0.0f, 1.0f)}   // top left
     };
 
     unsigned int indices[] = {

@@ -14,7 +14,8 @@ TextureGenEngine::MenuBar::MenuBar()
     m_alignTop = true;
     m_canClick = false;
     m_scaleWidth = true;
-    m_mesh = ObjectFactory::CreateSquare(m_x, m_y, m_width, m_height);
+    m_mesh = ObjectFactory::CreateSquare(m_width, m_height);
+    m_mesh->SetPosition(m_x, m_y);
     m_mesh->ChangeColor(0.1f, 0.1f, 0.1f, 1.0f);
 
 }
