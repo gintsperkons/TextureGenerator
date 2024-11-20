@@ -2,11 +2,16 @@
 #include "Core/World/ObjectFactory.h"
 #include "Core/Renderer/Mesh.h"
 #include "Core/Logger/Logger.h"
+#include "Engine.h"
+#include "Core/Renderer/Renderer.h"
+
 
 
 TextureGenEngine::Canvas2D::Canvas2D(int x, int y, int width, int height)
     : BaseElement(x, y, width, height)
 {
+    //!
+    //TODO fix object colision detection in subelements / views
     m_resizeUpdateX = true;
     m_alignLeft = true;
     m_draggable = true;
@@ -14,12 +19,13 @@ TextureGenEngine::Canvas2D::Canvas2D(int x, int y, int width, int height)
     m_scaleHeight = true;
     m_scaleWidth = true;
     m_mesh = ObjectFactory::CreateSquare(width, height);
-    m_mesh->SetPosition(x, y); 
+    m_mesh->SetPosition(0, 0); 
     m_mesh->ChangeColor(0.1f, 1.0f, 0.1f, 1.0f);
 }
 
 void TextureGenEngine::Canvas2D::Draw()
 {
+    TextureGenEngine::Engine::Get()->GetRenderer()->UseCustomViewport(m_x, m_y, m_width, m_height);
     if (m_mesh != nullptr)
         m_mesh->Draw();
     for (BaseElement *child : m_children)
@@ -27,6 +33,7 @@ void TextureGenEngine::Canvas2D::Draw()
         if (child != nullptr)
             child->Draw();
     }
+    TextureGenEngine::Engine::Get()->GetRenderer()->UseDefaultViewport();
 }
 
 void TextureGenEngine::Canvas2D::Drag(double x, double y)

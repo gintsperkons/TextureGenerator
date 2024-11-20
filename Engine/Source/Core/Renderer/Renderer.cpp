@@ -29,10 +29,24 @@ void TextureGenEngine::Renderer::Clear()
 	glClear(GL_COLOR_BUFFER_BIT);
 }
 
+void TextureGenEngine::Renderer::UseCustomViewport(int x, int y, int width, int height)
+{
+	glViewport(x, y, width, height);
+	m_projectionMatrix = glm::ortho(0.0f, (float)width, 0.0f, (float)height, -1.0f, 1.0f);
+}
+
 void TextureGenEngine::Renderer::UpdateViewport(int width, int height)
 {
-	glViewport(0, 0, width, height);
-	m_projectionMatrix = glm::ortho(0.0f, (float)width, 0.0f, (float)height, -1.0f, 1.0f);
+	m_width = width;
+	m_height = height;
+	glViewport(0, 0, m_width, m_height);
+	m_projectionMatrix = glm::ortho(0.0f, (float)m_width, 0.0f, (float)m_height, -1.0f, 1.0f);
+}
+
+void TextureGenEngine::Renderer::UseDefaultViewport()
+{
+	glViewport(0, 0, m_width, m_height);
+	m_projectionMatrix = glm::ortho(0.0f, (float)m_width, 0.0f, (float)m_height, -1.0f, 1.0f);
 }
 
 TextureGenEngine::Shader* TextureGenEngine::Renderer::GetShader(std::string name)
