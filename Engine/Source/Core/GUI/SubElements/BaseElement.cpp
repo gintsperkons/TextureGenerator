@@ -8,6 +8,23 @@ void TextureGenEngine::BaseElement::AddChild(BaseElement *child)
     m_children.push_back(child);
 }
 
+TextureGenEngine::BaseElement *TextureGenEngine::BaseElement::GetDraggable(int x, int y)
+{
+
+    if (m_mesh->CheckClickCollision(x, y) && m_draggable)
+    {
+        return this;
+    }
+
+        for (BaseElement *child : m_children)
+        {
+            BaseElement *temp = child->GetDraggable(x, y);
+            if (temp != nullptr)
+                return temp;
+        }
+    return nullptr;
+}
+
 void TextureGenEngine::BaseElement::CheckCollision(int x, int y)
 {
     if (m_mesh != nullptr && m_canClick)
@@ -79,4 +96,14 @@ void TextureGenEngine::BaseElement::Resize(int width, int height, int oldWidth, 
         if (child != nullptr)
             child->Resize(width, height, oldWidth, oldHeight);
     }
+}
+
+void TextureGenEngine::BaseElement::UpdatePositionByMouseDelta(double x, double y)
+{
+
+    
+        m_x += x;
+        m_y += y;
+        m_mesh->Move(x, y);
+    
 }

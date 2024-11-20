@@ -9,6 +9,7 @@ TextureGenEngine::Canvas2D::Canvas2D(int x, int y, int width, int height)
     m_resizeUpdateX = true;
     m_alignLeft = true;
     m_resizeUpdateY = false;
+    m_draggable = true;
     m_scaleHeight = true;
     m_scaleWidth = true;
     LOG_DEBUG("X: %d Y: %d\n", x, y);

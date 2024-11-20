@@ -34,6 +34,33 @@ void TextureGenEngine::GUIManager::Click(int x, int y)
     }
 }
 
+
+
+void TextureGenEngine::GUIManager::Drag(double x, double y)
+{
+    if (m_draggableElement != nullptr)
+    {
+        double sensitivity = 1;
+        LOG_DEBUG("X: %f, Y: %f\n", x, y);
+        m_draggableElement->UpdatePositionByMouseDelta(x * sensitivity, y * sensitivity);
+    }
+}
+
+void TextureGenEngine::GUIManager::GetDraggable(int x, int y)
+{
+    BaseElement* temp;
+    for (BaseElement *child : m_children)
+    {
+        temp = child->GetDraggable(x, y);
+        if (temp != nullptr)
+        {
+            m_draggableElement = temp;
+            LOG_DEBUG("Draggable element found\n");
+            break;
+        }
+    }
+}
+
 void TextureGenEngine::GUIManager::Resize(int width, int height)
 {
     for (BaseElement *child : m_children)

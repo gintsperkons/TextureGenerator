@@ -11,7 +11,7 @@
 
 TextureGenEngine::Screen::Screen()
 {
-   m_textMesh = new Text();
+    m_textMesh = new Text();
 }
 
 void TextureGenEngine::Screen::Update()
@@ -20,10 +20,28 @@ void TextureGenEngine::Screen::Update()
     {
         int width, height;
         TextureGenEngine::Engine::Get()->GetWindow()->GetFramebufferSize(width, height);
-        int* size = Input::GetMousePosition();
+        int *size = Input::GetMousePosition();
         if (m_guiManager)
             m_guiManager->Click(size[0], size[1]);
-        
+    }
+    if (Input::MouseButtonHeld(Mouse::ButtonLeft))
+    {
+        int width, height;
+        TextureGenEngine::Engine::Get()->GetWindow()->GetFramebufferSize(width, height);
+        int *size = Input::GetMousePosition();
+        double *mouseDelta = Input::GetMouseDelta();
+        if (m_isDragging)
+        {
+            if (m_guiManager)
+                m_guiManager->Drag(mouseDelta[0], mouseDelta[1]);
+        }
+        else if (m_guiManager)
+            m_guiManager->GetDraggable(size[0], size[1]);
+            m_isDragging = true;
+    }
+    if (Input::MouseButtonReleased(Mouse::ButtonLeft))
+    {
+        m_isDragging = false;
     }
 }
 
@@ -32,12 +50,10 @@ void TextureGenEngine::Screen::Draw()
     m_guiManager->Draw();
 }
 
-void TextureGenEngine::Screen::SetGUIManager(GUIManager* guiManager)
+void TextureGenEngine::Screen::SetGUIManager(GUIManager *guiManager)
 {
     m_guiManager = guiManager;
 }
-
-
 
 TextureGenEngine::Screen::~Screen()
 {

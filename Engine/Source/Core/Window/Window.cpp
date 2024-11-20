@@ -129,9 +129,15 @@ void TextureGenEngine::Window::GetFramebufferSize(int& width, int& height)
 }
 
 void TextureGenEngine::Window::UpdateMouseButtons()
-{
+{	double x,y;
+	glfwGetCursorPos(m_window, &x, &y);
+	Input::g_mouseDelta[0] = x - Input::g_mousePos[0];
+	Input::g_mouseDelta[1] = y - Input::g_mousePos[1];
+	Input::g_mousePos[0] = x;
+	Input::g_mousePos[1] = y;
+
 	for (int i = 0; i < Mouse::ButtonLast + 1; i++)
-	{
+	{	
 		int state = glfwGetMouseButton(m_window, i);
 		if (state == GLFW_PRESS && (Input::g_mouseButtonStates[i] == Mouse::Pressed || Input::g_mouseButtonStates[i] == Mouse::Held))
 		{
@@ -145,5 +151,6 @@ void TextureGenEngine::Window::UpdateMouseButtons()
 		{
 			Input::g_mouseButtonStates[i] = 0;
 		}
+
 	}
 }

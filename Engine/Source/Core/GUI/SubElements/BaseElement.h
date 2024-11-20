@@ -14,6 +14,7 @@ namespace TextureGenEngine
         bool m_alignTop = false;
         bool m_alignLeft = false;
         bool m_canClick = true;
+        bool m_draggable = true;
         bool m_scaleHeight = false;
         bool m_scaleWidth = false;
         bool m_resizeUpdateX = true;
@@ -44,11 +45,13 @@ namespace TextureGenEngine
                 func();
             }
         }
+        virtual BaseElement* GetDraggable(int x, int y);
         virtual void OnClick(std::function<void()> func)
         {
             m_subscribers.push_back(func);
         }
         virtual void CheckCollision(int x, int y);
         virtual void Resize(int width, int height, int oldWidth, int oldHeight);
+        virtual void UpdatePositionByMouseDelta(double x, double y);
     };
 } // namespace TextureGenEngine

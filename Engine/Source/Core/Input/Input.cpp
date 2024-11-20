@@ -4,7 +4,9 @@
 #include "Engine.h"
 #include "Core/Logger/Logger.h"
 
-int TextureGenEngine::Input::g_mouseButtonStates[TextureGenEngine::Mouse::ButtonLast+1] = {0};
+int TextureGenEngine::Input::g_mouseButtonStates[TextureGenEngine::Mouse::ButtonLast + 1] = {0};
+double TextureGenEngine::Input::g_mouseDelta[2] = {0};
+double TextureGenEngine::Input::g_mousePos[2] = {0};
 
 bool TextureGenEngine::Input::MouseButtonPressed(TextureGenEngine::Mouse::MouseCode button)
 {
@@ -24,7 +26,16 @@ bool TextureGenEngine::Input::MouseButtonHeld(TextureGenEngine::Mouse::MouseCode
 	return false;
 }
 
-int* TextureGenEngine::Input::GetMousePosition()
+bool TextureGenEngine::Input::MouseButtonReleased(TextureGenEngine::Mouse::MouseCode button)
+{
+	if (g_mouseButtonStates[button] == TextureGenEngine::Mouse::Released)
+	{
+		return true;
+	}
+	return false;
+}
+
+int *TextureGenEngine::Input::GetMousePosition()
 {
 	static int pos[2];
 	double x, y;
@@ -34,4 +45,7 @@ int* TextureGenEngine::Input::GetMousePosition()
 	return pos;
 }
 
-
+double *TextureGenEngine::Input::GetMouseDelta()
+{
+	return g_mouseDelta;
+}

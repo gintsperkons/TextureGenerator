@@ -9,7 +9,7 @@ class Screen
 {
     Text* m_textMesh;
     GUIManager* m_guiManager;
-    
+    bool m_isDragging = false;
     public:
     Screen();
     void Update();
