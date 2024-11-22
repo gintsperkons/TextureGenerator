@@ -50,7 +50,8 @@ void TextureGenEngine::Mesh::Draw()
     m_shader->Use();
     if (glGetError() != GL_NO_ERROR)
     {
-        LOG_ERROR("Shader use error");
+        GLenum error = glGetError();
+            LOG_ERROR("Shader use error : %d", error);
     }
 
     GLint projectionLoc = glGetUniformLocation(m_shader->GetID(), "projection");

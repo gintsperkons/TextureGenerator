@@ -4,6 +4,7 @@
 #include "Core/Renderer/Structures/Vertex2D.h"
 #include "Core/Logger/Logger.h"
 #include "Core/Renderer/Conversion.h"
+#include "Core/Renderer/Line.h"
 
 TextureGenEngine::Mesh* TextureGenEngine::ObjectFactory::CreateTriangle()
 {
@@ -94,3 +95,9 @@ TextureGenEngine::Mesh* TextureGenEngine::ObjectFactory::CreateCircle()
     return nullptr;
 }
 
+TextureGenEngine::Line *TextureGenEngine::ObjectFactory::CreateLine(int xStart, int yStart, int xEnd, int yEnd)
+{
+    Vertex2D start = Vertex2D{glm::vec2(xStart, yStart), glm::vec3(0.5f, 0.5f, 0.0f), glm::vec2(1.0f, 1.0f)};
+    Vertex2D end = Vertex2D{glm::vec2(xEnd, yEnd), glm::vec3(0.5f, 0.5f, 0.0f), glm::vec2(1.0f, 1.0f)};
+    return new Line(start, end);
+}

@@ -9,6 +9,7 @@
 #include <Core/GUI/Canvas/Canvas2D.h>
 #include <Core/Logger/Logger.h>
 #include <Core/GUI/Elements/Node.h>
+#include <Core/GUI/Elements/LineElement.h>
 
 void testCallback()
 {
@@ -36,8 +37,11 @@ int main()
 	TextureGenEngine::Node *node = new TextureGenEngine::Node(0, 0);
 	TextureGenEngine::Node *node2 = new TextureGenEngine::Node(100, 100);
 
+	TextureGenEngine::LineElement *line = new TextureGenEngine::LineElement(0, 0, 100, 100);
+
 	canvas->AddElement(node);
 	canvas->AddElement(node2);
+	canvas->AddElement(line);
 	guiManager->AddChild(canvas);
 	
 

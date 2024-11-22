@@ -17,7 +17,7 @@ TextureGenEngine::BaseElement *TextureGenEngine::BaseElement::GetDraggable(int x
         if (temp != nullptr)
             return temp;
     }
-    if (m_mesh->CheckClickCollision(x, y) && m_draggable)
+    if (m_mesh != nullptr && m_mesh->CheckClickCollision(x, y) && m_draggable)
     {
         return this;
     }
@@ -132,13 +132,14 @@ void TextureGenEngine::BaseElement::UpdatePositionByMouseDelta(double x, double 
 
     m_x += x;
     m_y -= y;
-    m_mesh->Move(x, y);
+    if (m_mesh != nullptr)
+        m_mesh->Move(x, y);
 }
 
 void TextureGenEngine::BaseElement::UpdatePositionRelativeToParent(int x, int y)
 {
     m_x += x;
     m_y += y;
-
+    if (m_mesh != nullptr)
     m_mesh->SetPosition(m_x, m_y);
 }
