@@ -20,7 +20,7 @@ TextureGenEngine::Canvas2D::Canvas2D(int x, int y, int width, int height)
     m_scaleWidth = true;
     m_mesh = ObjectFactory::CreateSquare(width, height);
     m_mesh->SetPosition(0, 0); 
-    m_mesh->ChangeColor(0.1f, 1.0f, 0.1f, 1.0f);
+    m_mesh->ChangeColor(0.2f, 0.2f, 0.2f, 1.0f);
 }
 
 void TextureGenEngine::Canvas2D::Draw()

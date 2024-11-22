@@ -33,8 +33,8 @@ int main()
 	guiManager->AddChild(menuBar);
 
 	TextureGenEngine::Canvas2D *canvas = new TextureGenEngine::Canvas2D(200, 0, bWidth - 100, bHeight - menuBar->GetMenuBarHeight());
-	TextureGenEngine::Node *node = new TextureGenEngine::Node(0, 0, 100, 100);
-	TextureGenEngine::Node *node2 = new TextureGenEngine::Node(100, 100, 100, 100);
+	TextureGenEngine::Node *node = new TextureGenEngine::Node(0, 0);
+	TextureGenEngine::Node *node2 = new TextureGenEngine::Node(100, 100);
 
 	canvas->AddElement(node);
 	canvas->AddElement(node2);
