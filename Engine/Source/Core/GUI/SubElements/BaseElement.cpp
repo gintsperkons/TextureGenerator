@@ -37,18 +37,18 @@ void TextureGenEngine::BaseElement::Drag(double x, double y)
     LOG_DEBUG("New X: %f, New Y: %f\n", newX, newY);
     LOG_DEBUG("Width: %f, Height: %f\n", m_width, m_height);
 
-    if (newY < pY)
-        y = newY - pY;
-    if (newX < pX)
-        x = pX - newX;
-    LOG_TRACE("Val1: %f, Val2: %f\n", newX + m_width, pX + width - m_width);
-    LOG_TRACE("X %f, Y %f\n", x, y);
-    LOG_TRACE("Val1: %f,%f,%f\n", (pX + width - m_width) , (newX + m_width),(pX + width - m_width) - (newX + width));
-    if (newX + m_width > pX + width-m_width)
-        x = (pX + width - m_width)-(newX + m_width);
-    LOG_TRACE("X %f, Y %f\n", x, y);
-    if (newY + m_height > pY + height)
-        y = (newY + m_height)-(pY + height) ;
+    // if (newY < pY)
+    //     y = newY - pY;
+    // if (newX < pX)
+    //     x = pX - newX;
+    // LOG_TRACE("Val1: %f, Val2: %f\n", newX + m_width, pX + width - m_width);
+    // LOG_TRACE("X %f, Y %f\n", x, y);
+    // LOG_TRACE("Val1: %f,%f,%f\n", (pX + width - m_width) , (newX + m_width),(pX + width - m_width) - (newX + width));
+    // if (newX + m_width > pX + width-m_width)
+    //     x = (pX + width - m_width)-(newX + m_width);
+    // LOG_TRACE("X %f, Y %f\n", x, y);
+    // if (newY + m_height > pY + height)
+    //     y = (newY + m_height)-(pY + height) ;
 
     UpdatePositionByMouseDelta(x, y);
     //m_mesh->SetPosition(m_x, m_y);

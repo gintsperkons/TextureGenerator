@@ -52,6 +52,21 @@ void TextureGenEngine::Canvas2D::AddElement(BaseElement *element)
     AddChild(element);
 }
 
+TextureGenEngine::BaseElement *TextureGenEngine::Canvas2D::GetDraggable(int x, int y)
+{
+    for (BaseElement *child : m_children)
+    {
+        BaseElement *temp = child->GetDraggable(x-m_x, y-m_y);
+        if (temp != nullptr)
+            return temp;
+    }
+    if (m_mesh->CheckClickCollision(x - m_x, y -m_y) && m_draggable)
+    {
+        return this;
+    }
+    return nullptr;
+}
+
 TextureGenEngine::Canvas2D::~Canvas2D()
 {
 }
