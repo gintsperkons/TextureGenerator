@@ -32,6 +32,7 @@ namespace TextureGenEngine
 		TAPI Window(int width, int height, const char *title);
 		~Window();
 		bool ShouldClose();
+		bool IsMinimized();
 		void Update();
 		void Draw();
 		GLFWwindow *GetNativeWindow()

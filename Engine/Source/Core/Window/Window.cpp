@@ -68,6 +68,11 @@ bool TextureGenEngine::Window::ShouldClose()
 	return glfwWindowShouldClose(m_window);	
 }
 
+bool TextureGenEngine::Window::IsMinimized()
+{
+	return m_width == 0 || m_height == 0;
+}
+
 void TextureGenEngine::Window::Update()
 {
 

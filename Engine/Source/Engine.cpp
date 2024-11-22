@@ -8,25 +8,28 @@
 #include "Core/Logger/Logger.h"
 #include "Core/Asserts.h"
 
-TextureGenEngine::Engine::Engine():Engine(new Window())
+TextureGenEngine::Engine::Engine() : Engine(new Window())
 {
 }
 
-void TextureGenEngine::Engine::ResizeCallBack(ResizeEvent event) {
+void TextureGenEngine::Engine::ResizeCallBack(ResizeEvent event)
+{
 
 	m_screen->Resize(event.width, event.height);
 	m_screen->Update();
 	m_window->Update();
-	m_window->Draw();
-	m_screen->Draw();
-
+	if (!m_window->IsMinimized())
+	{
+		m_window->Draw();
+		m_screen->Draw();
+	}
 }
 
-
-TextureGenEngine::Engine::Engine(Window* window):m_window(window)
+TextureGenEngine::Engine::Engine(Window *window) : m_window(window)
 {
 	TextureGenEngine::g_engine = this;
-	m_window->AddResizeListener([this](ResizeEvent event) { this->ResizeCallBack(event); });
+	m_window->AddResizeListener([this](ResizeEvent event)
+								{ this->ResizeCallBack(event); });
 	m_screen = new Screen();
 	m_fontManager = new FontManager();
 }
@@ -39,13 +42,16 @@ TextureGenEngine::Engine::~Engine()
 
 void TextureGenEngine::Engine::Run()
 {
-		m_screen->Update();
-		m_window->Update();
+	m_screen->Update();
+	m_window->Update();
+	if (!m_window->IsMinimized())
+	{
 		m_window->Draw();
 		m_screen->Draw();
+	}
 }
 
-TextureGenEngine::Window* TextureGenEngine::Engine::GetWindow()
+TextureGenEngine::Window *TextureGenEngine::Engine::GetWindow()
 {
 	if (!m_window)
 	{
@@ -63,17 +69,17 @@ TextureGenEngine::Renderer *TextureGenEngine::Engine::GetRenderer()
 	return GetWindow()->GetRenderer();
 }
 
-TextureGenEngine::Screen* TextureGenEngine::Engine::GetScreen()
+TextureGenEngine::Screen *TextureGenEngine::Engine::GetScreen()
 {
 	return m_screen;
 }
 
-TextureGenEngine::Engine* TextureGenEngine::Engine::Get()
+TextureGenEngine::Engine *TextureGenEngine::Engine::Get()
 {
 	return g_engine;
 }
 
-TAPI bool TextureGenEngine::Engine::IsRunning()
+bool TextureGenEngine::Engine::IsRunning()
 {
 	return !m_window->ShouldClose();
 }
