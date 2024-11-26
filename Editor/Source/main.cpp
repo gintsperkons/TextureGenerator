@@ -7,9 +7,6 @@
 #include <Core/World/Screen.h>
 #include <Core/GUI/Elements/Elements.h>
 #include <Core/GUI/Canvas/Canvas2D.h>
-#include <Core/Logger/Logger.h>
-#include <Core/GUI/Elements/Node.h>
-#include <Core/GUI/Elements/LineElement.h>
 
 void testCallback()
 {
@@ -30,7 +27,7 @@ int main()
 	fileMenu->OnClick(testCallback);
 	menuBar->AddMenu(fileMenu);
 	menuBar->AddMenu(editMenu);
-	menuBar->AddMenu(confMenu);
+	menuBar->AddMenu(confMenu); 
 	guiManager->AddChild(menuBar);
 
 	TextureGenEngine::Canvas2D *canvas = new TextureGenEngine::Canvas2D(200, 0, bWidth - 100, bHeight - menuBar->GetMenuBarHeight());
