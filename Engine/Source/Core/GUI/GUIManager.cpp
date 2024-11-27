@@ -30,7 +30,12 @@ void TextureGenEngine::GUIManager::Click(int x, int y)
 {
     for (BaseElement *child : m_children)
     {
-        child->CheckCollision(x, y);
+        m_activeObject = child->CheckCollision(x, y);
+        if (m_activeObject != nullptr)
+        {
+            LOG_DEBUG("Active object found\n");
+            break;
+        }
     }
 }
 
@@ -42,6 +47,18 @@ void TextureGenEngine::GUIManager::Drag(double x, double y)
     {
         m_draggableElement->Drag(x, y);
     }
+}
+
+void TextureGenEngine::GUIManager::InputCharacter(wchar_t character)
+{
+    if (m_activeObject != nullptr)
+    m_activeObject->InputCharacter(character);
+}
+
+void TextureGenEngine::GUIManager::DeleteCharacter()
+{
+    if (m_activeObject != nullptr)
+    m_activeObject->DeleteCharacter();
 }
 
 void TextureGenEngine::GUIManager::GetDraggable(int x, int y)

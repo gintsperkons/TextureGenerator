@@ -19,12 +19,18 @@ namespace TextureGenEngine
 		{
 			std::function<void(ResizeEvent)> callback;
 		};
+		struct CharacterSub
+		{
+			std::function<void(CharacterEvent)> callback;
+		};
 		std::vector<ResizeSub> m_resizeSubs;
+		std::vector<CharacterSub> m_characterSubs;
 		Renderer *m_renderer;
 		GLFWwindow *m_window;
 		Mesh *m_mesh;
 		void SwapBuffers();
 		void PoolEvents();
+		void UpdateKeyStates();
 		void UpdateMouseButtons();
 
 	public:
@@ -44,9 +50,11 @@ namespace TextureGenEngine
 			return m_renderer;
 		}
 		void OnResize();
+		void OnCharacter(int codepoint);
 		TAPI void GetFramebufferSize(int &width, int &height);
 		int GetWidth() { return m_width; }
 		int GetHeight() { return m_height; }
 		void AddResizeListener(std::function<void(ResizeEvent)> callback);
+		void AddCharacterListener(std::function<void(CharacterEvent)> callback);
 	};
 }

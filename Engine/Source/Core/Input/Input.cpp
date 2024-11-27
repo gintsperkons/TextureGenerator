@@ -5,8 +5,11 @@
 #include "Core/Logger/Logger.h"
 
 int TextureGenEngine::Input::g_mouseButtonStates[TextureGenEngine::Mouse::ButtonLast + 1] = {0};
+int TextureGenEngine::Input::g_keyStates[1024] = {0};
+std::vector<int> TextureGenEngine::Input::g_pressedKeys = {};
 double TextureGenEngine::Input::g_mouseDelta[2] = {0};
 double TextureGenEngine::Input::g_mousePos[2] = {0};
+
 
 bool TextureGenEngine::Input::MouseButtonPressed(TextureGenEngine::Mouse::MouseCode button)
 {
@@ -33,6 +36,28 @@ bool TextureGenEngine::Input::MouseButtonReleased(TextureGenEngine::Mouse::Mouse
 		return true;
 	}
 	return false;
+}
+
+TAPI bool TextureGenEngine::Input::KeyPressed(int key)
+{
+	if (key == Key::KeyAny)
+	{
+		if (g_pressedKeys.size() > 0)
+		{
+			return true;
+		}
+		return false;
+	}
+	if (g_keyStates[key] == 1)
+	{
+		return true;
+	}
+	return false;
+}
+
+TAPI std::vector<int> TextureGenEngine::Input::GetPressedKeys()
+{
+	return g_pressedKeys;
 }
 
 int *TextureGenEngine::Input::GetMousePosition()

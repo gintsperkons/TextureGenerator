@@ -25,7 +25,8 @@ TextureGenEngine::BaseElement *TextureGenEngine::BaseElement::GetDraggable(int x
 }
 
 void TextureGenEngine::BaseElement::Drag(double x, double y)
-{   float newX = m_x + x;
+{
+    float newX = m_x + x;
     float newY = m_y - y;
     float pX, pY;
     int width, height;
@@ -51,22 +52,43 @@ void TextureGenEngine::BaseElement::Drag(double x, double y)
     //     y = (newY + m_height)-(pY + height) ;
 
     UpdatePositionByMouseDelta(x, y);
-    //m_mesh->SetPosition(m_x, m_y);
+    // m_mesh->SetPosition(m_x, m_y);
 }
 
-void TextureGenEngine::BaseElement::CheckCollision(int x, int y)
+void TextureGenEngine::BaseElement::InputCharacter(wchar_t character)
 {
+    if (m_writable)
+    {
+        m_inputText += character;
+    }
+}
+
+void TextureGenEngine::BaseElement::DeleteCharacter()
+{
+    if (m_writable)
+    {
+        if (m_inputText.size() > 0)
+            m_inputText.pop_back();
+    }
+}
+
+TextureGenEngine::BaseElement *TextureGenEngine::BaseElement::CheckCollision(int x, int y)
+{
+    for (BaseElement *child : m_children)
+    {
+        BaseElement *temp = child->CheckCollision(x, y);
+        if (temp != nullptr)
+            return temp;
+    }
     if (m_mesh != nullptr && m_canClick)
     {
         if (m_mesh->CheckClickCollision(x, y))
         {
             Click();
+            return this;
         }
     }
-    for (BaseElement *child : m_children)
-    {
-        child->CheckCollision(x, y);
-    }
+    return nullptr;
 }
 
 void TextureGenEngine::BaseElement::Resize(int width, int height, int oldWidth, int oldHeight)
@@ -141,5 +163,5 @@ void TextureGenEngine::BaseElement::UpdatePositionRelativeToParent(int x, int y)
     m_x += x;
     m_y += y;
     if (m_mesh != nullptr)
-    m_mesh->SetPosition(m_x, m_y);
+        m_mesh->SetPosition(m_x, m_y);
 }

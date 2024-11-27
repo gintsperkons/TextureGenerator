@@ -8,14 +8,30 @@
 #include <Core/Window/Window.h>
 #include "Core/GUI/GUIManager.h"
 #include "Core/Renderer/Text.h"
+#include "Core/GUI/Structures.h"
+#include "Core/Input/KeyCodes.h"
+#include "Core/Window/WindowEvents.h"
 
 TextureGenEngine::Screen::Screen()
 {
     m_textMesh = new Text();
+    m_guiManager = nullptr;
+    TextureGenEngine::Engine::Get()->GetWindow()->AddCharacterListener([this](CharacterEvent event) {
+        if (m_guiManager)
+            LOG_DEBUG("Codepoint: %c\n", event.character);
+        LOG_DEBUG("Codepoint: %d\n", event.codePoint);
+    m_guiManager->InputCharacter(event.character);
+
+    });
 }
 
 void TextureGenEngine::Screen::Update()
 {
+    if (Input::KeyPressed(Key::KeyBackspace))
+    {
+        if (m_guiManager)
+            m_guiManager->DeleteCharacter();
+    }
     if (Input::MouseButtonPressed(Mouse::ButtonLeft))
     {
         int width, height;
@@ -37,7 +53,7 @@ void TextureGenEngine::Screen::Update()
         }
         else if (m_guiManager)
             m_guiManager->GetDraggable(size[0], size[1]);
-            m_isDragging = true;
+        m_isDragging = true;
     }
     if (Input::MouseButtonReleased(Mouse::ButtonLeft))
     {

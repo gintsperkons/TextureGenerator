@@ -2,6 +2,7 @@
 #include "Defines.h"
 #include <vector>
 #include <functional>
+#include <string>
 
 namespace TextureGenEngine
 {
@@ -11,6 +12,7 @@ namespace TextureGenEngine
     protected:
         std::vector<std::function<void()>> m_subscribers;
         static inline int m_menuBarHeight = 25;
+        bool m_selectable = false;
         bool m_alignTop = false;
         bool m_alignLeft = false;
         bool m_canClick = true;
@@ -19,6 +21,9 @@ namespace TextureGenEngine
         bool m_scaleWidth = false;
         bool m_resizeUpdateX = true;
         bool m_resizeUpdateY = true;
+        bool m_writable = false;
+        std::string m_inputText = "";
+
         float m_x, m_y, m_width, m_height;
         std::vector<BaseElement *> m_children;
         Mesh *m_mesh = nullptr;
@@ -55,13 +60,15 @@ namespace TextureGenEngine
             x = m_x;
             y = m_y;
         }
-        virtual BaseElement* GetDraggable(int x, int y);
+        virtual BaseElement *GetDraggable(int x, int y);
         virtual void OnClick(std::function<void()> func)
         {
             m_subscribers.push_back(func);
         }
         virtual void Drag(double x, double y);
-        virtual void CheckCollision(int x, int y);
+        virtual void InputCharacter(wchar_t character);
+        virtual void DeleteCharacter();
+        virtual BaseElement *CheckCollision(int x, int y);
         virtual void Resize(int width, int height, int oldWidth, int oldHeight);
         virtual void UpdatePositionByMouseDelta(double x, double y);
         virtual void UpdatePositionRelativeToParent(int x, int y);

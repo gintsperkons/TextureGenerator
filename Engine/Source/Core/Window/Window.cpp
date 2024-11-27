@@ -8,7 +8,8 @@
 #include <Core/Input/MouseCodes.h>
 #include <Core/Input/Input.h>
 #include <iostream>
-
+#include <vector>
+#include <algorithm>
 TextureGenEngine::Window::Window():Window(640, 480, "TextureGenEngine")
 {
 	
@@ -20,6 +21,12 @@ void frameBufferResizeCallback(GLFWwindow* window, int width, int height)
 	w->GetRenderer()->UpdateViewport(width, height);
 	w->OnResize();
 	
+}
+
+void characterCallback(GLFWwindow* window, unsigned int codepoint)
+{
+	TextureGenEngine::Window* w = (TextureGenEngine::Window*)glfwGetWindowUserPointer(window);
+	w->OnCharacter(codepoint);
 }
 
 
@@ -47,6 +54,7 @@ TextureGenEngine::Window::Window(int width, int height, const char* title) :
 	}
 	glfwMakeContextCurrent(m_window);
 	glfwSetFramebufferSizeCallback(m_window, frameBufferResizeCallback);
+	glfwSetCharCallback(m_window, characterCallback);
 	glfwSetWindowUserPointer(m_window, this);
 	glfwGetFramebufferSize(m_window, &m_width, &m_height);
 	m_renderer = new Renderer(m_width, m_height);
@@ -75,7 +83,7 @@ bool TextureGenEngine::Window::IsMinimized()
 
 void TextureGenEngine::Window::Update()
 {
-
+	UpdateKeyStates();
 	UpdateMouseButtons();
 	SwapBuffers();
 	PoolEvents();
@@ -102,6 +110,17 @@ void TextureGenEngine::Window::OnResize()
 	}
 }
 
+void TextureGenEngine::Window::OnCharacter(int codepoint)
+{
+	for (auto sub : m_characterSubs)
+	{
+		CharacterEvent event;
+		event.codePoint = codepoint;
+		event.character = static_cast<wchar_t>(codepoint);
+		sub.callback(event);
+	}
+}
+
 void TextureGenEngine::Window::AddResizeListener(std::function<void(ResizeEvent)> callback)
 {
 	ResizeSub sub;
@@ -109,10 +128,12 @@ void TextureGenEngine::Window::AddResizeListener(std::function<void(ResizeEvent)
 	m_resizeSubs.push_back(sub);
 }
 
-
-
-
-
+void TextureGenEngine::Window::AddCharacterListener(std::function<void(CharacterEvent)> callback)
+{
+	CharacterSub event;
+	event.callback = callback;
+	m_characterSubs.push_back(event);
+}
 
 void TextureGenEngine::Window::SwapBuffers()
 {
@@ -124,6 +145,8 @@ void TextureGenEngine::Window::PoolEvents()
 	glfwPollEvents();
 }
 
+
+
 void TextureGenEngine::Window::GetFramebufferSize(int& width, int& height)
 {
 	if (m_window == nullptr)
@@ -132,6 +155,30 @@ void TextureGenEngine::Window::GetFramebufferSize(int& width, int& height)
 	}
 	glfwGetFramebufferSize(m_window, &width, &height);
 
+}
+
+void TextureGenEngine::Window::UpdateKeyStates()
+{
+	for (int i = 32; i < 349; i++)
+	{
+		int state = glfwGetKey(m_window, i);
+		if (state == GLFW_PRESS && (Input::g_keyStates[i] == 1 || Input::g_keyStates[i] == 2))
+		{
+			Input::g_keyStates[i] = 2;
+		}
+		else if (state == GLFW_PRESS)
+		{
+			Input::g_pressedKeys.push_back(i);
+			Input::g_keyStates[i] = 1;
+		}
+		else
+		{
+			Input::g_pressedKeys.erase(
+				std::remove(Input::g_pressedKeys.begin(), Input::g_pressedKeys.end(), i),
+				Input::g_pressedKeys.end());
+			Input::g_keyStates[i] = 0;
+		}
+	}
 }
 
 void TextureGenEngine::Window::UpdateMouseButtons()
