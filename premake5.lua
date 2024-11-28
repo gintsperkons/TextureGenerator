@@ -4,7 +4,6 @@ workspace("TextureGenerator")
 architecture "x64"
 configurations {"Debug", "Release", "Dist"}
 startproject "Editor"
-warnings "Extra"
 flags {"MultiProcessorCompile"}
 
 filter "system:linux"
