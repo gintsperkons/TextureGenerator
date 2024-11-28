@@ -6,6 +6,7 @@ struct GLFWwindow;
 namespace TextureGenEngine
 {
     class WindowManager;
+    class GUIManager;
     class Window
     {
         WindowManager *m_manager;
@@ -14,6 +15,7 @@ namespace TextureGenEngine
         int m_width;
         int m_height;
         GLFWwindow *m_window;
+        GUIManager *m_gui;
 
     public:
         bool ShouldClose();
@@ -21,5 +23,6 @@ namespace TextureGenEngine
         ~Window();
         void Update();
         void Draw();
+        TAPI void AddGUI(GUIManager *gui);
     };
 }

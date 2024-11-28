@@ -1,13 +1,18 @@
 #include <Engine.h>
 #include <Core/Logger/Logger.h>
 #include <Core/Window/Window.h>
+#include <GUI/GUIManager.h>
+
+
 
 int main()
 {
 	TextureGenEngine::Engine::Init();
 	TextureGenEngine::Engine *engine = TextureGenEngine::Engine::Get();
-	engine->AddWindow("TextureGenEngine2", 800, 600);
-	engine->GetMainWindow();
+
+
+	TextureGenEngine::GUIManager *guiManager = new TextureGenEngine::GUIManager();
+	engine->GetMainWindow()->AddGUI(guiManager);
 
 	
 
