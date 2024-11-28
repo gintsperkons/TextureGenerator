@@ -3,7 +3,6 @@
 #include <glad/glad.h>
 #include <array>
 #include "Engine.h"
-#include "Core/Window/Window.h"
 #include "Core/Logger/Logger.h"
 #include "Core/Renderer/Renderer.h"
 #include "Core/Asserts.h"
@@ -42,7 +41,7 @@ TextureGenEngine::Mesh::Mesh(Vertex2D vertices[], unsigned int vertexCount, unsi
     glBindVertexArray(0);
 
     m_model = glm::mat4(1.0f);
-    m_shader = Engine::Get()->GetRenderer()->GetShader("base");
+    //!m_shader = Engine::Get()->GetRenderer()->GetShader("base");
 }
 
 void TextureGenEngine::Mesh::Draw()
@@ -59,7 +58,7 @@ void TextureGenEngine::Mesh::Draw()
     THAUMA_ASSERT_MSG(projectionLoc != -1, "Failed to get projection uniform location");
     THAUMA_ASSERT_MSG(modelLoc != -1, "Failed to get model uniform location");
     glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(m_model));
-    glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(TextureGenEngine::Engine::Get()->GetRenderer()->GetProjectionMatrix()));
+   //! glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(TextureGenEngine::Engine::Get()->GetRenderer()->GetProjectionMatrix()));
     if (glGetError() != GL_NO_ERROR)
     {
         LOG_ERROR("Failed to set projection matrix uniform");
@@ -89,16 +88,17 @@ void TextureGenEngine::Mesh::Draw()
 
 glm::vec3 screenToWorld(float screenX, float screenY)
 {
-    glm::mat4 inverseProjView = glm::inverse(TextureGenEngine::Engine::Get()->GetRenderer()->GetProjectionMatrix() * TextureGenEngine::Engine::Get()->GetRenderer()->GetViewMatrix());
+    //!glm::mat4 inverseProjView = glm::inverse(TextureGenEngine::Engine::Get()->GetRenderer()->GetProjectionMatrix() * TextureGenEngine::Engine::Get()->GetRenderer()->GetViewMatrix());
     int windowWidth, windowHeight;
-    TextureGenEngine::Engine::Get()->GetWindow()->GetFramebufferSize(windowWidth, windowHeight);
+    //!TextureGenEngine::Engine::Get()->GetWindow()->GetFramebufferSize(windowWidth, windowHeight);
     // Convert screen coordinates to normalized device coordinates (NDC)
     float ndcX = (2.0f * screenX) / windowWidth - 1.0f;
     float ndcY = 1.0f - (2.0f * screenY) / windowHeight;
 
     // Convert to world space by applying the inverse projection-view matrix
-    glm::vec4 worldPos = inverseProjView * glm::vec4(ndcX, ndcY, 0.0f, 1.0f); // Assuming click is on the near plane
-    return glm::vec3(worldPos);
+    //! glm::vec4 worldPos = inverseProjView * glm::vec4(ndcX, ndcY, 0.0f, 1.0f); // Assuming click is on the near plane
+    //! return glm::vec3(worldPos);
+     return glm::vec3(0.0f);
 }
 
 bool TextureGenEngine::Mesh::CheckClickCollision(float x, float y)

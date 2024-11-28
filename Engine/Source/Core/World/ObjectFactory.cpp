@@ -3,7 +3,6 @@
 #include <cmath>
 #include "Core/Renderer/Structures/Vertex2D.h"
 #include "Core/Logger/Logger.h"
-#include "Core/Renderer/Conversion.h"
 #include "Core/Renderer/Line.h"
 
 TextureGenEngine::Mesh* TextureGenEngine::ObjectFactory::CreateTriangle()

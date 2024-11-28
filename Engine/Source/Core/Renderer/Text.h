@@ -1,23 +1,22 @@
-#include "Defines.h"
-#include <glm/glm.hpp>
-#include <string>
-#include <Core/GUI/Structures.h>
+// #include "Defines.h"
+// #include <glm/glm.hpp>
+// #include <string>
 
-namespace TextureGenEngine
-{
-    class Shader;
-    class Text
-    {
-    private:
-        unsigned int VBO, VAO;
-        Shader *m_shader;
-        /* data */
-        float CalculateScale(std::string text, int textSize, int &textHeight, int &textWidth, int &maxDescender);
+// namespace TextureGenEngine
+// {
+//     class Shader;
+//     class Text
+//     {
+//     private:
+//         unsigned int VBO, VAO;
+//         Shader *m_shader;
+//         /* data */
+//         float CalculateScale(std::string text, int textSize, int &textHeight, int &textWidth, int &maxDescender);
 
-    public:
-        Text();
-        void Draw(std::string text, float x, float y, int frameHeight, int frameWidth, int textSize, glm::vec3 color, AlignmentHorizontal hAlign, AlignmentVertical vAlign);
-        ~Text();
-    };
+//     public:
+//         Text();
+//         // void Draw(std::string text, float x, float y, int frameHeight, int frameWidth, int textSize, glm::vec3 color, AlignmentHorizontal hAlign, AlignmentVertical vAlign);
+//         ~Text();
+//     };
 
-} // namespace TextureGenEngine
+// } // namespace TextureGenEngine

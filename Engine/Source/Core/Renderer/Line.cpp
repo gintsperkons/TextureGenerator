@@ -13,7 +13,7 @@ TextureGenEngine::Line::Line(Vertex2D start, Vertex2D end)
     // Initialize vertices with start and end points
     m_vertices.push_back(start);
     m_vertices.push_back(end);
-    m_shader = TextureGenEngine::Engine::Get()->GetRenderer()->GetShader("line");
+    //!m_shader = TextureGenEngine::Engine::Get()->GetRenderer()->GetShader("line");
     // Define indices for the line (2 vertices make 1 line)
     m_indices = {0, 1};
 
@@ -78,7 +78,7 @@ void TextureGenEngine::Line::Draw()
     }
     else
     {
-        glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(TextureGenEngine::Engine::Get()->GetRenderer()->GetProjectionMatrix()));
+       //! glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(TextureGenEngine::Engine::Get()->GetRenderer()->GetProjectionMatrix()));
     }
 
     if (modelLoc == -1)

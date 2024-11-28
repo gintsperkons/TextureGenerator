@@ -1,77 +1,40 @@
 #include "Engine.h"
 #include <stdio.h>
-#include "Core/Window/Window.h"
 #include "Core/Renderer/Mesh.h"
-#include "Core/World/Screen.h"
-#include "Core/Window/WindowEvents.h"
-#include "Core/FontManager.h"
+#include "Core/Window/WindowManager.h"
 #include "Core/Logger/Logger.h"
+#include "Core/Window/Window.h"
 #include "Core/Asserts.h"
 
-TextureGenEngine::Engine::Engine() : Engine(new Window())
+void TextureGenEngine::Engine::Init()
 {
+	g_engine = new Engine();
 }
 
-void TextureGenEngine::Engine::ResizeCallBack(ResizeEvent event)
+void TextureGenEngine::Engine::Shutdown()
 {
-
-	m_screen->Resize(event.width, event.height);
-	m_screen->Update();
-	m_window->Update();
-	if (!m_window->IsMinimized())
-	{
-		m_window->Draw();
-		m_screen->Draw();
-	}
+	delete g_engine;
+	g_engine = nullptr;
 }
 
-TextureGenEngine::Engine::Engine(Window *window) : m_window(window)
+TextureGenEngine::Window* TextureGenEngine::Engine::AddWindow(const std::string &title, int width, int height)
 {
-	TextureGenEngine::g_engine = this;
-	m_window->AddResizeListener([this](ResizeEvent event)
-								{ this->ResizeCallBack(event); });
-	m_screen = new Screen();
-	m_fontManager = new FontManager();
+	return m_windowManager->AddWindow(title, width, height);
+}
+
+TextureGenEngine::Engine::Engine() : m_windowManager(new WindowManager())
+{
+	m_running = true;
 }
 
 TextureGenEngine::Engine::~Engine()
 {
-	delete m_window;
-	delete m_screen;
 }
 
 void TextureGenEngine::Engine::Run()
 {
-	m_screen->Update();
-	m_window->Update();
-	if (!m_window->IsMinimized())
-	{
-		m_window->Draw();
-		m_screen->Draw();
-	}
-}
-
-TextureGenEngine::Window *TextureGenEngine::Engine::GetWindow()
-{
-	if (!m_window)
-	{
-		LOG_ERROR("window is null");
-	}
-	return m_window;
-}
-
-TextureGenEngine::Renderer *TextureGenEngine::Engine::GetRenderer()
-{
-	if (!GetWindow()->GetRenderer())
-	{
-		LOG_ERROR("renderer is null");
-	}
-	return GetWindow()->GetRenderer();
-}
-
-TextureGenEngine::Screen *TextureGenEngine::Engine::GetScreen()
-{
-	return m_screen;
+	m_windowManager->Update();
+	m_running = !m_windowManager->ShouldClose();
 }
 
 TextureGenEngine::Engine *TextureGenEngine::Engine::Get()
@@ -81,5 +44,6 @@ TextureGenEngine::Engine *TextureGenEngine::Engine::Get()
 
 bool TextureGenEngine::Engine::IsRunning()
 {
-	return !m_window->ShouldClose();
+	return m_running;
 }
+

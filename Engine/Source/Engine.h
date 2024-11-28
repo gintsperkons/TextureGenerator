@@ -1,31 +1,26 @@
+#pragma once
 #include "Defines.h"
+#include <string>
 
 namespace TextureGenEngine
 {
-	struct ResizeEvent;
-	class Mesh;
+	class WindowManager;
 	class Window;
-	class FontManager;
-	class Screen;
-	class Renderer;
 	class Engine
 	{
-		FontManager* m_fontManager;
-		Window* m_window;
-		Screen* m_screen;
-		void ResizeCallBack(ResizeEvent event);
-	public:
-		TAPI Engine();
-		TAPI Engine(Window * window);
-		TAPI ~Engine();
-		TAPI void Run();
-		TAPI Window* GetWindow();
-		Renderer* GetRenderer();
-		TAPI TextureGenEngine::Screen* GetScreen();
-		TAPI static Engine* Get();
-		TAPI bool IsRunning();
-		FontManager* GetFontManager(){return m_fontManager;};
 		
+		WindowManager *m_windowManager;
+		bool m_running = false;
+	public:
+		Engine();
+		~Engine();
+		TAPI void Run();
+		TAPI static Engine *Get();
+		TAPI bool IsRunning();
+		TAPI static void Init();
+		TAPI static void Shutdown();
+		TAPI Window* AddWindow(const std::string &title, int width, int height);
 	};
-		inline static Engine* g_engine = nullptr;
+
+	inline static Engine *g_engine = nullptr;
 }
