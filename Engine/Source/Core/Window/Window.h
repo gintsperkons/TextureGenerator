@@ -20,5 +20,6 @@ namespace TextureGenEngine
         Window(WindowManager *manager, int id, const std::string &title, int width, int height);
         ~Window();
         void Update();
+        void Draw();
     };
 }

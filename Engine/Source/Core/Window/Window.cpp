@@ -31,3 +31,7 @@ void TextureGenEngine::Window::Update()
     glfwPollEvents();
     glfwSwapBuffers(m_window);
 }
+
+void TextureGenEngine::Window::Draw()
+{
+}

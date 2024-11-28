@@ -17,9 +17,14 @@ void TextureGenEngine::Engine::Shutdown()
 	g_engine = nullptr;
 }
 
-TextureGenEngine::Window* TextureGenEngine::Engine::AddWindow(const std::string &title, int width, int height)
+TextureGenEngine::Window *TextureGenEngine::Engine::AddWindow(const std::string &title, int width, int height)
 {
 	return m_windowManager->AddWindow(title, width, height);
+}
+
+TextureGenEngine::Window *TextureGenEngine::Engine::GetMainWindow()
+{
+	return m_windowManager->GetMainWindow();
 }
 
 TextureGenEngine::Engine::Engine() : m_windowManager(new WindowManager())
@@ -34,6 +39,7 @@ TextureGenEngine::Engine::~Engine()
 void TextureGenEngine::Engine::Run()
 {
 	m_windowManager->Update();
+	m_windowManager->Draw();
 	m_running = !m_windowManager->ShouldClose();
 }
 
@@ -46,4 +52,3 @@ bool TextureGenEngine::Engine::IsRunning()
 {
 	return m_running;
 }
-

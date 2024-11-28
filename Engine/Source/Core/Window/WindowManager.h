@@ -8,6 +8,7 @@ namespace TextureGenEngine
     class Window;
     class WindowManager
     {
+        Window *m_mainWindow;
         std::vector<Window *> m_windows;
         int m_lastId = 0;
         int activeWindow = 0;
@@ -19,6 +20,8 @@ namespace TextureGenEngine
         WindowManager();
         ~WindowManager();
         void Update();
+        void Draw();
         Window *AddWindow(const std::string &title, int width, int height);
+        Window *GetMainWindow();
     };
 }

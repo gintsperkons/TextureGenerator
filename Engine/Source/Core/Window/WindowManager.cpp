@@ -6,7 +6,11 @@
 
 bool TextureGenEngine::WindowManager::ShouldClose()
 {
-    return activeWindow <= 0;
+    if (m_mainWindow)
+    {
+        return m_mainWindow->ShouldClose() || activeWindow == 0;
+    }
+    return true;
 }
 
 // Public
@@ -19,7 +23,7 @@ TextureGenEngine::WindowManager::WindowManager()
         Engine::Get()->Shutdown();
         exit(EXIT_FAILURE);
     }
-    AddWindow("TextureGenEngine", 800, 600);
+    m_mainWindow = AddWindow("TextureGenEngine", 800, 600);
 }
 
 
@@ -45,6 +49,14 @@ void TextureGenEngine::WindowManager::Update()
     CloseNecessaryWindows();
 }
 
+void TextureGenEngine::WindowManager::Draw()
+{
+    for (Window *window : m_windows)
+    {
+        window->Draw();
+    }
+}
+
 TextureGenEngine::Window *TextureGenEngine::WindowManager::AddWindow(const std::string &title, int width, int height)
 {
 
@@ -57,6 +69,11 @@ TextureGenEngine::Window *TextureGenEngine::WindowManager::AddWindow(const std::
         return window;
     }
     return nullptr;
+}
+
+TextureGenEngine::Window *TextureGenEngine::WindowManager::GetMainWindow()
+{
+    return m_mainWindow;
 }
 
 //Private

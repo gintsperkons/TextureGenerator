@@ -20,6 +20,7 @@ namespace TextureGenEngine
 		TAPI static void Init();
 		TAPI static void Shutdown();
 		TAPI Window* AddWindow(const std::string &title, int width, int height);
+		TAPI Window* GetMainWindow();
 	};
 
 	inline static Engine *g_engine = nullptr;
