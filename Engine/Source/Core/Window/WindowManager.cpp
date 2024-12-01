@@ -60,7 +60,7 @@ void TextureGenEngine::WindowManager::Draw()
 TextureGenEngine::Window *TextureGenEngine::WindowManager::AddWindow(const std::string &title, int width, int height)
 {
 
-    Window *window = new Window(this, m_lastId, title, width, height);
+    Window *window = new Window(this, m_lastId, title, width, height, m_mainWindow ? m_mainWindow->GetWindow() : nullptr);
     if (window)
     {
         m_windows.push_back(window);

@@ -2,6 +2,7 @@
 #include <Core/Logger/Logger.h>
 #include <Core/Window/Window.h>
 #include <GUI/GUIManager.h>
+#include <GUI/Components.h>
 
 
 
@@ -12,6 +13,11 @@ int main()
 
 
 	TextureGenEngine::GUIManager *guiManager = new TextureGenEngine::GUIManager();
+
+
+	TextureGenEngine::Label *label = new TextureGenEngine::Label(10,10,100,100, "Hello World");
+	guiManager->AddComponent(label);
+
 	engine->GetMainWindow()->AddGUI(guiManager);
 
 	

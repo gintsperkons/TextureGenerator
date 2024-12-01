@@ -4,6 +4,7 @@
 #include "Core/Window/WindowManager.h"
 #include "Core/Logger/Logger.h"
 #include "Core/Window/Window.h"
+#include "Core/Renderer/Renderer.h"
 #include "Core/Asserts.h"
 
 void TextureGenEngine::Engine::Init()
@@ -27,9 +28,11 @@ TextureGenEngine::Window *TextureGenEngine::Engine::GetMainWindow()
 	return m_windowManager->GetMainWindow();
 }
 
-TextureGenEngine::Engine::Engine() : m_windowManager(new WindowManager())
+TextureGenEngine::Engine::Engine() : 
+m_windowManager(new WindowManager()),
+m_renderer(new Renderer(m_windowManager->GetMainWindow()->GetWidth(), m_windowManager->GetMainWindow()->GetHeight())),
+m_running(true)
 {
-	m_running = true;
 }
 
 TextureGenEngine::Engine::~Engine()

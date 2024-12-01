@@ -7,6 +7,7 @@ namespace TextureGenEngine
 {
     class WindowManager;
     class GUIManager;
+    class Renderer;
     class Window
     {
         WindowManager *m_manager;
@@ -19,10 +20,14 @@ namespace TextureGenEngine
 
     public:
         bool ShouldClose();
-        Window(WindowManager *manager, int id, const std::string &title, int width, int height);
+        Window(WindowManager *manager, int id, const std::string &title, int width, int height, GLFWwindow* contextWindow = nullptr);
         ~Window();
         void Update();
         void Draw();
         TAPI void AddGUI(GUIManager *gui);
+        GLFWwindow *GetWindow() { return m_window; }
+        int GetWidth() { return m_width; }
+        int GetHeight() { return m_height; }
+        void GetFramebufferSize(int &width, int &height);
     };
 }
