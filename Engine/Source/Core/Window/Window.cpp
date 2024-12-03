@@ -12,6 +12,18 @@ bool TextureGenEngine::Window::ShouldClose()
     return glfwWindowShouldClose(m_window);
 }
 
+void resizeCallback(GLFWwindow *window, int width, int height)
+{
+    TextureGenEngine::Window *win = (TextureGenEngine ::Window*)glfwGetWindowUserPointer(window);
+    for (auto &sub : win->GetResizeSubs())
+    {
+        sub.callback({width, height});
+    }
+    TextureGenEngine::Engine::Get()->GetRenderer()->UpdateViewport(width, height);
+    win->Update();
+    win->Draw();
+}
+
 TextureGenEngine::Window::Window(WindowManager *manager, int id, const std::string &title, int width, int height, GLFWwindow *contextWindow) : m_manager(manager), m_id(id), m_title(title), m_width(width), m_height(height),
                                                                                                                                                          m_gui(nullptr), m_window(nullptr)
 {
@@ -28,6 +40,8 @@ TextureGenEngine::Window::Window(WindowManager *manager, int id, const std::stri
     }
 
     glfwMakeContextCurrent(m_window);
+    glfwSetWindowUserPointer(m_window, this);
+    glfwSetFramebufferSizeCallback(m_window, resizeCallback);
 }
 
 TextureGenEngine::Window::~Window()
@@ -40,8 +54,10 @@ TextureGenEngine::Window::~Window()
 
 void TextureGenEngine::Window::Update()
 {
+
     glfwPollEvents();
     glfwSwapBuffers(m_window);
+    glClear(GL_COLOR_BUFFER_BIT);
     if (m_gui)
     {
         m_gui->Update();
@@ -64,7 +80,7 @@ void TextureGenEngine::Window::AddGUI(TextureGenEngine::GUIManager *gui)
     }
     gui->SetWindow(this);
     m_resizeSubs.push_back({[gui](ResizeEvent e) { gui->Resize(e.width, e.height); }});
-    gui->Resize(m_width, m_height);
+    gui->Init(m_width, m_height);
     m_gui = gui;
 }
 

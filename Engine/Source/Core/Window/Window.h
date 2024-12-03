@@ -38,5 +38,6 @@ namespace TextureGenEngine
         int GetWidth() { return m_width; }
         int GetHeight() { return m_height; }
         void GetFramebufferSize(int &width, int &height);
+        std::vector<ResizeSub> GetResizeSubs() { return m_resizeSubs; }
     };
 }

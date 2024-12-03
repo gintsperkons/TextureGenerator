@@ -34,5 +34,31 @@ void TextureGenEngine::GUIManager::AddComponent(Component *component)
 
 void TextureGenEngine::GUIManager::Resize(int width, int height)
 {
+    m_oldWidth = m_width;
+    m_oldHeight = m_height;
+    m_width = width;
+    m_height = height;
     LOG_DEBUG("Resizing GUIManager to %d %d\n", width, height);
+    for (auto &child : m_children)
+    {
+        child->Resize(width, height);
+    }
+}
+
+void TextureGenEngine::GUIManager::Init(int width, int height)
+{
+    m_oldWidth = m_width;
+    m_oldHeight = m_height;
+    m_width = width;
+    m_height = height;
+    for (auto &child : m_children)
+    {
+        child->Init(width, height);
+    }
+}
+
+void TextureGenEngine::GUIManager::GetOldSize(float &width, float &height)
+{
+    width = m_oldWidth;
+    height = m_oldHeight;
 }

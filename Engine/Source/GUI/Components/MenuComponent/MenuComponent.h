@@ -9,7 +9,9 @@ namespace TextureGenEngine
         /* data */
     public:
         MenuComponent(int height = 50);
+        void Init(int width,int height) override;
         void Draw() override;
+        void Resize(int width, int height) override;
         ~MenuComponent();
     };
     
