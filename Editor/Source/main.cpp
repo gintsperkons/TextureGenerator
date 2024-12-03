@@ -15,7 +15,7 @@ int main()
 	TextureGenEngine::GUIManager *guiManager = new TextureGenEngine::GUIManager();
 
 
-	TextureGenEngine::Label *label = new TextureGenEngine::Label(10,10,100,100, "Hello World");
+	TextureGenEngine::Label *label = new TextureGenEngine::Label(50,50,100,100, "Hello World");
 	guiManager->AddComponent(label);
 
 	engine->GetMainWindow()->AddGUI(guiManager);

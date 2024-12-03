@@ -11,6 +11,7 @@ m_x(x),m_y(y),m_width(width),m_height(height)
     m_backgroundColor.b = 0.0f;
     m_backgroundColor.a = 1.0f;
     m_background->ChangeColor(m_backgroundColor.r,m_backgroundColor.g,m_backgroundColor.b,m_backgroundColor.a);
+    m_background->SetPosition(x,y);
 }
 
 void TextureGenEngine::Component::Draw()
