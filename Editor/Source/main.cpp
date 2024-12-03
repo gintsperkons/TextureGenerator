@@ -4,6 +4,7 @@
 #include <GUI/GUIManager.h>
 #include <GUI/Components.h>
 #include <GUI/Color.h>
+#include <GUI/ScalingType.h>
 
 
 
@@ -16,13 +17,21 @@ int main()
 	TextureGenEngine::GUIManager *guiManager = new TextureGenEngine::GUIManager();
 
 
-	TextureGenEngine::Label *label = new TextureGenEngine::Label(50,50,100,100, "Hello World");
-	label->SetBackground(TextureGenEngine::Color(0.0f, 1.0f, 1.0f, 1.0f));
-	guiManager->AddComponent(label);
+	// TextureGenEngine::Label *label = new TextureGenEngine::Label(50,50,100,100, "Hello World");
+	// label->SetBackground(TextureGenEngine::Color(0.0f, 1.0f, 1.0f, 1.0f));
+	// guiManager->AddComponent(label);
 
 	TextureGenEngine::MenuBar *menuBar = new TextureGenEngine::MenuBar();
 	menuBar->SetBackground(TextureGenEngine::Color(1.0f, 0.0f, 1.0f, 1.0f));
 	guiManager->AddComponent(menuBar);
+
+	TextureGenEngine::Panel *panel = new TextureGenEngine::Panel(0, 0, 300, 100,TextureGenEngine::ScalingType::FIXED, TextureGenEngine::ScalingType::FILL);
+	panel->SetBackground(TextureGenEngine::Color(1.0f, 1.0f, 0.0f, 1.0f));
+	guiManager->AddComponent(panel);
+
+	TextureGenEngine::Panel *panel2 = new TextureGenEngine::Panel(300, 0, 500, 100, TextureGenEngine::ScalingType::FILL, TextureGenEngine::ScalingType::FILL);
+	panel2->SetBackground(TextureGenEngine::Color(1.0f, 0.0f, 0.0f, 1.0f));
+	guiManager->AddComponent(panel2);
 
 	engine->GetMainWindow()->AddGUI(guiManager);
 

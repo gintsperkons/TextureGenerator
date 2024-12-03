@@ -9,10 +9,10 @@ namespace TextureGenEngine
     class Component
     {
         
-        GUIManager *m_manager = nullptr;
-        Color m_backgroundColor;
 
     protected:
+        GUIManager *m_manager = nullptr;
+        Color m_backgroundColor;
         Mesh *m_background = nullptr;
         float m_x;
         float m_y;

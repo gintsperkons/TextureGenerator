@@ -51,6 +51,11 @@ void TextureGenEngine::GUIManager::Init(int width, int height)
     m_oldHeight = m_height;
     m_width = width;
     m_height = height;
+    if (m_oldWidth == 0 && m_oldHeight == 0)
+    {
+        m_oldWidth = width;
+        m_oldHeight = height;
+    }
     for (auto &child : m_children)
     {
         child->Init(width, height);
