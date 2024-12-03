@@ -170,7 +170,7 @@ void TextureGenEngine::Mesh::ChangeColor(float r, float g, float b, float a)
 
     if (glGetError() != GL_NO_ERROR)
     {
-        LOG_ERROR("Failed to update vertex buffer with new color");
+        LOG_ERROR("Failed to update vertex buffer with new color\n");
     }
 }
 

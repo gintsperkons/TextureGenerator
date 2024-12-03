@@ -1,15 +1,24 @@
 #pragma once
 #include "Defines.h"
+#include "WindowEvents.h"
 #include <string>
+#include <vector>
+#include <functional>
 
 struct GLFWwindow;
 namespace TextureGenEngine
 {
+    struct ResizeSub {
+        std::function<void(ResizeEvent)> callback;
+    };
+
     class WindowManager;
     class GUIManager;
     class Renderer;
     class Window
     {
+        std::vector<ResizeSub> m_resizeSubs;
+
         WindowManager *m_manager;
         int m_id;
         std::string m_title;

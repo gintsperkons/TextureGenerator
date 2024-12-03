@@ -63,6 +63,8 @@ void TextureGenEngine::Window::AddGUI(TextureGenEngine::GUIManager *gui)
         delete m_gui;
     }
     gui->SetWindow(this);
+    m_resizeSubs.push_back({[gui](ResizeEvent e) { gui->Resize(e.width, e.height); }});
+    gui->Resize(m_width, m_height);
     m_gui = gui;
 }
 

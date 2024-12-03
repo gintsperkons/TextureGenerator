@@ -17,5 +17,6 @@ namespace TextureGenEngine
         void Draw();
         TAPI void AddComponent(Component *component);
         void SetWindow(Window *window) { m_window = window; }
+        void Resize(int width, int height);
     };
 } // namespace TextureGenEngine
