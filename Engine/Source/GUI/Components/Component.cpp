@@ -2,14 +2,15 @@
 #include "Core/Renderer/Mesh.h"
 #include "Core/World/ObjectFactory.h"
 
-TextureGenEngine::Component::Component(int x, int y, int width, int height)
+TextureGenEngine::Component::Component(int x, int y, int width, int height):
+m_x(x),m_y(y),m_width(width),m_height(height)
 {
     m_background = ObjectFactory::CreateSquare(width, height);
-    m_backgroundColor[0] = 1.0f;
-    m_backgroundColor[1] = 0.0f;
-    m_backgroundColor[2] = 0.0f;
-    m_backgroundColor[3] = 1.0f;
-    m_background->ChangeColor(m_backgroundColor[0],m_backgroundColor[1],m_backgroundColor[2],m_backgroundColor[3]);
+    m_backgroundColor.r = 1.0f;
+    m_backgroundColor.g = 0.0f;
+    m_backgroundColor.b = 0.0f;
+    m_backgroundColor.a = 1.0f;
+    m_background->ChangeColor(m_backgroundColor.r,m_backgroundColor.g,m_backgroundColor.b,m_backgroundColor.a);
 }
 
 void TextureGenEngine::Component::Draw()

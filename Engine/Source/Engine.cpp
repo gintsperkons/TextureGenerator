@@ -5,6 +5,7 @@
 #include "Core/Logger/Logger.h"
 #include "Core/Window/Window.h"
 #include "Core/Renderer/Renderer.h"
+#include "Core/Font/FontManager.h"
 #include "Core/Asserts.h"
 
 void TextureGenEngine::Engine::Init()
@@ -31,6 +32,7 @@ TextureGenEngine::Window *TextureGenEngine::Engine::GetMainWindow()
 TextureGenEngine::Engine::Engine() : 
 m_windowManager(new WindowManager()),
 m_renderer(new Renderer(m_windowManager->GetMainWindow()->GetWidth(), m_windowManager->GetMainWindow()->GetHeight())),
+m_fontManager(new FontManager()),
 m_running(true)
 {
 }

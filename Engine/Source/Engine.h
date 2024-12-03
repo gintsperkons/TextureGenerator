@@ -6,12 +6,14 @@ namespace TextureGenEngine
 {
 	class WindowManager;
 	class Renderer;
+	class FontManager;
 	class Window;
 	class Engine
 	{
 
 		WindowManager *m_windowManager;
 		Renderer *m_renderer;
+		FontManager *m_fontManager;
 		bool m_running = false;
 
 	public:
@@ -25,6 +27,7 @@ namespace TextureGenEngine
 		TAPI Window *AddWindow(const std::string &title, int width, int height);
 		TAPI Window *GetMainWindow();
 		Renderer* GetRenderer() { return m_renderer; }
+		FontManager* GetFontManager() { return m_fontManager; }
 	};
 
 	inline static Engine *g_engine = nullptr;
