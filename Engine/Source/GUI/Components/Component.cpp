@@ -25,3 +25,9 @@ void TextureGenEngine::Component::Draw()
 TextureGenEngine::Component::~Component()
 {
 }
+
+void TextureGenEngine::Component::SetBackground(Color color)
+{
+    m_backgroundColor = color;
+    m_background->ChangeColor(color.r, color.g, color.b, color.a);
+}

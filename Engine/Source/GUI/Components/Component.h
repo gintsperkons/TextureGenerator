@@ -4,11 +4,12 @@
 
 namespace TextureGenEngine
 {
+    class GUIManager;
     class Mesh;
     class Component
     {
         
-
+        GUIManager *m_manager = nullptr;
         Color m_backgroundColor;
         Mesh *m_background = nullptr;
     
@@ -22,5 +23,7 @@ namespace TextureGenEngine
         Component(int x, int y, int width, int height);
         virtual void Draw();
         virtual ~Component();
+        TAPI virtual void SetBackground(Color color);
+        void SetManager(GUIManager *manager) { m_manager = manager; }
     };
 } // namespace TextureGenEngine
