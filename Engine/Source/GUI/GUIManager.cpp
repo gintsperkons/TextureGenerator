@@ -27,6 +27,6 @@ void TextureGenEngine::GUIManager::Draw()
 }
 
 void TextureGenEngine::GUIManager::AddComponent(Component *component)
-{
+{   component->SetManager(this);
     m_children.push_back(component);
 }

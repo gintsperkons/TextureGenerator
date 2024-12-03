@@ -3,7 +3,7 @@
 #include FT_FREETYPE_H
 #include "FontManager.h"
 #include "Core/Logger/Logger.h"
-#include "Core/FileHandler/FileHandler.h"
+#include "Core/FileHandler/FileHandler.h" 
 #include <string>
 
 TextureGenEngine::FontManager::FontManager()

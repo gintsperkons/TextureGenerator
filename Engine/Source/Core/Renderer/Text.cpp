@@ -58,7 +58,6 @@ float TextureGenEngine::Text::CalculateScale(std::string text, int textSize, int
 
 void TextureGenEngine::Text::Draw(std::string text, float x, float y, int frameHeight, int frameWidth, int textSize, glm::vec3 color, AlignmentHorizontal hAlign, AlignmentVertical vAlign) // width and height in pixels of text
 {
-    LOG_DEBUG("Drawing text: %s\n", text.c_str());
     m_shader->Use();
     if (glGetError() != GL_NO_ERROR)
     {

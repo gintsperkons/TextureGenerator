@@ -62,6 +62,7 @@ void TextureGenEngine::Window::AddGUI(TextureGenEngine::GUIManager *gui)
     {
         delete m_gui;
     }
+    gui->SetWindow(this);
     m_gui = gui;
 }
 

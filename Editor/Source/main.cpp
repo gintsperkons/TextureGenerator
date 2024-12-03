@@ -20,6 +20,10 @@ int main()
 	label->SetBackground(TextureGenEngine::Color(0.0f, 1.0f, 1.0f, 1.0f));
 	guiManager->AddComponent(label);
 
+	TextureGenEngine::MenuBar *menuBar = new TextureGenEngine::MenuBar();
+	menuBar->SetBackground(TextureGenEngine::Color(1.0f, 0.0f, 1.0f, 1.0f));
+	guiManager->AddComponent(menuBar);
+
 	engine->GetMainWindow()->AddGUI(guiManager);
 
 	
