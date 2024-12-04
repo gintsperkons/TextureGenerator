@@ -53,9 +53,22 @@ void TextureGenEngine::Input::CharCallback(unsigned int codepoint)
 void TextureGenEngine::Input::MouseButtonCallback(int button, int action, int mods)
 {
     LOG_DEBUG("Button: %d, Action: %d, Mods: %d\n", button, action, mods);
+    double x,y;
+    glfwGetCursorPos(m_window->GetWindow(), &x, &y);
+    for (auto &sub : m_mouseClickSubs)
+    {
+        sub.callback({x, y, button, action == GLFW_PRESS});
+    }
 }
 
 void TextureGenEngine::Input::CursorPosCallback(double xpos, double ypos)
 {
     LOG_DEBUG("X: %f, Y: %f\n", xpos, ypos);
+}
+
+void TextureGenEngine::Input::SubscribeToMouseClickEvents(std::function<void(MouseButtonEvent)> subscriber)
+{
+    MouseClickSub sub;
+    sub.callback = subscriber;
+    m_mouseClickSubs.push_back(sub);
 }

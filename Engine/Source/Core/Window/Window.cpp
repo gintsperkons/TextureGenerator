@@ -92,3 +92,4 @@ void TextureGenEngine::Window::GetFramebufferSize(int &width, int &height)
 {
     glfwGetFramebufferSize(m_window, &width, &height);
 }
+

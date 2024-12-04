@@ -1,6 +1,9 @@
 #include "GUIManager.h"
 #include "Components/Component.h"
 #include "Core/Logger/Logger.h"
+#include "Core/Input/InputEvents.h"
+#include "Core/Window/Window.h"
+#include "Core/Input/Input.h"
 
 TextureGenEngine::GUIManager::GUIManager()
 {
@@ -60,6 +63,15 @@ void TextureGenEngine::GUIManager::Init(int width, int height)
     {
         child->Init(width, height);
     }
+
+    m_window->GetInput()->SubscribeToMouseClickEvents([this](MouseButtonEvent e) {
+        for (auto &child : m_children)
+        {
+            LOG_DEBUG("Mouse move event\n");
+            LOG_DEBUG("Event x: %d, y: %d, button: %d, down: %d\n", e.x, e.y, e.button, e.down);
+            //child->OnMouseMove(e);
+        }
+    });
 }
 
 void TextureGenEngine::GUIManager::GetOldSize(float &width, float &height)

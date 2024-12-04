@@ -3,6 +3,7 @@
 #include "WindowEvents.h"
 #include <string>
 #include <vector>
+#include "Core/Input/InputEvents.h"
 #include <functional>
 
 struct GLFWwindow;
@@ -11,6 +12,7 @@ namespace TextureGenEngine
     struct ResizeSub {
         std::function<void(ResizeEvent)> callback;
     };
+
 
     class WindowManager;
     class GUIManager;
