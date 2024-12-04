@@ -15,6 +15,7 @@ namespace TextureGenEngine
     class WindowManager;
     class GUIManager;
     class Renderer;
+    class Input;
     class Window
     {
         std::vector<ResizeSub> m_resizeSubs;
@@ -26,6 +27,7 @@ namespace TextureGenEngine
         int m_height;
         GLFWwindow *m_window;
         GUIManager *m_gui;
+        Input* m_input;
 
     public:
         bool ShouldClose();
@@ -38,6 +40,7 @@ namespace TextureGenEngine
         int GetWidth() { return m_width; }
         int GetHeight() { return m_height; }
         void GetFramebufferSize(int &width, int &height);
+        Input* GetInput() { return m_input; }
         std::vector<ResizeSub> GetResizeSubs() { return m_resizeSubs; }
     };
 }

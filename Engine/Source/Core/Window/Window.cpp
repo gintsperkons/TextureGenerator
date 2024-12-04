@@ -6,6 +6,7 @@
 #include "GUI/GUIManager.h"
 #include "Window.h"
 #include "Core/Renderer/Renderer.h"
+#include "Core/Input/Input.h"
 
 bool TextureGenEngine::Window::ShouldClose()
 {
@@ -25,7 +26,7 @@ void resizeCallback(GLFWwindow *window, int width, int height)
 }
 
 TextureGenEngine::Window::Window(WindowManager *manager, int id, const std::string &title, int width, int height, GLFWwindow *contextWindow) : m_manager(manager), m_id(id), m_title(title), m_width(width), m_height(height),
-                                                                                                                                                         m_gui(nullptr), m_window(nullptr)
+                                                                                                                                                         m_gui(nullptr), m_window(nullptr),m_input(nullptr)
 {
     if (contextWindow)
         m_window = glfwCreateWindow(width, height, title.c_str(), NULL, contextWindow);
@@ -42,6 +43,8 @@ TextureGenEngine::Window::Window(WindowManager *manager, int id, const std::stri
     glfwMakeContextCurrent(m_window);
     glfwSetWindowUserPointer(m_window, this);
     glfwSetFramebufferSizeCallback(m_window, resizeCallback);
+    m_input = new Input(this);
+
 }
 
 TextureGenEngine::Window::~Window()
@@ -50,6 +53,7 @@ TextureGenEngine::Window::~Window()
         delete m_gui;
 
     glfwDestroyWindow(m_window);
+    delete m_input;
 }
 
 void TextureGenEngine::Window::Update()
