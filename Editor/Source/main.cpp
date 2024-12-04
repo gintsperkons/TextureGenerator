@@ -25,6 +25,14 @@ int main()
 	menuBar->SetBackground(TextureGenEngine::Color(1.0f, 0.0f, 1.0f, 1.0f));
 	guiManager->AddComponent(menuBar);
 
+	TextureGenEngine::Menu *menu = new TextureGenEngine::Menu("File");
+	menu->SetBackground(TextureGenEngine::Color(0.0f, 1.0f, 0.0f, 1.0f));
+	menuBar->AddMenu(menu);
+
+	TextureGenEngine::Menu *menu2 = new TextureGenEngine::Menu("Options");
+	menu2->SetBackground(TextureGenEngine::Color(0.0f, 1.0f, 0.0f, 1.0f));
+	menuBar->AddMenu(menu2);
+
 	TextureGenEngine::Panel *panelList = new TextureGenEngine::Panel(0, 300, 300, 100,TextureGenEngine::ScalingType::FIXED, TextureGenEngine::ScalingType::FILL);
 	panelList->SetBackground(TextureGenEngine::Color(1.0f, 1.0f, 0.0f, 1.0f));
 	guiManager->AddComponent(panelList);

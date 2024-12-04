@@ -3,17 +3,17 @@
 #include "GUI/Components/Component.h"
 namespace TextureGenEngine
 {
-    class MenuComponent: public Component
+    class MenuComponent : public Component
     {
     private:
         /* data */
     public:
-        MenuComponent(int height = 50);
-        void Init(int width,int height) override;
+        MenuComponent(int height = MenuComponent::height);
+        void Init(int width, int height) override;
         void Draw() override;
         void Resize(int width, int height) override;
         ~MenuComponent();
+        static inline int height = 25;
     };
-    
+
 } // namespace TextureGenEngine
- 

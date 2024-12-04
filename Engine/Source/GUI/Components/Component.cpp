@@ -27,7 +27,6 @@ void TextureGenEngine::Component::Resize(int width, int height)
 
     float oldWidth, oldHeight;
     m_manager->GetOldSize(oldWidth, oldHeight);
-    LOG_DEBUG("Old Width: %f Old Height: %f\n", oldWidth, oldHeight);
     float newWidth = m_width*width/oldWidth;
     float newHeight = m_height*height/oldHeight;
     m_background->Scale(newWidth/m_width, newHeight/m_height);

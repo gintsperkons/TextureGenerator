@@ -2,6 +2,7 @@
 #include "Core/Renderer/Mesh.h"
 #include "GUI/GUIManager.h"
 #include "Core/Logger/Logger.h"
+#include "GUI/Components/MenuComponent/MenuComponent.h"
 
 
 TextureGenEngine::Panel::Panel(int x, int y, int width, int height, ScalingType xScaling, ScalingType yScaling)
@@ -37,8 +38,8 @@ void TextureGenEngine::Panel::Resize(int width, int height)
     }
     if (m_scalingTypeY == ScalingType::FILL)
     {
-        yScale = (height - 50-m_y) / m_height;
-        m_height = (height - 50 - m_y);
+        yScale = (height - MenuComponent::height-m_y) / m_height;
+        m_height = (height - MenuComponent::height - m_y);
     }
     if (m_scalingTypeX == ScalingType::FIXED)
     {
@@ -55,8 +56,8 @@ void TextureGenEngine::Panel::Resize(int width, int height)
     }
     if (m_scalingTypeY == ScalingType::DYNAMIC)
     {
-        yScale = (newHeight - 50) / m_height;
-        m_height = newHeight - 50;
+        yScale = (newHeight - MenuComponent::height) / m_height;
+        m_height = newHeight - MenuComponent::height;
     }
     m_background->Scale(xScale, yScale);
     LOG_DEBUG("Resizing Panel to %f %f\n", m_width, m_height);
