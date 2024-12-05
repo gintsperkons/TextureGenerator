@@ -37,9 +37,9 @@ int main()
 	panelList->SetBackground(TextureGenEngine::Color(1.0f, 1.0f, 0.0f, 1.0f));
 	guiManager->AddComponent(panelList);
 
-	TextureGenEngine::Panel *panelNodeGraph = new TextureGenEngine::Panel(300, 0, 500, 100, TextureGenEngine::ScalingType::FILL, TextureGenEngine::ScalingType::FILL);
-	panelNodeGraph->SetBackground(TextureGenEngine::Color(1.0f, 0.0f, 0.0f, 1.0f));
-	guiManager->AddComponent(panelNodeGraph);
+	TextureGenEngine::Canvas2D *canvasNodeGraph = new TextureGenEngine::Canvas2D(300, 0, 500, 100, TextureGenEngine::ScalingType::FILL, TextureGenEngine::ScalingType::FILL);
+	canvasNodeGraph->SetBackground(TextureGenEngine::Color(1.0f, 0.0f, 0.0f, 1.0f));
+	guiManager->AddComponent(canvasNodeGraph);
 
 	TextureGenEngine::Panel *panelPreview = new TextureGenEngine::Panel(0, 0, 300, 300, TextureGenEngine::ScalingType::FIXED, TextureGenEngine::ScalingType::FIXED);
 	panelPreview->SetBackground(TextureGenEngine::Color(0.0f, 0.0f, 1.0f, 1.0f));
