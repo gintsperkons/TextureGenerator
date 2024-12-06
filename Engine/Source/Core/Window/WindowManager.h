@@ -8,7 +8,7 @@ namespace TextureGenEngine
     class Window;
     class WindowManager
     {
-        Window *m_mainWindow;
+        Window *m_mainWindow = nullptr;
         std::vector<Window *> m_windows;
         int m_lastId = 0;
         int activeWindow = 0;

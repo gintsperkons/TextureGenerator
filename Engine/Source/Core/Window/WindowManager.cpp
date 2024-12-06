@@ -89,6 +89,10 @@ void TextureGenEngine::WindowManager::CloseNecessaryWindows()
     }
     for (int i = 0; i < toRemove.size(); i++)
     {
+        if (m_mainWindow == m_windows[toRemove[i]])
+        {
+            m_mainWindow = nullptr;
+        }
         delete m_windows[toRemove[i]];
         m_windows.erase(m_windows.begin() + toRemove[i]);
         activeWindow--;

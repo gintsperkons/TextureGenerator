@@ -16,6 +16,13 @@ void TextureGenEngine::Menu::Draw()
     m_text->Draw(m_title, m_x, m_y, m_height, m_width, 12, glm::vec3(0.0f, 0.0f, 0.0f), AlignmentHorizontal::LEFT, AlignmentVertical::CENTER);
 }
 
+void TextureGenEngine::Menu::Resize(int width, int height)
+{
+    m_y = height - m_height;
+    m_background->SetPosition(m_x, m_y);
+    m_width = width;
+}
+
 void TextureGenEngine::Menu::SetMenuBar(int x, int y, int width, int height)
 {
     m_x = x;

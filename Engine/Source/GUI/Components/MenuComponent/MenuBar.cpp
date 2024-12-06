@@ -34,6 +34,10 @@ void TextureGenEngine::MenuBar::Resize(int width, int height)
     m_y = height - m_height;
     m_background->SetPosition(m_x, m_y);
     m_width = width;
+    for (auto &menu : m_menus)
+    {
+        menu->Resize(width, height);
+    }
 
 }
 

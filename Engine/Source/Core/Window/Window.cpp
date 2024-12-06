@@ -10,12 +10,15 @@
 
 bool TextureGenEngine::Window::ShouldClose()
 {
+    if (m_window == NULL)
+        return true ;
     return glfwWindowShouldClose(m_window);
+    ;
 }
 
 void resizeCallback(GLFWwindow *window, int width, int height)
 {
-    TextureGenEngine::Window *win = (TextureGenEngine ::Window*)glfwGetWindowUserPointer(window);
+    TextureGenEngine::Window *win = (TextureGenEngine ::Window *)glfwGetWindowUserPointer(window);
     for (auto &sub : win->GetResizeSubs())
     {
         sub.callback({width, height});
@@ -26,7 +29,7 @@ void resizeCallback(GLFWwindow *window, int width, int height)
 }
 
 TextureGenEngine::Window::Window(WindowManager *manager, int id, const std::string &title, int width, int height, GLFWwindow *contextWindow) : m_manager(manager), m_id(id), m_title(title), m_width(width), m_height(height),
-                                                                                                                                                         m_gui(nullptr), m_window(nullptr),m_input(nullptr)
+                                                                                                                                               m_gui(nullptr), m_window(nullptr), m_input(nullptr)
 {
     if (contextWindow)
         m_window = glfwCreateWindow(width, height, title.c_str(), NULL, contextWindow);
@@ -44,16 +47,16 @@ TextureGenEngine::Window::Window(WindowManager *manager, int id, const std::stri
     glfwSetWindowUserPointer(m_window, this);
     glfwSetFramebufferSizeCallback(m_window, resizeCallback);
     m_input = new Input(this);
-
 }
 
 TextureGenEngine::Window::~Window()
 {
     if (m_gui)
         delete m_gui;
-
-    glfwDestroyWindow(m_window);
-    delete m_input;
+    if (m_input)
+        delete m_input;
+    if (m_window)
+        glfwDestroyWindow(m_window);
 }
 
 void TextureGenEngine::Window::Update()
@@ -83,7 +86,8 @@ void TextureGenEngine::Window::AddGUI(TextureGenEngine::GUIManager *gui)
         delete m_gui;
     }
     gui->SetWindow(this);
-    m_resizeSubs.push_back({[gui](ResizeEvent e) { gui->Resize(e.width, e.height); }});
+    m_resizeSubs.push_back({[gui](ResizeEvent e)
+                            { gui->Resize(e.width, e.height); }});
     gui->Init(m_width, m_height);
     m_gui = gui;
 }
@@ -92,4 +96,3 @@ void TextureGenEngine::Window::GetFramebufferSize(int &width, int &height)
 {
     glfwGetFramebufferSize(m_window, &width, &height);
 }
-
