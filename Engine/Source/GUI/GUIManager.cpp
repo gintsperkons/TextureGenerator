@@ -79,3 +79,13 @@ void TextureGenEngine::GUIManager::GetOldSize(float &width, float &height)
     width = m_oldWidth;
     height = m_oldHeight;
 }
+
+void TextureGenEngine::GUIManager::Scissors(int x, int y, int width, int height)
+{
+    m_window->Scissors(x, y, width, height);
+}
+
+void TextureGenEngine::GUIManager::ScissorsReset()
+{
+    m_window->ScissorsReset();
+}

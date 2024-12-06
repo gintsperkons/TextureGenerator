@@ -23,5 +23,7 @@ namespace TextureGenEngine
         void Resize(int width, int height);
         void Init(int width, int height);
         void GetOldSize(float &width, float &height);
+        void Scissors(int x, int y, int width, int height);
+        void ScissorsReset();
     };
 } // namespace TextureGenEngine

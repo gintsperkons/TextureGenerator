@@ -81,6 +81,17 @@ void TextureGenEngine::Window::Draw()
     }
 }
 
+void TextureGenEngine::Window::Scissors(int x, int y, int width, int height)
+{
+    glEnable(GL_SCISSOR_TEST);
+    glScissor(x, m_height - y - height, width, height);
+}
+
+void TextureGenEngine::Window::ScissorsReset()
+{
+    glDisable(GL_SCISSOR_TEST);
+}
+
 void TextureGenEngine::Window::AddGUI(TextureGenEngine::GUIManager *gui)
 {
     if (m_gui)
