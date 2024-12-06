@@ -19,6 +19,7 @@ bool TextureGenEngine::Window::ShouldClose()
 void resizeCallback(GLFWwindow *window, int width, int height)
 {
     TextureGenEngine::Window *win = (TextureGenEngine ::Window *)glfwGetWindowUserPointer(window);
+    
     for (auto &sub : win->GetResizeSubs())
     {
         sub.callback({width, height});
@@ -44,6 +45,7 @@ TextureGenEngine::Window::Window(WindowManager *manager, int id, const std::stri
     }
 
     glfwMakeContextCurrent(m_window);
+    glfwSetWindowSizeLimits(m_window, 600,400, GLFW_DONT_CARE, GLFW_DONT_CARE);
     glfwSetWindowUserPointer(m_window, this);
     glfwSetFramebufferSizeCallback(m_window, resizeCallback);
     m_input = new Input(this);

@@ -123,9 +123,10 @@ void TextureGenEngine::Line::ChangeColor(float r, float g, float b, float a)
     glBufferSubData(GL_ARRAY_BUFFER, 0, m_vertices.size() * sizeof(Vertex2D), m_vertices.data());
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-    if (glGetError() != GL_NO_ERROR)
+    int error = glGetError();
+    if (error != GL_NO_ERROR)
     {
-        LOG_ERROR("Failed to update vertex buffer with new color\n");
+        LOG_WARN("Failed to update vertex buffer with new color: %d\n", error);
     }
 }
 

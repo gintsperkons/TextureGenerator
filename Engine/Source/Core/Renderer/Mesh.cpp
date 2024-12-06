@@ -10,6 +10,7 @@
 #include "Core/Renderer/Shaders/Shader.h"
 #include "glm/gtc/type_ptr.hpp"
 #include "glm/gtx/matrix_decompose.hpp"
+#include <limits>
 
 TextureGenEngine::Mesh::Mesh(Vertex2D vertices[], unsigned int vertexCount, unsigned int indices[], unsigned int indexCount)
     : m_indexCount(indexCount)
@@ -51,7 +52,7 @@ void TextureGenEngine::Mesh::Draw()
     if (glGetError() != GL_NO_ERROR)
     {
         GLenum error = glGetError();
-            LOG_ERROR("Shader use error : %d", error);
+        LOG_ERROR("Shader use error : %d", error);
     }
 
     GLint projectionLoc = glGetUniformLocation(m_shader->GetID(), "projection");
@@ -59,7 +60,7 @@ void TextureGenEngine::Mesh::Draw()
     THAUMA_ASSERT_MSG(projectionLoc != -1, "Failed to get projection uniform location");
     THAUMA_ASSERT_MSG(modelLoc != -1, "Failed to get model uniform location");
     glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(m_model));
-   glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(TextureGenEngine::Engine::Get()->GetRenderer()->GetProjectionMatrix()));
+    glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(TextureGenEngine::Engine::Get()->GetRenderer()->GetProjectionMatrix()));
     if (glGetError() != GL_NO_ERROR)
     {
         LOG_ERROR("Failed to set projection matrix uniform");
@@ -97,9 +98,9 @@ glm::vec3 screenToWorld(float screenX, float screenY)
     float ndcY = 1.0f - (2.0f * screenY) / windowHeight;
 
     // Convert to world space by applying the inverse projection-view matrix
-     glm::vec4 worldPos = inverseProjView * glm::vec4(ndcX, ndcY, 0.0f, 1.0f); // Assuming click is on the near plane
-     return glm::vec3(worldPos);
-     return glm::vec3(0.0f);
+    glm::vec4 worldPos = inverseProjView * glm::vec4(ndcX, ndcY, 0.0f, 1.0f); // Assuming click is on the near plane
+    return glm::vec3(worldPos);
+    return glm::vec3(0.0f);
 }
 
 bool TextureGenEngine::Mesh::CheckClickCollision(float x, float y)
@@ -114,7 +115,7 @@ bool TextureGenEngine::Mesh::CheckClickCollision(float x, float y)
     for (const auto &vertex : m_vertices)
     {
         // Transform the vertex position from local space to world space
-        glm::vec4 worldPos = m_model * glm::vec4(vertex.Position,0.0f, 1.0f); // Apply model matrix (translation, rotation, scale)
+        glm::vec4 worldPos = m_model * glm::vec4(vertex.Position, 0.0f, 1.0f); // Apply model matrix (translation, rotation, scale)
         glm::vec3 transformedPos = glm::vec3(worldPos);
 
         // Update the AABB with the new transformed position
@@ -137,7 +138,7 @@ void TextureGenEngine::Mesh::Move(float x, float y)
 }
 
 void TextureGenEngine::Mesh::SetPosition(float x, float y)
-{    
+{
     glm::vec3 scale, translation, skew;
     glm::quat rotation;
     glm::vec4 perspective;
@@ -152,6 +153,7 @@ void TextureGenEngine::Mesh::SetPosition(float x, float y)
 }
 void TextureGenEngine::Mesh::Scale(float x, float y)
 {
+    
     m_model = glm::scale(m_model, glm::vec3(x, y, 1.0f));
 }
 
@@ -168,9 +170,10 @@ void TextureGenEngine::Mesh::ChangeColor(float r, float g, float b, float a)
     glBufferSubData(GL_ARRAY_BUFFER, 0, m_vertices.size() * sizeof(Vertex2D), m_vertices.data());
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-    if (glGetError() != GL_NO_ERROR)
+    int error = glGetError();
+    if (error != GL_NO_ERROR)
     {
-        LOG_ERROR("Failed to update vertex buffer with new color\n");
+        LOG_WARN("Failed to update vertex buffer with new color: %d\n", error);
     }
 }
 

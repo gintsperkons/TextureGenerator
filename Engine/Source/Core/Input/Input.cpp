@@ -63,7 +63,6 @@ void TextureGenEngine::Input::MouseButtonCallback(int button, int action, int mo
 
 void TextureGenEngine::Input::CursorPosCallback(double xpos, double ypos)
 {
-    LOG_DEBUG("X: %f, Y: %f\n", xpos, ypos);
 }
 
 void TextureGenEngine::Input::SubscribeToMouseClickEvents(std::function<void(MouseButtonEvent)> subscriber)

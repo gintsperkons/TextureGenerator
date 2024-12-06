@@ -17,9 +17,6 @@ int main()
 	TextureGenEngine::GUIManager *guiManager = new TextureGenEngine::GUIManager();
 
 
-	// TextureGenEngine::Label *label = new TextureGenEngine::Label(50,50,100,100, "Hello World");
-	// label->SetBackground(TextureGenEngine::Color(0.0f, 1.0f, 1.0f, 1.0f));
-	// guiManager->AddComponent(label);
 
 	TextureGenEngine::MenuBar *menuBar = new TextureGenEngine::MenuBar();
 	menuBar->SetBackground(TextureGenEngine::Color(1.0f, 0.0f, 1.0f, 1.0f));
