@@ -3,3 +3,4 @@
 #include "Components/MenuComponent/Menu.h"
 #include "Components/Panel.h"
 #include "Components/Canvas2D/Canvas2D.h"
+#include "Components/Canvas2D/Node.h"

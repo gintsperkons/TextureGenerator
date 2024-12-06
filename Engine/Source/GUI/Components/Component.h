@@ -14,6 +14,7 @@ namespace TextureGenEngine
         GUIManager *m_manager = nullptr;
         Color m_backgroundColor;
         Mesh *m_background = nullptr;
+        Component *m_parent = nullptr;
         float m_x;
         float m_y;
         float m_width;
@@ -27,5 +28,8 @@ namespace TextureGenEngine
         TAPI virtual void SetBackground(Color color);
         void SetManager(GUIManager *manager) { m_manager = manager; }
         virtual void Init(int width, int height);
+        void SetParent(Component *parent) { m_parent = parent; }
+        float GetX() { return m_x; }
+        float GetY() { return m_y; }
     };
 } // namespace TextureGenEngine
