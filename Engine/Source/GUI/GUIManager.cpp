@@ -5,6 +5,7 @@
 #include "Core/Window/Window.h"
 #include "Core/Input/Input.h"
 
+
 TextureGenEngine::GUIManager::GUIManager()
 {
 }
@@ -83,6 +84,27 @@ void TextureGenEngine::GUIManager::GetOldSize(float &width, float &height)
 void TextureGenEngine::GUIManager::Scissors(int x, int y, int width, int height)
 {
     m_window->Scissors(x, y, width, height);
+}
+
+void TextureGenEngine::GUIManager::MouseMove(MouseMoveEvent e)
+{
+    m_mouseXChange = e.x - m_mouseXLast;
+    m_mouseYChange = e.y - m_mouseYLast;
+    m_mouseXLast = e.x;
+    for (auto &child : m_children)
+    {
+        LOG_DEBUG("Mouse move event x: %f, y: %f\n", e.x, e.y);
+        //child->OnMouseMove(e.x, e.y);
+    }
+}
+
+void TextureGenEngine::GUIManager::MouseClick(MouseButtonEvent e)   
+{
+    for (auto &child : m_children)
+    {
+        LOG_DEBUG("Mouse click event x: %f, y: %f, button: %d, down: %d\n", e.x, e.y, e.button, e.down);
+        //child->OnMouseClick(button, action);
+    }
 }
 
 void TextureGenEngine::GUIManager::ScissorsReset()

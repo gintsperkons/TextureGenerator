@@ -1,6 +1,7 @@
 #pragma once
 #include "Defines.h"
 #include "GUI/Color.h"
+#include <string>
 
 namespace TextureGenEngine
 {
@@ -19,6 +20,7 @@ namespace TextureGenEngine
         float m_y;
         float m_width;
         float m_height;
+        std::string m_type;
 
     public:
         Component(int x, int y, int width, int height);

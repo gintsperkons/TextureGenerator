@@ -63,6 +63,14 @@ void TextureGenEngine::Input::MouseButtonCallback(int button, int action, int mo
 
 void TextureGenEngine::Input::CursorPosCallback(double xpos, double ypos)
 {
+    m_xChange = xpos - m_xLast;
+    m_yChange = ypos - m_yLast;
+    m_xLast = xpos;
+    m_yLast = ypos;
+    for (auto &sub : m_mouseMoveSubs)
+    {
+        sub.callback({m_xChange, m_yChange});
+    }
 }
 
 void TextureGenEngine::Input::SubscribeToMouseClickEvents(std::function<void(MouseButtonEvent)> subscriber)
@@ -70,4 +78,11 @@ void TextureGenEngine::Input::SubscribeToMouseClickEvents(std::function<void(Mou
     MouseClickSub sub;
     sub.callback = subscriber;
     m_mouseClickSubs.push_back(sub);
+}
+
+void TextureGenEngine::Input::SubscribeToMouseMoveEvents(std::function<void(MouseMoveEvent)> subscriber)
+{
+    MouseMoveSub sub;
+    sub.callback = subscriber;
+    m_mouseMoveSubs.push_back(sub);
 }

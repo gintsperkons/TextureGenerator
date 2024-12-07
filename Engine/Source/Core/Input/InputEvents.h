@@ -11,3 +11,13 @@ struct MouseButtonEvent
     int button;
     bool down;
 };
+struct MouseMoveEvent
+{
+    MouseMoveEvent(double x, double y)
+        : x(x), y(y)
+    {
+    }
+
+    double x;
+    double y;
+};

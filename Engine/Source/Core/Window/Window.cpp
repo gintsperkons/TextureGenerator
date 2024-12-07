@@ -11,7 +11,7 @@
 bool TextureGenEngine::Window::ShouldClose()
 {
     if (m_window == NULL)
-        return true ;
+        return true;
     return glfwWindowShouldClose(m_window);
     ;
 }
@@ -19,7 +19,7 @@ bool TextureGenEngine::Window::ShouldClose()
 void resizeCallback(GLFWwindow *window, int width, int height)
 {
     TextureGenEngine::Window *win = (TextureGenEngine ::Window *)glfwGetWindowUserPointer(window);
-    
+
     for (auto &sub : win->GetResizeSubs())
     {
         sub.callback({width, height});
@@ -45,7 +45,7 @@ TextureGenEngine::Window::Window(WindowManager *manager, int id, const std::stri
     }
 
     glfwMakeContextCurrent(m_window);
-    glfwSetWindowSizeLimits(m_window, 600,400, GLFW_DONT_CARE, GLFW_DONT_CARE);
+    glfwSetWindowSizeLimits(m_window, 600, 400, GLFW_DONT_CARE, GLFW_DONT_CARE);
     glfwSetWindowUserPointer(m_window, this);
     glfwSetFramebufferSizeCallback(m_window, resizeCallback);
     m_input = new Input(this);
@@ -101,6 +101,10 @@ void TextureGenEngine::Window::AddGUI(TextureGenEngine::GUIManager *gui)
     gui->SetWindow(this);
     m_resizeSubs.push_back({[gui](ResizeEvent e)
                             { gui->Resize(e.width, e.height); }});
+    m_input->SubscribeToMouseClickEvents([gui](MouseButtonEvent e)
+                                         { gui->MouseClick(e); });
+    m_input->SubscribeToMouseMoveEvents([gui](MouseMoveEvent e)
+                                        { gui->MouseMove(e); });
     gui->Init(m_width, m_height);
     m_gui = gui;
 }

@@ -1,6 +1,7 @@
 #pragma once
 #include "Defines.h"
 #include <vector>
+#include "Core/Input/InputEvents.h"
 
 namespace TextureGenEngine
 {
@@ -13,6 +14,14 @@ namespace TextureGenEngine
         float m_height;
         std::vector<Component *> m_children;
         Window *m_window;
+        double m_mouseXLast;
+        double m_mouseYLast;
+        double m_mouseXChange;
+        double m_mouseYChange;
+        
+
+        Component * currentObject = nullptr;
+
     public:
         TAPI GUIManager();
         ~GUIManager();
@@ -24,6 +33,9 @@ namespace TextureGenEngine
         void Init(int width, int height);
         void GetOldSize(float &width, float &height);
         void Scissors(int x, int y, int width, int height);
+        void MouseMove(MouseMoveEvent e);
+        void MouseClick(MouseButtonEvent e);
+        
         void ScissorsReset();
     };
 } // namespace TextureGenEngine
