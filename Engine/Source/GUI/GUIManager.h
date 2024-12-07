@@ -14,13 +14,10 @@ namespace TextureGenEngine
         float m_height;
         std::vector<Component *> m_children;
         Window *m_window;
-        double m_mouseXLast;
-        double m_mouseYLast;
-        double m_mouseXChange;
-        double m_mouseYChange;
-        
+        int m_mouseButtonStates[Mouse::ButtonLast+1] = {0};
 
         Component * currentObject = nullptr;
+        void GetDraggableComponent(double x, double y);
 
     public:
         TAPI GUIManager();

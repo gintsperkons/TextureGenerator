@@ -5,6 +5,26 @@
 #include "Core/Window/Window.h"
 #include "Core/Input/Input.h"
 
+void TextureGenEngine::GUIManager::GetDraggableComponent(double x, double y)
+{
+    LOG_DEBUG("Getting draggable component\n");
+    for (auto &child : m_children)
+    {
+        LOG_DEBUG("searching found type %s\n", child->GetType().c_str());
+        if (child->CheckCollision(x, y))
+        {
+            Component *element = child->GetDraggableComponent(x, y);
+            if (element)
+            {
+                LOG_DEBUG("Element found type %s\n", element->GetType().c_str());
+                currentObject = element;
+
+                return;
+            }
+        }
+    }
+    currentObject = nullptr;
+}
 
 TextureGenEngine::GUIManager::GUIManager()
 {
@@ -21,6 +41,13 @@ TextureGenEngine::GUIManager::~GUIManager()
 
 void TextureGenEngine::GUIManager::Update()
 {
+    for (int i = 0; i <= Mouse::ButtonLast; i++)
+    {
+        if (m_mouseButtonStates[i] == Mouse::Pressed)
+        {
+            m_mouseButtonStates[i] = Mouse::Held;
+        }
+    }
 }
 
 void TextureGenEngine::GUIManager::Draw()
@@ -32,7 +59,8 @@ void TextureGenEngine::GUIManager::Draw()
 }
 
 void TextureGenEngine::GUIManager::AddComponent(Component *component)
-{   component->SetManager(this);
+{
+    component->SetManager(this);
     m_children.push_back(component);
 }
 
@@ -64,15 +92,6 @@ void TextureGenEngine::GUIManager::Init(int width, int height)
     {
         child->Init(width, height);
     }
-
-    m_window->GetInput()->SubscribeToMouseClickEvents([this](MouseButtonEvent e) {
-        for (auto &child : m_children)
-        {
-            LOG_DEBUG("Mouse move event\n");
-            LOG_DEBUG("Event x: %d, y: %d, button: %d, down: %d\n", e.x, e.y, e.button, e.down);
-            //child->OnMouseMove(e);
-        }
-    });
 }
 
 void TextureGenEngine::GUIManager::GetOldSize(float &width, float &height)
@@ -81,29 +100,42 @@ void TextureGenEngine::GUIManager::GetOldSize(float &width, float &height)
     height = m_oldHeight;
 }
 
-void TextureGenEngine::GUIManager::Scissors(int x, int y, int width, int height)
+void TextureGenEngine::GUIManager:: Scissors(int x, int y, int width, int height)
 {
     m_window->Scissors(x, y, width, height);
 }
 
 void TextureGenEngine::GUIManager::MouseMove(MouseMoveEvent e)
 {
-    m_mouseXChange = e.x - m_mouseXLast;
-    m_mouseYChange = e.y - m_mouseYLast;
-    m_mouseXLast = e.x;
-    for (auto &child : m_children)
+    LOG_DEBUG("Mouse moved x: %f, y: %f\n", e.x, e.y);
+    LOG_DEBUG("left button state: %d\n", m_mouseButtonStates[Mouse::ButtonLeft]);
+    LOG_DEBUG("current object: %p\n", currentObject);
+
+    if (currentObject && m_mouseButtonStates[Mouse::ButtonLeft] == Mouse::Held)
     {
-        LOG_DEBUG("Mouse move event x: %f, y: %f\n", e.x, e.y);
-        //child->OnMouseMove(e.x, e.y);
+        currentObject->OnMouseDrag(e.x, e.y);
     }
 }
 
-void TextureGenEngine::GUIManager::MouseClick(MouseButtonEvent e)   
+void TextureGenEngine::GUIManager::MouseClick(MouseButtonEvent e)
 {
-    for (auto &child : m_children)
+    m_mouseButtonStates[e.button] = e.down ? Mouse::Pressed : Mouse::Released;
+    if (e.button == Mouse::ButtonLeft && e.down)
     {
-        LOG_DEBUG("Mouse click event x: %f, y: %f, button: %d, down: %d\n", e.x, e.y, e.button, e.down);
-        //child->OnMouseClick(button, action);
+        GetDraggableComponent(e.x, e.y);
+        for (auto &child : m_children)
+        {
+            if (child->CheckCollision(e.x, e.y))
+            {
+                LOG_DEBUG("Collision detected x: %f, y: %f button: %d down: %d\n", e.x, e.y, e.button, e.down);
+                child->Click(e.x, e.y);
+            }
+            // child->OnMouseClick(button, action);
+        }
+    }
+    if (e.button == Mouse::ButtonLeft && !e.down)
+    {
+        currentObject = nullptr;
     }
 }
 

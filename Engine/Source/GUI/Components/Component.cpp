@@ -45,3 +45,33 @@ void TextureGenEngine::Component::Init(int width, int height)
     m_background->SetPosition(m_x, m_y);
     m_background->ChangeColor(m_backgroundColor.r, m_backgroundColor.g, m_backgroundColor.b, m_backgroundColor.a);
 }
+
+bool TextureGenEngine::Component::CheckCollision(float x, float y)
+{
+    float x1 = m_x;
+    float x2 = m_x + m_width;
+    float y1 = m_y;
+    float y2 = m_y + m_height;
+    float testX = x;
+    float testY = y;
+
+    LOG_DEBUG("x1: %f, x2: %f, y1: %f, y2: %f\n", x1, x2, y1, y2);
+    LOG_DEBUG("testX: %f, testY: %f\n", testX, testY);
+    if (testX > x1 && testX < x2 && testY > y1 && testY < y2)
+    {
+        return true;
+    }
+    return false;
+}
+
+void TextureGenEngine::Component::OnMouseDrag(double x, double y)
+{
+    LOG_DEBUG("Dragging\n");
+    if (m_draggable)
+    {
+        m_x += x;
+        m_y -= y;
+
+        m_background->Move(x, y);
+    }
+}

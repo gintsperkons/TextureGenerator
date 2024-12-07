@@ -20,10 +20,7 @@ void resizeCallback(GLFWwindow *window, int width, int height)
 {
     TextureGenEngine::Window *win = (TextureGenEngine ::Window *)glfwGetWindowUserPointer(window);
 
-    for (auto &sub : win->GetResizeSubs())
-    {
-        sub.callback({width, height});
-    }
+    win->Resize(width, height);
     TextureGenEngine::Engine::Get()->GetRenderer()->UpdateViewport(width, height);
     win->Update();
     win->Draw();
@@ -81,10 +78,20 @@ void TextureGenEngine::Window::Draw()
     }
 }
 
+void TextureGenEngine::Window::Resize(int width, int height)
+{
+    m_width = width;
+    m_height = height;
+    for (auto &sub : m_resizeSubs)
+    {
+        sub.callback({width, height});
+    }
+}
+
 void TextureGenEngine::Window::Scissors(int x, int y, int width, int height)
 {
     glEnable(GL_SCISSOR_TEST);
-    glScissor(x, m_height - y - height, width, height);
+    glScissor(x, y, width, height);
 }
 
 void TextureGenEngine::Window::ScissorsReset()

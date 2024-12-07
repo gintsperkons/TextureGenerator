@@ -52,9 +52,10 @@ void TextureGenEngine::Input::CharCallback(unsigned int codepoint)
 
 void TextureGenEngine::Input::MouseButtonCallback(int button, int action, int mods)
 {
-    LOG_DEBUG("Button: %d, Action: %d, Mods: %d\n", button, action, mods);
     double x,y;
     glfwGetCursorPos(m_window->GetWindow(), &x, &y);
+    y = m_window->GetHeight()-y;
+    LOG_DEBUG("Mouse button: %d, Action: %d, Mods: %d, x: %f, y: %f\n", button, action, mods, x, y);
     for (auto &sub : m_mouseClickSubs)
     {
         sub.callback({x, y, button, action == GLFW_PRESS});

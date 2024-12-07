@@ -63,6 +63,8 @@ void TextureGenEngine::Panel::Resize(int width, int height)
     LOG_DEBUG("Resizing Panel to %f %f\n", m_width, m_height);
 }
 
+
+
 TextureGenEngine::Panel::~Panel()
 {
 }

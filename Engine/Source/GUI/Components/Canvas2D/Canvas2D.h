@@ -15,5 +15,7 @@ namespace TextureGenEngine
         void Draw() override;
         ~Canvas2D();
         void TAPI AddNode(Node *node);
+        Component* GetDraggableComponent(double x, double y) override;
+        void OnMouseDrag(double x, double y) override;
     };
 } // namespace TextureGenEngine

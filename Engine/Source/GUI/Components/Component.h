@@ -20,7 +20,8 @@ namespace TextureGenEngine
         float m_y;
         float m_width;
         float m_height;
-        std::string m_type;
+        std::string m_type = "base";
+        bool m_draggable = false;
 
     public:
         Component(int x, int y, int width, int height);
@@ -33,5 +34,14 @@ namespace TextureGenEngine
         void SetParent(Component *parent) { m_parent = parent; }
         float GetX() { return m_x; }
         float GetY() { return m_y; }
+        float GetWidth() { return m_width; }
+        float GetHeight() { return m_height; }
+        std::string GetType() { return m_type; }
+        bool IsDraggable() { return m_draggable; }
+        virtual void Click(float x, float y) {};
+        virtual bool CheckCollision(float x, float y);
+        virtual Component *GetDraggableComponent(double x, double y) { return nullptr; }
+        virtual void OnMouseDrag(double x, double y);
+
     };
 } // namespace TextureGenEngine
