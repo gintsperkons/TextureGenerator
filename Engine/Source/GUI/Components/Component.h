@@ -40,6 +40,8 @@ namespace TextureGenEngine
         std::string GetType() { return m_type; }
         bool IsDraggable() { return m_draggable; }
         bool IsSelectable() { return m_selectable; }
+        virtual void Select() {};
+        virtual void DeSelect() {};
         virtual void Click(float x, float y) {};
         virtual bool CheckCollision(float x, float y);
         virtual Component *SelectObject(double x, double y) { return nullptr; }

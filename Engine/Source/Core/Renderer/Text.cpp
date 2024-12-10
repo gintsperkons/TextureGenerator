@@ -153,3 +153,14 @@ TextureGenEngine::Text::~Text()
     glDeleteVertexArrays(1, &VAO);
     glDeleteBuffers(1, &VBO);
 }
+
+float TextureGenEngine::Text::GetTextWidth(std::string text, int textSize)
+{
+    int textWidth = 0;
+    for (char c : text)
+    {
+        Character ch = TextureGenEngine::Engine::Get()->GetFontManager()->GetCharacter(c);
+        textWidth += (ch.Advance >> 6);
+    }
+    return textWidth * textSize / 30.0f;
+}

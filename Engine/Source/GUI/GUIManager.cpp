@@ -16,14 +16,20 @@ void TextureGenEngine::GUIManager::SelectObject(double x, double y)
             if (element)
             {
                 currentObject = element;
+                currentObject->Select();
                 return;
             }
             if (child->IsSelectable())
             {
                 currentObject = child;
+                currentObject->Select();
                 return;
             }
         }
+    }
+    if (currentObject)
+    {
+        currentObject->DeSelect();
     }
     currentObject = nullptr;
 }
@@ -64,6 +70,11 @@ void TextureGenEngine::GUIManager::AddComponent(Component *component)
 {
     component->SetManager(this);
     m_children.push_back(component);
+}
+
+bool TextureGenEngine::GUIManager::IsSelected(Component *component)
+{
+    return component == currentObject;
 }
 
 void TextureGenEngine::GUIManager::Resize(int width, int height)
@@ -109,9 +120,6 @@ void TextureGenEngine::GUIManager:: Scissors(int x, int y, int width, int height
 
 void TextureGenEngine::GUIManager::MouseMove(MouseMoveEvent e)
 {
-    LOG_DEBUG("Mouse moved x: %f, y: %f\n", e.x, e.y);
-    LOG_DEBUG("left button state: %d\n", m_mouseButtonStates[Mouse::ButtonLeft]);
-    LOG_DEBUG("current object: %p\n", currentObject);
 
     if (currentObject && m_mouseButtonStates[Mouse::ButtonLeft] == Mouse::Held)
     {
@@ -151,9 +159,9 @@ void TextureGenEngine::GUIManager::CharEventAction(CharEvent e)
 
 void TextureGenEngine::GUIManager::KeyAction(int key, int scancode, int action, int mods)
 {
-    if (currentObject->GetType() == "TextInput")
+    if (currentObject && currentObject->GetType() == "TextInput")
     {
-        if (action == Key::KeyAction::Press)
+        if (action == Key::KeyAction::Press || action == Key::KeyAction::Repeat)
         {
             if (key == Key::Backspace)
             {

@@ -19,6 +19,7 @@ namespace TextureGenEngine
         Text(bool staticSize = true);
         void Draw(std::string text, float x, float y, int frameHeight, int frameWidth, int textSize, glm::vec3 color, AlignmentHorizontal hAlign, AlignmentVertical vAlign);
         ~Text();
+        float GetTextWidth(std::string text, int textSize);
     };
 
 } // namespace TextureGenEngine

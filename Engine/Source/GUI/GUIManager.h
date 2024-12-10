@@ -25,6 +25,7 @@ namespace TextureGenEngine
         void Update();
         void Draw();
         TAPI void AddComponent(Component *component);
+        bool IsSelected(Component *component);
         void SetWindow(Window *window) { m_window = window; }
         void Resize(int width, int height);
         void Init(int width, int height);
