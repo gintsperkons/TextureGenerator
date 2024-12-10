@@ -43,11 +43,11 @@ int main()
 	canvasNodeGraph->SetBackground(TextureGenEngine::Color(1.0f, 0.0f, 0.0f, 1.0f));
 	guiManager->AddComponent(canvasNodeGraph);
 
-	TextureGenEngine::Node *node = new TextureGenEngine::Node(0, 0, 100, 100);
+	TextureGenEngine::Node *node = new TextureGenEngine::Node(0, 0);
 	node->SetBackground(TextureGenEngine::Color(0.0f, 1.0f, 1.0f, 1.0f));
 	canvasNodeGraph->AddNode(node);
 
-	TextureGenEngine::Node *node2 = new TextureGenEngine::Node(100, 100, 100, 100);
+	TextureGenEngine::Node *node2 = new TextureGenEngine::Node(100, 100);
 	node2->SetBackground(TextureGenEngine::Color(0.6f, 1.0f, 0.5f, 1.0f));
 	canvasNodeGraph->AddNode(node2);
 

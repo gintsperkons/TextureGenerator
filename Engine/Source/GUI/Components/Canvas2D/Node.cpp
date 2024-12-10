@@ -1,11 +1,14 @@
 #include "Node.h"
+#include "Core/Renderer/Mesh.h"
+#include "Core/World/ObjectFactory.h"
 #include "Core/Logger/Logger.h"
 #include "GUI/GUIManager.h"
 #include "Core/Window/Window.h"
 
-TextureGenEngine::Node::Node(int x, int y, int width, int height):
-Component(x, y, width, height)
+TextureGenEngine::Node::Node(int x, int y):
+Component(x, y, 100, c_titleHeight)
 {
+    m_dataBackground = ObjectFactory::CreateSquare(100, 100);
     m_draggable = true;
     m_type = "Node";
 }
@@ -16,8 +19,21 @@ void TextureGenEngine::Node::Init(int width, int height)
     {
         m_x = m_parent->GetX() + m_x;
         m_y = m_parent->GetY() + m_y;
+        m_dataBackground->SetPosition(m_x, m_y-100);
     }
     Component::Init(width, height);
+}
+
+void TextureGenEngine::Node::Draw()
+{
+    Component::Draw();
+    m_dataBackground->Draw();
+}
+
+void TextureGenEngine::Node::OnMouseDrag(double x, double y)
+{
+    Component::OnMouseDrag(x, y);
+    m_dataBackground->Move(x, y);
 }
 
 bool TextureGenEngine::Node::CheckCollision(float x, float y)
@@ -32,10 +48,6 @@ bool TextureGenEngine::Node::CheckCollision(float x, float y)
 
 float oldWidth, oldHeight;
 m_manager->GetOldSize(oldWidth, oldHeight);
-LOG_DEBUG("Old Width: %f Old Height: %f\n", oldWidth, oldHeight);
-    
-LOG_DEBUG("x1: %f, x2: %f, y1: %f, y2: %f\n", x1, x2, y1, y2);
-LOG_DEBUG("testX: %f, testY: %f\n", testX, testY);
 
     if (testX > x1 && testX < x2 && testY > y1 && testY < y2)
     {
