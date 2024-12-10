@@ -11,7 +11,7 @@
 #include <glm/gtc/type_ptr.hpp>
 #include "Core/Font/FontManager.h"
 
-TextureGenEngine::Text::Text()
+TextureGenEngine::Text::Text(bool staticSize):m_staticSize(staticSize)
 {
     glGenVertexArrays(1, &VAO);
     glGenBuffers(1, &VBO);
@@ -53,6 +53,13 @@ float TextureGenEngine::Text::CalculateScale(std::string text, int textSize, int
     textHeight = hAboveBase + hBelowBase;
     textWidth = totalWidth;
     // Calculate the maximum scale based on height (height constraint)
+    
+    if (m_staticSize )
+    {
+        if (textHeight == 0)
+            return 1.0f;
+        return (float)textSize / 30.0f;
+    }
     return textSize / (lineCount * totalHeight);
 }
 

@@ -4,21 +4,23 @@
 #include "Core/Input/InputEvents.h"
 #include "Core/Window/Window.h"
 #include "Core/Input/Input.h"
+#include "Components/TextInput.h"
 
-void TextureGenEngine::GUIManager::GetDraggableComponent(double x, double y)
+void TextureGenEngine::GUIManager::SelectObject(double x, double y)
 {
-    LOG_DEBUG("Getting draggable component\n");
     for (auto &child : m_children)
     {
-        LOG_DEBUG("searching found type %s\n", child->GetType().c_str());
         if (child->CheckCollision(x, y))
         {
-            Component *element = child->GetDraggableComponent(x, y);
+            Component *element = child->SelectObject(x, y);
             if (element)
             {
-                LOG_DEBUG("Element found type %s\n", element->GetType().c_str());
                 currentObject = element;
-
+                return;
+            }
+            if (child->IsSelectable())
+            {
+                currentObject = child;
                 return;
             }
         }
@@ -122,12 +124,11 @@ void TextureGenEngine::GUIManager::MouseClick(MouseButtonEvent e)
     m_mouseButtonStates[e.button] = e.down ? Mouse::Pressed : Mouse::Released;
     if (e.button == Mouse::ButtonLeft && e.down)
     {
-        GetDraggableComponent(e.x, e.y);
+        SelectObject(e.x, e.y);
         for (auto &child : m_children)
         {
             if (child->CheckCollision(e.x, e.y))
             {
-                LOG_DEBUG("Collision detected x: %f, y: %f button: %d down: %d\n", e.x, e.y, e.button, e.down);
                 child->Click(e.x, e.y);
             }
             // child->OnMouseClick(button, action);
@@ -135,7 +136,30 @@ void TextureGenEngine::GUIManager::MouseClick(MouseButtonEvent e)
     }
     if (e.button == Mouse::ButtonLeft && !e.down)
     {
-        currentObject = nullptr;
+
+        LOG_DEBUG("Mouse button released\n");
+    }
+}
+
+void TextureGenEngine::GUIManager::CharEventAction(CharEvent e)
+{
+    if (currentObject->GetType() == "TextInput")
+    {
+        ((TextInput *)currentObject)->AddChar(e.codepoint);
+    }
+}
+
+void TextureGenEngine::GUIManager::KeyAction(int key, int scancode, int action, int mods)
+{
+    if (currentObject->GetType() == "TextInput")
+    {
+        if (action == Key::KeyAction::Press)
+        {
+            if (key == Key::Backspace)
+            {
+                ((TextInput *)currentObject)->RemoveChar();
+            }
+        }
     }
 }
 

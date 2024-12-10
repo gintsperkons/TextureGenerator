@@ -8,6 +8,7 @@ TextureGenEngine::Canvas2D::Canvas2D(int x, int y, int width, int height, Scalin
 
 {
     m_draggable = true;
+    m_selectable = true;
     m_type = "Canvas2D";
 }
 
@@ -37,17 +38,16 @@ void TextureGenEngine::Canvas2D::AddNode(Node *node)
     node->Init(m_width, m_height);
 }
 
-TextureGenEngine::Component* TextureGenEngine::Canvas2D::GetDraggableComponent(double x, double y)
+TextureGenEngine::Component *TextureGenEngine::Canvas2D::SelectObject(double x, double y)
 {
     for (auto &node : m_nodes)
     {
-        if (node->CheckCollision(x, y) && node->IsDraggable())
+        if (node->CheckCollision(x, y) && node->IsSelectable())
         {
-
             return node;
         }
     }
-    if (m_draggable)
+    if (m_selectable)
     {
         return this;
     }

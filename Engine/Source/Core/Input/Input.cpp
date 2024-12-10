@@ -42,12 +42,18 @@ TextureGenEngine::Input::~Input()
 
 void TextureGenEngine::Input::KeyCallback(int key, int scancode, int action, int mods)
 {
-    LOG_DEBUG("Key: %d, Scancode: %d, Action: %d, Mods: %d\n", key, scancode, action, mods);
+    for (auto &sub : m_keyEventSubs)
+    {
+        sub.callback({key, scancode, action, mods});
+    }
 }
 
 void TextureGenEngine::Input::CharCallback(unsigned int codepoint)
 {
-    LOG_DEBUG("Char: %c\n", codepoint);
+    for (auto &sub : m_charEventSubs)
+    {
+        sub.callback({codepoint});
+    }
 }
 
 void TextureGenEngine::Input::MouseButtonCallback(int button, int action, int mods)
@@ -55,7 +61,6 @@ void TextureGenEngine::Input::MouseButtonCallback(int button, int action, int mo
     double x,y;
     glfwGetCursorPos(m_window->GetWindow(), &x, &y);
     y = m_window->GetHeight()-y;
-    LOG_DEBUG("Mouse button: %d, Action: %d, Mods: %d, x: %f, y: %f\n", button, action, mods, x, y);
     for (auto &sub : m_mouseClickSubs)
     {
         sub.callback({x, y, button, action == GLFW_PRESS});
@@ -86,4 +91,18 @@ void TextureGenEngine::Input::SubscribeToMouseMoveEvents(std::function<void(Mous
     MouseMoveSub sub;
     sub.callback = subscriber;
     m_mouseMoveSubs.push_back(sub);
+}
+
+void TextureGenEngine::Input::SubscribeToCharEvents(std::function<void(CharEvent)> subscriber)
+{
+    CharEventSub sub;
+    sub.callback = subscriber;
+    m_charEventSubs.push_back(sub);
+}
+
+void TextureGenEngine::Input::SubscribeToKeyEvents(std::function<void(KeyEvent)> subscriber)
+{
+    KeyEventSub sub;
+    sub.callback = subscriber;
+    m_keyEventSubs.push_back(sub);
 }

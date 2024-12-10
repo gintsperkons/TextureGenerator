@@ -11,6 +11,7 @@ Component(x, y, 100, c_titleHeight)
 {
     m_dataBackground = ObjectFactory::CreateSquare(100, 100);
     m_draggable = true;
+    m_selectable = true;
     m_type = "Node";
 }
 

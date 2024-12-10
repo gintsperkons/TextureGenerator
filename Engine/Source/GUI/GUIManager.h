@@ -17,7 +17,7 @@ namespace TextureGenEngine
         int m_mouseButtonStates[Mouse::ButtonLast+1] = {0};
 
         Component * currentObject = nullptr;
-        void GetDraggableComponent(double x, double y);
+        void SelectObject(double x, double y);
 
     public:
         TAPI GUIManager();
@@ -32,6 +32,8 @@ namespace TextureGenEngine
         void Scissors(int x, int y, int width, int height);
         void MouseMove(MouseMoveEvent e);
         void MouseClick(MouseButtonEvent e);
+        void CharEventAction(CharEvent e);
+        void KeyAction(int key, int scancode, int action, int mods);
         
         void ScissorsReset();
     };

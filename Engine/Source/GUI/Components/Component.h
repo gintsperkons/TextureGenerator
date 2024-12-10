@@ -21,6 +21,7 @@ namespace TextureGenEngine
         float m_width;
         float m_height;
         std::string m_type = "base";
+        bool m_selectable = false;
         bool m_draggable = false;
 
     public:
@@ -38,9 +39,10 @@ namespace TextureGenEngine
         float GetHeight() { return m_height; }
         std::string GetType() { return m_type; }
         bool IsDraggable() { return m_draggable; }
+        bool IsSelectable() { return m_selectable; }
         virtual void Click(float x, float y) {};
         virtual bool CheckCollision(float x, float y);
-        virtual Component *GetDraggableComponent(double x, double y) { return nullptr; }
+        virtual Component *SelectObject(double x, double y) { return nullptr; }
         virtual void OnMouseDrag(double x, double y);
 
     };

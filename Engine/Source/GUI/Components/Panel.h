@@ -14,7 +14,7 @@ namespace TextureGenEngine
         TAPI Panel(int x, int y, int width, int height, ScalingType xScaling, ScalingType yScaling);
         void Init(int width, int height) override;
         void Resize(int width, int height) override;
-        Component *GetDraggableComponent(double x, double y) override { return nullptr; };
+        Component *SelectObject(double x, double y) override { return nullptr; };
         ~Panel();
     };
 

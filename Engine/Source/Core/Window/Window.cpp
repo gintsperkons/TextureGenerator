@@ -112,6 +112,10 @@ void TextureGenEngine::Window::AddGUI(TextureGenEngine::GUIManager *gui)
                                          { gui->MouseClick(e); });
     m_input->SubscribeToMouseMoveEvents([gui](MouseMoveEvent e)
                                         { gui->MouseMove(e); });
+    m_input->SubscribeToCharEvents([gui](CharEvent e)
+                                   { gui->CharEventAction(e); });
+    m_input->SubscribeToKeyEvents([gui](KeyEvent e)
+                                    { gui->KeyAction(e.key, e.scancode, e.action, e.mods); });
     gui->Init(m_width, m_height);
     m_gui = gui;
 }
