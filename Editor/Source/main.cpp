@@ -5,6 +5,7 @@
 #include <GUI/Components.h>
 #include <GUI/Color.h>
 #include <GUI/ScalingType.h>
+#include <GUI/NodeElements.h>
 
 
 
@@ -45,6 +46,7 @@ int main()
 
 	TextureGenEngine::Node *node = new TextureGenEngine::Node(0, 0);
 	node->SetBackground(TextureGenEngine::Color(0.0f, 1.0f, 1.0f, 1.0f));
+	node->AddElement(new TextureGenEngine::IntegerElement());
 	canvasNodeGraph->AddNode(node);
 
 	TextureGenEngine::Node *node2 = new TextureGenEngine::Node(100, 100);

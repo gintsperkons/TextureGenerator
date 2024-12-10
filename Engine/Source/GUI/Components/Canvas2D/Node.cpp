@@ -4,6 +4,7 @@
 #include "Core/Logger/Logger.h"
 #include "GUI/GUIManager.h"
 #include "Core/Window/Window.h"
+#include "NodeElements/NodeElement.h"
 
 TextureGenEngine::Node::Node(int x, int y):
 Component(x, y, 100, c_titleHeight)
@@ -28,6 +29,13 @@ void TextureGenEngine::Node::Draw()
 {
     Component::Draw();
     m_dataBackground->Draw();
+}
+
+void TextureGenEngine::Node::AddElement(NodeElement *element)
+{
+    m_elements.push_back(element);
+    element->AddParentNode(this);
+    element->Setup();
 }
 
 void TextureGenEngine::Node::OnMouseDrag(double x, double y)
