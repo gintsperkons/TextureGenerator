@@ -27,7 +27,7 @@ void resizeCallback(GLFWwindow *window, int width, int height)
 }
 
 TextureGenEngine::Window::Window(WindowManager *manager, int id, const std::string &title, int width, int height, GLFWwindow *contextWindow) : m_manager(manager), m_id(id), m_title(title), m_width(width), m_height(height),
-                                                                                                                                               m_gui(nullptr), m_window(nullptr), m_input(nullptr)
+                                                                                                                                                  m_gui(nullptr), m_window(nullptr), m_input(nullptr)
 {
     if (contextWindow)
         m_window = glfwCreateWindow(width, height, title.c_str(), NULL, contextWindow);
@@ -63,7 +63,7 @@ void TextureGenEngine::Window::Update()
 
     glfwPollEvents();
     glfwSwapBuffers(m_window);
-    glClear(GL_COLOR_BUFFER_BIT);
+    TextureGenEngine::Engine::Get()->GetRenderer()->Clear();
     if (m_gui)
     {
         m_gui->Update();

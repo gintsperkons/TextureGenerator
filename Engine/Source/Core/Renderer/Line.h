@@ -1,6 +1,6 @@
 #pragma once
 #include <vector>
-#include "Structures/Vertex2D.h"
+#include "Structures/Vertex3D.h"
 
 namespace TextureGenEngine
 {
@@ -10,7 +10,7 @@ namespace TextureGenEngine
     {
     private:
         unsigned int VBO, VAO, EBO;          // OpenGL Buffers
-        std::vector<Vertex2D> m_vertices;    // Store two points (start and end)
+        std::vector<Vertex3D> m_vertices;    // Store two points (start and end)
         std::vector<unsigned int> m_indices; // Store index for drawing the line
         glm::mat4 m_model;                   // Transformation matrix (position, rotation, scale)
         Shader *m_shader;                    // Shader to render the line
@@ -18,7 +18,7 @@ namespace TextureGenEngine
 
     public:
         // Constructor to initialize the line with start and end points
-        Line(Vertex2D start, Vertex2D end);
+        Line(Vertex3D start, Vertex3D end);
 
         // Destructor to cleanup OpenGL resources
         ~Line();

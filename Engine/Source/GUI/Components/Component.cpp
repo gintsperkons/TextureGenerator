@@ -75,3 +75,8 @@ void TextureGenEngine::Component::OnMouseDrag(double x, double y)
         m_background->Move(x, y);
     }
 }
+
+void TextureGenEngine::Component::SetDepth(float depth)
+{
+    m_background->SetDepth(depth);
+}

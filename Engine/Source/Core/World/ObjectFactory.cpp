@@ -1,16 +1,16 @@
 #include "ObjectFactory.h"
 #include "Core/Renderer/Mesh.h"
 #include <cmath>
-#include "Core/Renderer/Structures/Vertex2D.h"
+#include "Core/Renderer/Structures/Vertex3D.h"
 #include "Core/Logger/Logger.h"
 #include "Core/Renderer/Line.h"
 
 TextureGenEngine::Mesh* TextureGenEngine::ObjectFactory::CreateTriangle()
 {
-    Vertex2D vertices[] = {
-        Vertex2D{ glm::vec2(0.5f,  0.5f), glm::vec3(0.5f, 0.5f, 0.0f), glm::vec2(1.0f, 1.0f) }, // top right
-        Vertex2D{ glm::vec2(0.5f, -0.5f), glm::vec3(0.5f, -0.5f, 0.0f), glm::vec2(1.0f, 0.0f) }, // bottom right
-        Vertex2D{ glm::vec2(-0.5f, -0.5f), glm::vec3(-0.5f, -0.5f, 1.0f), glm::vec2(0.0f, 0.0f) }  // bottom left
+    Vertex3D vertices[] = {
+        Vertex3D{ glm::vec3(0.5f,  0.5f,1.0f), glm::vec3(0.5f, 0.5f, 0.0f), glm::vec2(1.0f, 1.0f) }, // top right
+        Vertex3D{ glm::vec3(0.5f, -0.5f,1.0f), glm::vec3(0.5f, -0.5f, 0.0f), glm::vec2(1.0f, 0.0f) }, // bottom right
+        Vertex3D{ glm::vec3(-0.5f, -0.5f,1.0f), glm::vec3(-0.5f, -0.5f, 1.0f), glm::vec2(0.0f, 0.0f) }  // bottom left
     };
 
     unsigned int indices[] = {
@@ -25,11 +25,11 @@ TextureGenEngine::Mesh* TextureGenEngine::ObjectFactory::CreateTriangle()
 
 TextureGenEngine::Mesh* TextureGenEngine::ObjectFactory::CreateSquare( int width, int height)
 {
-    Vertex2D vertices[] = {
-        Vertex2D{glm::vec2(width, 0), glm::vec3(0.5f, 0.5f, 0.0f), glm::vec2(1.0f, 1.0f)},   // top right
-        Vertex2D{glm::vec2(width, height), glm::vec3(0.5f, -0.5f, 0.0f), glm::vec2(1.0f, 0.0f)},  // bottom right
-        Vertex2D{glm::vec2(0, height), glm::vec3(-0.5f, -0.5f, 1.0f), glm::vec2(0.0f, 0.0f)}, // bottom left
-        Vertex2D{glm::vec2(0, 0), glm::vec3(-0.5f, 0.5f, 0.0f), glm::vec2(0.0f, 1.0f)}   // top left
+       Vertex3D vertices[] = {
+        Vertex3D{glm::vec3(width, 0,0), glm::vec3(0.5f, 0.5f, 0.0f), glm::vec2(1.0f, 1.0f)},   // top right
+        Vertex3D{glm::vec3(width, height,0), glm::vec3(0.5f, -0.5f, 0.0f), glm::vec2(1.0f, 0.0f)},  // bottom right
+        Vertex3D{glm::vec3(0, height,0), glm::vec3(-0.5f, -0.5f, 1.0f), glm::vec2(0.0f, 0.0f)}, // bottom left
+        Vertex3D{glm::vec3(0, 0,0), glm::vec3(-0.5f, 0.5f, 0.0f), glm::vec2(0.0f, 1.0f)}   // top left
     };
 
     unsigned int indices[] = {
@@ -96,7 +96,7 @@ TextureGenEngine::Mesh* TextureGenEngine::ObjectFactory::CreateCircle()
 
 TextureGenEngine::Line *TextureGenEngine::ObjectFactory::CreateLine(int xStart, int yStart, int xEnd, int yEnd)
 {
-    Vertex2D start = Vertex2D{glm::vec2(xStart, yStart), glm::vec3(0.5f, 0.5f, 0.0f), glm::vec2(1.0f, 1.0f)};
-    Vertex2D end = Vertex2D{glm::vec2(xEnd, yEnd), glm::vec3(0.5f, 0.5f, 0.0f), glm::vec2(1.0f, 1.0f)};
+    Vertex3D start = Vertex3D{glm::vec3(xStart, yStart,1), glm::vec3(0.5f, 0.5f, 0.0f), glm::vec2(1.0f, 1.0f)};
+    Vertex3D end = Vertex3D{glm::vec3(xEnd, yEnd,1), glm::vec3(0.5f, 0.5f, 0.0f), glm::vec2(1.0f, 1.0f)};
     return new Line(start, end);
 }

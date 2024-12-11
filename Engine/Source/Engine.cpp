@@ -29,6 +29,11 @@ TextureGenEngine::Window *TextureGenEngine::Engine::GetMainWindow()
 	return m_windowManager->GetMainWindow();
 }
 
+double TextureGenEngine::Engine::GetTime()
+{
+	return m_windowManager->GetTime();
+}
+
 TextureGenEngine::Engine::Engine() : 
 m_windowManager(new WindowManager()),
 m_renderer(new Renderer(m_windowManager->GetMainWindow()->GetWidth(), m_windowManager->GetMainWindow()->GetHeight())),

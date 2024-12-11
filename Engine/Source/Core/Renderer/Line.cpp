@@ -7,7 +7,7 @@
 #include "Core/Renderer/Renderer.h"
 #include <glm/gtc/type_ptr.hpp>
 
-TextureGenEngine::Line::Line(Vertex2D start, Vertex2D end)
+TextureGenEngine::Line::Line(Vertex3D start, Vertex3D end)
     : m_shader(nullptr), m_indexCount(2)
 {
     // Initialize vertices with start and end points
@@ -28,22 +28,22 @@ TextureGenEngine::Line::Line(Vertex2D start, Vertex2D end)
 
     // Vertex buffer setup
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, m_vertices.size() * sizeof(Vertex2D), &m_vertices[0], GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, m_vertices.size() * sizeof(Vertex3D), &m_vertices[0], GL_STATIC_DRAW);
 
     // Element buffer setup
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_indices.size() * sizeof(unsigned int), &m_indices[0], GL_STATIC_DRAW);
 
     // Vertex attribute pointer for position (location = 0)
-    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex2D), (void *)offsetof(Vertex2D, Position));
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex3D), (void *)offsetof(Vertex3D, Position));
     glEnableVertexAttribArray(0);
 
     // Vertex attribute pointer for color (location = 1)
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex2D), (void *)offsetof(Vertex2D, Color));
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex3D), (void *)offsetof(Vertex3D, Color));
     glEnableVertexAttribArray(1);
 
     // Vertex attribute pointer for texCoords (location = 2)
-    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex2D), (void *)offsetof(Vertex2D, TexCoords));
+    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex3D), (void *)offsetof(Vertex3D, TexCoords));
     glEnableVertexAttribArray(2);
 
     // Unbind VAO to avoid unintended modifications
@@ -120,7 +120,7 @@ void TextureGenEngine::Line::ChangeColor(float r, float g, float b, float a)
 
     // Re-upload the vertex data to the GPU with the updated color
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferSubData(GL_ARRAY_BUFFER, 0, m_vertices.size() * sizeof(Vertex2D), m_vertices.data());
+    glBufferSubData(GL_ARRAY_BUFFER, 0, m_vertices.size() * sizeof(Vertex3D), m_vertices.data());
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 
     int error = glGetError();

@@ -46,6 +46,7 @@ namespace TextureGenEngine
         virtual bool CheckCollision(float x, float y);
         virtual Component *SelectObject(double x, double y) { return nullptr; }
         virtual void OnMouseDrag(double x, double y);
+        virtual void SetDepth(float depth);
 
     };
 } // namespace TextureGenEngine

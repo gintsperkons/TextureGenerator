@@ -23,5 +23,6 @@ namespace TextureGenEngine
         void Draw();
         Window *AddWindow(const std::string &title, int width, int height);
         Window *GetMainWindow();
+        double GetTime();
     };
 }

@@ -47,18 +47,20 @@ int main()
 	TextureGenEngine::Node *node = new TextureGenEngine::Node(0, 0);
 	node->SetBackground(TextureGenEngine::Color(0.0f, 1.0f, 1.0f, 1.0f));
 	node->AddElement(new TextureGenEngine::IntegerElement());
+	node->SetDepth(0.2f);
 	canvasNodeGraph->AddNode(node);
 
 	TextureGenEngine::Node *node2 = new TextureGenEngine::Node(100, 100);
 	node2->SetBackground(TextureGenEngine::Color(0.6f, 1.0f, 0.5f, 1.0f));
-	canvasNodeGraph->AddNode(node2);	
+	canvasNodeGraph->AddNode(node2);
+	node2->SetDepth(0.1f);	
 
-	
-TextureGenEngine::TextInput *textInput = new TextureGenEngine::TextInput(0, 0, 100, 25);
-textInput->SetBackground(TextureGenEngine::Color(0.5f, 1.0f, 0.0f, 1.0f));
-guiManager->AddComponent(textInput);
+		
+	TextureGenEngine::TextInput *textInput = new TextureGenEngine::TextInput(0, 0, 100, 25);	
+	textInput->SetBackground(TextureGenEngine::Color(0.5f, 1.0f, 0.0f, 1.0f));
+	guiManager->AddComponent(textInput);
 
-	engine->GetMainWindow()->AddGUI(guiManager);
+	 engine->GetMainWindow()->AddGUI(guiManager);
 
 	
 

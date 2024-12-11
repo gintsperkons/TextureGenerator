@@ -72,12 +72,13 @@ void TextureGenEngine::Text::Draw(std::string text, float x, float y, int frameH
     }
 
     GLint projectionLoc = glGetUniformLocation(m_shader->GetID(), "projection");
+    GLint viewLoc = glGetUniformLocation(m_shader->GetID(), "view");
     GLint textColorLoc = glGetUniformLocation(m_shader->GetID(), "textColor");
-    if (projectionLoc == -1 || textColorLoc == -1)
+    if (projectionLoc == -1 || textColorLoc == -1 || viewLoc == -1)
     {
         LOG_ERROR("Failed to get uniform location");
     }
-
+    glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(TextureGenEngine::Engine::Get()->GetRenderer()->GetViewMatrix()));
     glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(TextureGenEngine::Engine::Get()->GetRenderer()->GetProjectionMatrix()));
     glUniform3f(textColorLoc, color.x, color.y, color.z);
     glActiveTexture(GL_TEXTURE0);

@@ -9,10 +9,11 @@ out vec2 fragTexCoords; // Pass texture coordinates to the fragment shader
 
 uniform mat4 model;        // Model transformation matrix
 uniform mat4 projection;   // Projection matrix
+uniform mat4 view; // View matrix
 
 void main()
 {
-    gl_Position = projection * model * vec4(position, 0.0, 1.0);
+    gl_Position = projection * view * model * vec4(position, 0.0, 1.0);
 
     vertexColor = color;      // Pass the vertex color
     fragTexCoords = texCoords; // Pass the texture coordinates

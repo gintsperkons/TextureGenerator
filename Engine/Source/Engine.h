@@ -28,6 +28,7 @@ namespace TextureGenEngine
 		TAPI Window *GetMainWindow();
 		Renderer* GetRenderer() { return m_renderer; }
 		FontManager* GetFontManager() { return m_fontManager; }
+		double GetTime();
 	};
 
 	inline static Engine *g_engine = nullptr;

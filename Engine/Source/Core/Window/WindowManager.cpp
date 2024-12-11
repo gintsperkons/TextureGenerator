@@ -76,6 +76,11 @@ TextureGenEngine::Window *TextureGenEngine::WindowManager::GetMainWindow()
     return m_mainWindow;
 }
 
+double TextureGenEngine::WindowManager::GetTime()
+{
+    return glfwGetTime();
+}
+
 //Private
 void TextureGenEngine::WindowManager::CloseNecessaryWindows()
 {
