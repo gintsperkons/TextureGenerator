@@ -15,6 +15,8 @@ Component(x, y, width, height)
     m_cursor->SetPosition(x, y);
     m_type = "TextInput";
     m_selectable = true;
+
+    m_cursor->ChangeShader("cursor");
 }
 
 TextureGenEngine::TextInput::~TextInput()

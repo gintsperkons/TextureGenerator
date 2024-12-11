@@ -177,6 +177,11 @@ void TextureGenEngine::Mesh::ChangeColor(float r, float g, float b, float a)
     }
 }
 
+void TextureGenEngine::Mesh::ChangeShader(std::string shaderName)
+{
+    m_shader = Engine::Get()->GetRenderer()->GetShader(shaderName);
+}
+
 TextureGenEngine::Mesh::~Mesh()
 {
     glDeleteVertexArrays(1, &VAO);

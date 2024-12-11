@@ -17,6 +17,10 @@ TextureGenEngine::ShaderManager::ShaderManager()
         std::pair<std::string, Shader *>(
             "line",
             new Shader(ReadFile("Shaders/line.vert"), ReadFile("Shaders/line.frag"))));
+    m_shaders.insert(
+        std::pair<std::string, Shader *>(
+            "cursor",
+            new Shader(ReadFile("Shaders/cursor.vert"), ReadFile("Shaders/cursor.frag"))));
 }
 
 TextureGenEngine::Shader *TextureGenEngine::ShaderManager::GetShader(std::string name)

@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include <string>
 #include "Structures/Vertex2D.h"
 
 namespace TextureGenEngine
@@ -22,6 +23,7 @@ namespace TextureGenEngine
 		void SetPosition(float x, float y);
 		void Scale(float x, float y);
 		void ChangeColor(float r, float g, float b, float a);
+		void ChangeShader(std::string shaderName);
 		~Mesh();
 	};
 }
