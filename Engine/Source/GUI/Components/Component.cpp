@@ -5,8 +5,9 @@
 #include "Core/Logger/Logger.h"
 
 TextureGenEngine::Component::Component(int x, int y, int width, int height):
-m_x(x),m_y(y),m_width(width),m_height(height)
+m_x(static_cast<float>(x)), m_y(static_cast<float>(y)), m_width(static_cast<float>(width)), m_height(static_cast<float>(height))
 {
+    LOG_DEBUG("Width %f\n", m_width);
     m_background = ObjectFactory::CreateSquare(width, height);
 }
 

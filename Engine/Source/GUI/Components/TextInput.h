@@ -13,7 +13,10 @@ namespace TextureGenEngine
         Mesh *m_cursor = nullptr;
         std::string m_text;
         bool m_showCursor = false;
+        int m_cursorPosition = 0;
+        float m_textDrawOffset = 0;
 
+        void CheckCursorInView();
     public:
         TAPI TextInput(int x, int y, int width, int height);
         ~TextInput();
@@ -22,5 +25,7 @@ namespace TextureGenEngine
         void RemoveChar();
         void Select() override { m_showCursor = true; };
         void DeSelect() override { m_showCursor = false; };
+        void MoveCursorLeft();
+        void MoveCursorRight();
     };
 }

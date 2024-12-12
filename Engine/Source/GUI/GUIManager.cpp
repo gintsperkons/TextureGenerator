@@ -113,7 +113,7 @@ void TextureGenEngine::GUIManager::GetOldSize(float &width, float &height)
     height = m_oldHeight;
 }
 
-void TextureGenEngine::GUIManager:: Scissors(int x, int y, int width, int height)
+void TextureGenEngine::GUIManager::Scissors(int x, int y, int width, int height)
 {
     m_window->Scissors(x, y, width, height);
 }
@@ -151,7 +151,8 @@ void TextureGenEngine::GUIManager::MouseClick(MouseButtonEvent e)
 
 void TextureGenEngine::GUIManager::CharEventAction(CharEvent e)
 {
-    if (currentObject->GetType() == "TextInput")
+
+    if (currentObject && currentObject->GetType() == "TextInput")
     {
         ((TextInput *)currentObject)->AddChar(e.codepoint);
     }
@@ -159,10 +160,19 @@ void TextureGenEngine::GUIManager::CharEventAction(CharEvent e)
 
 void TextureGenEngine::GUIManager::KeyAction(int key, int scancode, int action, int mods)
 {
-    if (currentObject && currentObject->GetType() == "TextInput")
+    if (action == Key::KeyAction::Press || action == Key::KeyAction::Repeat)
     {
-        if (action == Key::KeyAction::Press || action == Key::KeyAction::Repeat)
+        if (currentObject && currentObject->GetType() == "TextInput")
         {
+
+            if (key == Key::Left)
+            {
+                ((TextInput *)currentObject)->MoveCursorLeft();
+            }
+            if (key == Key::Right)
+            {
+                ((TextInput *)currentObject)->MoveCursorRight();
+            }
             if (key == Key::Backspace)
             {
                 ((TextInput *)currentObject)->RemoveChar();
