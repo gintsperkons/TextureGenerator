@@ -1,37 +1,108 @@
-#include <GLFW/glfw3.h>
 #include "Input.h"
 #include "Core/Window/Window.h"
-#include "Engine.h"
+#include "GLFW/glfw3.h"
 #include "Core/Logger/Logger.h"
 
-int TextureGenEngine::Input::g_mouseButtonStates[TextureGenEngine::Mouse::ButtonLast+1] = {0};
-
-bool TextureGenEngine::Input::MouseButtonPressed(TextureGenEngine::Mouse::MouseCode button)
+void keyCallback(GLFWwindow *window, int key, int scancode, int action, int mods)
 {
-	if (g_mouseButtonStates[button] == TextureGenEngine::Mouse::Pressed)
-	{
-		return true;
-	}
-	return false;
+    TextureGenEngine::Window *win = (TextureGenEngine::Window *)glfwGetWindowUserPointer(window);
+    win->GetInput()->KeyCallback(key, scancode, action, mods);
 }
 
-bool TextureGenEngine::Input::MouseButtonHeld(TextureGenEngine::Mouse::MouseCode button)
+void charCallback(GLFWwindow *window, unsigned int codepoint)
 {
-	if (g_mouseButtonStates[button] == TextureGenEngine::Mouse::Held)
-	{
-		return true;
-	}
-	return false;
+    TextureGenEngine::Window *win = (TextureGenEngine::Window *)glfwGetWindowUserPointer(window);
+    win->GetInput()->CharCallback(codepoint);
 }
 
-int* TextureGenEngine::Input::GetMousePosition()
+void mouseButtonCallback(GLFWwindow *window, int button, int action, int mods)
 {
-	static int pos[2];
-	double x, y;
-	glfwGetCursorPos(TextureGenEngine::Engine::Get()->GetWindow()->GetNativeWindow(), &x, &y);
-	pos[0] = (int)x;
-	pos[1] = (int)y;
-	return pos;
+    TextureGenEngine::Window *win = (TextureGenEngine::Window *)glfwGetWindowUserPointer(window);
+    win->GetInput()->MouseButtonCallback(button, action, mods);
 }
 
+void cursorPosCallback(GLFWwindow *window, double xpos, double ypos)
+{
+    TextureGenEngine::Window *win = (TextureGenEngine::Window *)glfwGetWindowUserPointer(window);
+    win->GetInput()->CursorPosCallback(xpos, ypos);
+}
 
+TextureGenEngine::Input::Input(Window * win):
+m_window(win)
+{
+    glfwSetKeyCallback(m_window->GetWindow(), keyCallback);
+    glfwSetCharCallback(m_window->GetWindow(), charCallback);
+    glfwSetMouseButtonCallback(m_window->GetWindow(), mouseButtonCallback);
+    glfwSetCursorPosCallback(m_window->GetWindow(), cursorPosCallback);
+}
+
+TextureGenEngine::Input::~Input()
+{
+}
+
+void TextureGenEngine::Input::KeyCallback(int key, int scancode, int action, int mods)
+{
+    for (auto &sub : m_keyEventSubs)
+    {
+        sub.callback({key, scancode, action, mods});
+    }
+}
+
+void TextureGenEngine::Input::CharCallback(unsigned int codepoint)
+{
+    for (auto &sub : m_charEventSubs)
+    {
+        sub.callback({codepoint});
+    }
+}
+
+void TextureGenEngine::Input::MouseButtonCallback(int button, int action, int mods)
+{
+    double x,y;
+    glfwGetCursorPos(m_window->GetWindow(), &x, &y);
+    y = m_window->GetHeight()-y;
+    for (auto &sub : m_mouseClickSubs)
+    {
+        sub.callback({x, y, button, action == GLFW_PRESS});
+    }
+}
+
+void TextureGenEngine::Input::CursorPosCallback(double xpos, double ypos)
+{
+    m_xChange = xpos - m_xLast;
+    m_yChange = ypos - m_yLast;
+    m_xLast = xpos;
+    m_yLast = ypos;
+    for (auto &sub : m_mouseMoveSubs)
+    {
+        sub.callback({m_xChange, m_yChange});
+    }
+}
+
+void TextureGenEngine::Input::SubscribeToMouseClickEvents(std::function<void(MouseButtonEvent)> subscriber)
+{
+    MouseClickSub sub;
+    sub.callback = subscriber;
+    m_mouseClickSubs.push_back(sub);
+}
+
+void TextureGenEngine::Input::SubscribeToMouseMoveEvents(std::function<void(MouseMoveEvent)> subscriber)
+{
+    MouseMoveSub sub;
+    sub.callback = subscriber;
+    m_mouseMoveSubs.push_back(sub);
+}
+
+void TextureGenEngine::Input::SubscribeToCharEvents(std::function<void(CharEvent)> subscriber)
+{
+    CharEventSub sub;
+    sub.callback = subscriber;
+    m_charEventSubs.push_back(sub);
+}
+
+void TextureGenEngine::Input::SubscribeToKeyEvents(std::function<void(KeyEvent)> subscriber)
+{
+    KeyEventSub sub;
+    sub.callback = subscriber;
+    m_keyEventSubs.push_back(sub);
+}

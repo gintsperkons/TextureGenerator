@@ -1,2 +1,2 @@
 @echo off
-./Scripts/Windows/Setup.bat %1
+.\Scripts\Windows\Setup.bat %1

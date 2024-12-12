@@ -1,51 +1,51 @@
 #pragma once
 #include "Defines.h"
 #include "WindowEvents.h"
+#include <string>
 #include <vector>
+#include "Core/Input/InputEvents.h"
 #include <functional>
-#include "Core/Asserts.h"
+
 struct GLFWwindow;
 namespace TextureGenEngine
 {
-	class Renderer;
-	class Mesh;
+    struct ResizeSub {
+        std::function<void(ResizeEvent)> callback;
+    };
 
-	class Window
-	{
-		int m_width;
-		int m_height;
 
-		struct ResizeSub
-		{
-			std::function<void(ResizeEvent)> callback;
-		};
-		std::vector<ResizeSub> m_resizeSubs;
-		Renderer *m_renderer;
-		GLFWwindow *m_window;
-		Mesh *m_mesh;
-		void SwapBuffers();
-		void PoolEvents();
-		void UpdateMouseButtons();
+    class WindowManager;
+    class GUIManager;
+    class Renderer;
+    class Input;
+    class Window
+    {
+        std::vector<ResizeSub> m_resizeSubs;
 
-	public:
-		TAPI Window();
-		TAPI Window(int width, int height, const char *title);
-		~Window();
-		bool ShouldClose();
-		void Update();
-		void Draw();
-		GLFWwindow *GetNativeWindow()
-		{
-			return m_window;
-		}
-		Renderer *GetRenderer()
-		{
-			return m_renderer;
-		}
-		void OnResize();
-		TAPI void GetFramebufferSize(int &width, int &height);
-		int GetWidth() { return m_width; }
-		int GetHeight() { return m_height; }
-		void AddResizeListener(std::function<void(ResizeEvent)> callback);
-	};
+        WindowManager *m_manager;
+        int m_id;
+        std::string m_title;
+        int m_width;
+        int m_height;
+        GLFWwindow *m_window;
+        GUIManager *m_gui;
+        Input* m_input;
+
+    public:
+        bool ShouldClose();
+        Window(WindowManager *manager, int id, const std::string &title, int width, int height, GLFWwindow* contextWindow = nullptr);
+        ~Window();
+        void Update();
+        void Draw();
+        void Resize(int width, int height);
+        void Scissors(int x, int y, int width, int height);
+        void ScissorsReset();
+        TAPI void AddGUI(GUIManager *gui);
+        GLFWwindow *GetWindow() { return m_window; }
+        int GetWidth() { return m_width; }
+        int GetHeight() { return m_height; }
+        void GetFramebufferSize(int &width, int &height);
+        Input* GetInput() { return m_input; }
+        std::vector<ResizeSub> GetResizeSubs() { return m_resizeSubs; }
+    };
 }

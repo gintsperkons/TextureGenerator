@@ -13,4 +13,10 @@ namespace TextureGenEngine
 		int x;
 		int y;
 	};
+
+	struct CharacterEvent
+	{
+		int codePoint;
+		wchar_t character;
+	};
 }

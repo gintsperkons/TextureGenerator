@@ -5,9 +5,9 @@
 #include "Core/FileHandler/FileHandler.h"
 #include <string>
 
-TextureGenEngine::Shader::Shader(std::string vertexSource, std::string fragmentSource)
+TextureGenEngine::Shader::Shader(std::string name, std::string vertexSource, std::string fragmentSource)
 {
-
+    m_name = name;
 
     unsigned int vertexShader;
     vertexShader = glCreateShader(GL_VERTEX_SHADER);
@@ -39,14 +39,14 @@ TextureGenEngine::Shader::Shader(std::string vertexSource, std::string fragmentS
     }
 
     // Shader Program
-    ID = glCreateProgram();
-    glAttachShader(ID, vertexShader);
-    glAttachShader(ID, fragmentShader);
-    glLinkProgram(ID);
-    glGetProgramiv(ID, GL_LINK_STATUS, &success);
+    m_ID = glCreateProgram();
+    glAttachShader(m_ID, vertexShader);
+    glAttachShader(m_ID, fragmentShader);
+    glLinkProgram(m_ID);
+    glGetProgramiv(m_ID, GL_LINK_STATUS, &success);
     if (!success)
     {
-        glGetProgramInfoLog(ID, 512, NULL, infoLog);
+        glGetProgramInfoLog(m_ID, 512, NULL, infoLog);
         std::cout << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n"
                   << infoLog << std::endl;
     }
@@ -56,10 +56,10 @@ TextureGenEngine::Shader::Shader(std::string vertexSource, std::string fragmentS
 
 void TextureGenEngine::Shader::Use()
 {
-    glUseProgram(ID);
+    glUseProgram(m_ID);
 }
 
 TextureGenEngine::Shader::~Shader()
 {
-    glDeleteProgram(ID);
+    glDeleteProgram(m_ID);
 }

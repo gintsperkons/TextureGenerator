@@ -1,149 +1,126 @@
+#include <glad/glad.h>
+#include <GLFW/glfw3.h>
+#include "WindowManager.h"
+#include "Engine.h"
+#include "Core/Logger/Logger.h"
+#include "GUI/GUIManager.h"
 #include "Window.h"
 #include "Core/Renderer/Renderer.h"
-#include "Core/Renderer/Mesh.h"
-#include "Core/World/ObjectFactory.h"
-#include "Core/Logger/Logger.h"
-#include "Core/Asserts.h"
-#include "GLFW/glfw3.h"
-#include <Core/Input/MouseCodes.h>
-#include <Core/Input/Input.h>
-#include <iostream>
-
-TextureGenEngine::Window::Window():Window(640, 480, "TextureGenEngine")
-{
-	
-}
-
-void frameBufferResizeCallback(GLFWwindow* window, int width, int height)
-{
-	TextureGenEngine::Window* w = (TextureGenEngine::Window*)glfwGetWindowUserPointer(window);
-	w->GetRenderer()->UpdateViewport(width, height);
-	w->OnResize();
-	
-}
-
-
-void errorCallback(int error, const char* description) {
-    std::cerr << "Error " << error << ": " << description << std::endl;
-}
-
-TextureGenEngine::Window::Window(int width, int height, const char* title) :
-	m_renderer(nullptr),m_width(width),m_height(height)
-{
-	glfwSetErrorCallback(errorCallback);
-	if (!glfwInit())
-	{
-		LOG_FATAL("Failed to initialize GLFW\n");
-	}
-
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-	m_window = glfwCreateWindow(640, 480, title, NULL, NULL);
-	if (!m_window)
-	{
-		glfwTerminate();
-		LOG_FATAL("Failed to create window\n");
-	}
-	glfwMakeContextCurrent(m_window);
-	glfwSetFramebufferSizeCallback(m_window, frameBufferResizeCallback);
-	glfwSetWindowUserPointer(m_window, this);
-	glfwGetFramebufferSize(m_window, &m_width, &m_height);
-	m_renderer = new Renderer(m_width, m_height);
-	THAUMA_ASSERT_MSG(m_renderer!=nullptr, "Failed to create renderer");
-}
-
-
-TextureGenEngine::Window::~Window()
-{
-	delete m_renderer;
-	glfwDestroyWindow(m_window);
-	m_window = nullptr;
-	glfwTerminate();
-}
+#include "Core/Input/Input.h"
 
 bool TextureGenEngine::Window::ShouldClose()
 {
-	return glfwWindowShouldClose(m_window);	
+    if (m_window == NULL)
+        return true;
+    return glfwWindowShouldClose(m_window);
+    ;
+}
+
+void resizeCallback(GLFWwindow *window, int width, int height)
+{
+    TextureGenEngine::Window *win = (TextureGenEngine ::Window *)glfwGetWindowUserPointer(window);
+
+    win->Resize(width, height);
+    TextureGenEngine::Engine::Get()->GetRenderer()->UpdateViewport(width, height);
+    win->Update();
+    win->Draw();
+}
+
+TextureGenEngine::Window::Window(WindowManager *manager, int id, const std::string &title, int width, int height, GLFWwindow *contextWindow) : m_manager(manager), m_id(id), m_title(title), m_width(width), m_height(height),
+                                                                                                                                                  m_gui(nullptr), m_window(nullptr), m_input(nullptr)
+{
+    if (contextWindow)
+        m_window = glfwCreateWindow(width, height, title.c_str(), NULL, contextWindow);
+    else
+        m_window = glfwCreateWindow(width, height, title.c_str(), NULL, NULL);
+
+    if (!m_window)
+    {
+        LOG_ERROR("Failed to create window\n");
+        Engine::Get()->Shutdown();
+        exit(EXIT_FAILURE);
+    }
+
+    glfwMakeContextCurrent(m_window);
+    glfwSetWindowSizeLimits(m_window, 600, 400, GLFW_DONT_CARE, GLFW_DONT_CARE);
+    glfwSetWindowUserPointer(m_window, this);
+    glfwSetFramebufferSizeCallback(m_window, resizeCallback);
+    m_input = new Input(this);
+}
+
+TextureGenEngine::Window::~Window()
+{
+    if (m_gui)
+        delete m_gui;
+    if (m_input)
+        delete m_input;
+    if (m_window)
+        glfwDestroyWindow(m_window);
 }
 
 void TextureGenEngine::Window::Update()
 {
 
-	UpdateMouseButtons();
-	SwapBuffers();
-	PoolEvents();
-	m_renderer->Clear();
-
+    glfwPollEvents();
+    glfwSwapBuffers(m_window);
+    TextureGenEngine::Engine::Get()->GetRenderer()->Clear();
+    if (m_gui)
+    {
+        m_gui->Update();
+    }
 }
 
 void TextureGenEngine::Window::Draw()
 {
-	
+    if (m_gui)
+    {
+        m_gui->Draw();
+    }
 }
 
-
-
-void TextureGenEngine::Window::OnResize()
+void TextureGenEngine::Window::Resize(int width, int height)
 {
-	glfwGetFramebufferSize(m_window, &m_width, &m_height);
-	for (auto sub : m_resizeSubs)
-	{
-		ResizeEvent event;
-		event.width = m_width;
-		event.height = m_height;
-		sub.callback(event);
-	}
+    m_width = width;
+    m_height = height;
+    for (auto &sub : m_resizeSubs)
+    {
+        sub.callback({width, height});
+    }
 }
 
-void TextureGenEngine::Window::AddResizeListener(std::function<void(ResizeEvent)> callback)
+void TextureGenEngine::Window::Scissors(int x, int y, int width, int height)
 {
-	ResizeSub sub;
-	sub.callback = callback;
-	m_resizeSubs.push_back(sub);
+    glEnable(GL_SCISSOR_TEST);
+    glScissor(x, y, width, height);
 }
 
-
-
-
-
-
-void TextureGenEngine::Window::SwapBuffers()
+void TextureGenEngine::Window::ScissorsReset()
 {
-	glfwSwapBuffers(m_window);
+    glDisable(GL_SCISSOR_TEST);
 }
 
-void TextureGenEngine::Window::PoolEvents()
+void TextureGenEngine::Window::AddGUI(TextureGenEngine::GUIManager *gui)
 {
-	glfwPollEvents();
+    if (m_gui)
+    {
+        delete m_gui;
+    }
+    gui->SetWindow(this);
+    m_resizeSubs.push_back({[gui](ResizeEvent e)
+                            { gui->Resize(e.width, e.height); }});
+    m_input->SubscribeToMouseClickEvents([gui](MouseButtonEvent e)
+                                         { gui->MouseClick(e); });
+    m_input->SubscribeToMouseMoveEvents([gui](MouseMoveEvent e)
+                                        { gui->MouseMove(e); });
+    m_input->SubscribeToCharEvents([gui](CharEvent e)
+                                   { gui->CharEventAction(e); });
+    m_input->SubscribeToKeyEvents([gui](KeyEvent e)
+                                    { gui->KeyAction(e.key, e.scancode, e.action, e.mods); });
+    gui->Init(m_width, m_height);
+    m_gui = gui;
 }
 
-void TextureGenEngine::Window::GetFramebufferSize(int& width, int& height)
+void TextureGenEngine::Window::GetFramebufferSize(int &width, int &height)
 {
-	if (m_window == nullptr)
-	{
-		LOG_ERROR("Window is null\n");
-	}
-	glfwGetFramebufferSize(m_window, &width, &height);
-
-}
-
-void TextureGenEngine::Window::UpdateMouseButtons()
-{
-	for (int i = 0; i < Mouse::ButtonLast + 1; i++)
-	{
-		int state = glfwGetMouseButton(m_window, i);
-		if (state == GLFW_PRESS && (Input::g_mouseButtonStates[i] == Mouse::Pressed || Input::g_mouseButtonStates[i] == Mouse::Held))
-		{
-			Input::g_mouseButtonStates[i] = 2;
-		}
-		else if (state == GLFW_PRESS)
-		{
-			Input::g_mouseButtonStates[i] = 1;
-		}
-		else
-		{
-			Input::g_mouseButtonStates[i] = 0;
-		}
-	}
+    glfwGetFramebufferSize(m_window, &width, &height);
 }

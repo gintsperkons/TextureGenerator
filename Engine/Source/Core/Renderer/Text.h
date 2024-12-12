@@ -1,6 +1,7 @@
 #include "Defines.h"
 #include <glm/glm.hpp>
 #include <string>
+#include "Core/Renderer/Structures/Aligment.h"
 
 namespace TextureGenEngine
 {
@@ -8,13 +9,17 @@ namespace TextureGenEngine
     class Text
     {
     private:
-    unsigned int VBO, VAO;
-    Shader *m_shader;
+        bool m_staticSize;
+        unsigned int VBO, VAO;
+        Shader *m_shader;
         /* data */
+        float CalculateScale(std::string text, int textSize, int &textHeight, int &textWidth, int &maxDescender);
+
     public:
-        Text(/* args */);
-        void Draw(std::string text, float x, float y, float scale, glm::vec3 color);
+        Text(bool staticSize = true);
+        void Draw(std::string text, float x, float y, int frameHeight, int frameWidth, int textSize, glm::vec3 color, AlignmentHorizontal hAlign, AlignmentVertical vAlign);
         ~Text();
+        float GetTextWidth(std::string text, int textSize);
     };
-    
+
 } // namespace TextureGenEngine

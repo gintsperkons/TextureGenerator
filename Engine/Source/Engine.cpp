@@ -1,79 +1,64 @@
 #include "Engine.h"
 #include <stdio.h>
-#include "Core/Window/Window.h"
 #include "Core/Renderer/Mesh.h"
-#include "Core/World/Screen.h"
-#include "Core/Window/WindowEvents.h"
-#include "Core/FontManager.h"
+#include "Core/Window/WindowManager.h"
 #include "Core/Logger/Logger.h"
+#include "Core/Window/Window.h"
+#include "Core/Renderer/Renderer.h"
+#include "Core/Font/FontManager.h"
 #include "Core/Asserts.h"
 
-TextureGenEngine::Engine::Engine():Engine(new Window())
+void TextureGenEngine::Engine::Init()
 {
+	g_engine = new Engine();
 }
 
-void TextureGenEngine::Engine::ResizeCallBack(ResizeEvent event) {
-
-	m_screen->Resize(event.width, event.height);
-	m_screen->Update();
-	m_window->Update();
-	m_window->Draw();
-	m_screen->Draw();
-
+void TextureGenEngine::Engine::Shutdown()
+{
+	delete g_engine;
+	g_engine = nullptr;
 }
 
-
-TextureGenEngine::Engine::Engine(Window* window):m_window(window)
+TextureGenEngine::Window *TextureGenEngine::Engine::AddWindow(const std::string &title, int width, int height)
 {
-	TextureGenEngine::g_engine = this;
-	m_window->AddResizeListener([this](ResizeEvent event) { this->ResizeCallBack(event); });
-	m_screen = new Screen();
-	m_fontManager = new FontManager();
+	return m_windowManager->AddWindow(title, width, height);
+}
+
+TextureGenEngine::Window *TextureGenEngine::Engine::GetMainWindow()
+{
+	return m_windowManager->GetMainWindow();
+}
+
+double TextureGenEngine::Engine::GetTime()
+{
+	return m_windowManager->GetTime();
+}
+
+TextureGenEngine::Engine::Engine() : 
+m_windowManager(new WindowManager()),
+m_renderer(new Renderer(m_windowManager->GetMainWindow()->GetWidth(), m_windowManager->GetMainWindow()->GetHeight())),
+m_fontManager(new FontManager()),
+m_running(true)
+{
 }
 
 TextureGenEngine::Engine::~Engine()
 {
-	delete m_window;
-	delete m_screen;
 }
 
 void TextureGenEngine::Engine::Run()
 {
-		m_screen->Update();
-		m_window->Update();
-		m_window->Draw();
-		m_screen->Draw();
+	m_windowManager->Update();
+	m_windowManager->Draw();
+	m_running = !m_windowManager->ShouldClose();
 }
 
-TextureGenEngine::Window* TextureGenEngine::Engine::GetWindow()
-{
-	if (!m_window)
-	{
-		LOG_ERROR("window is null");
-	}
-	return m_window;
-}
-
-TextureGenEngine::Renderer *TextureGenEngine::Engine::GetRenderer()
-{
-	if (!GetWindow()->GetRenderer())
-	{
-		LOG_ERROR("renderer is null");
-	}
-	return GetWindow()->GetRenderer();
-}
-
-TextureGenEngine::Screen* TextureGenEngine::Engine::GetScreen()
-{
-	return m_screen;
-}
-
-TextureGenEngine::Engine* TextureGenEngine::Engine::Get()
+TextureGenEngine::Engine *TextureGenEngine::Engine::Get()
 {
 	return g_engine;
 }
 
-TAPI bool TextureGenEngine::Engine::IsRunning()
+bool TextureGenEngine::Engine::IsRunning()
 {
-	return !m_window->ShouldClose();
+	return m_running;
 }
