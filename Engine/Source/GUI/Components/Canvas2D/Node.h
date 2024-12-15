@@ -18,6 +18,8 @@ namespace TextureGenEngine
         void TAPI AddElement(NodeElement *element);
         void OnMouseDrag(double x, double y) override;
         bool CheckCollision(float x, float y) override;
+        float GetOffset(NodeElement* element);
+        Component *SelectObject(double x, double y) override;
         ~Node();
 
         static inline int c_titleHeight = 25;

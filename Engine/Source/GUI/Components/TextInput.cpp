@@ -26,9 +26,19 @@ TextureGenEngine::TextInput::~TextInput()
 {
 }
 
+void TextureGenEngine::TextInput::Init(int width, int height)
+{
+    m_x = m_parent->GetX() + m_x;
+    m_y = m_parent->GetY() + m_y;
+    m_background->SetPosition(m_x, m_y);
+
+    m_width = width;
+    m_height = height;
+}
+
 void TextureGenEngine::TextInput::Draw()
 {
-
+    if (m_manager == nullptr) return;
     m_manager->Scissors(m_x, m_y, m_width, m_height);
     Component::Draw();
     if ((m_cursor && m_textMesh && m_showCursor))
@@ -123,4 +133,13 @@ void TextureGenEngine::TextInput::MoveCursorRight()
         }
         m_cursor->SetPosition(m_x + textBeforeSize, m_y);
     }
+}
+
+void TextureGenEngine::TextInput::SetPosition(float x, float y)
+{
+    m_x = x;
+    m_y = y;
+    m_cursor->SetPosition(x, y);
+    m_background->SetPosition(x, y);
+    m_textMesh->Draw(m_text, m_x, m_y, m_height, m_width, 12, glm::vec3(0, 0, 0), AlignmentHorizontal::LEFT, AlignmentVertical::CENTER);
 }

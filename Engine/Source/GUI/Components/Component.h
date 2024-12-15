@@ -30,7 +30,7 @@ namespace TextureGenEngine
         virtual ~Component();
         virtual void Resize(int width, int height);
         TAPI virtual void SetBackground(Color color);
-        void SetManager(GUIManager *manager) { m_manager = manager; }
+        virtual void SetManager(GUIManager *manager) { m_manager = manager; }
         virtual void Init(int width, int height);
         void SetParent(Component *parent) { m_parent = parent; }
         float GetX() { return m_x; }
@@ -47,6 +47,7 @@ namespace TextureGenEngine
         virtual Component *SelectObject(double x, double y) { return nullptr; }
         virtual void OnMouseDrag(double x, double y);
         virtual void SetDepth(float depth);
+        virtual void SetPosition(float x, float y) { m_x = x; m_y = y; };
 
     };
 } // namespace TextureGenEngine

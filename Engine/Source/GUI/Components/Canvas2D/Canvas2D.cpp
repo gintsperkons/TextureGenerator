@@ -32,9 +32,9 @@ TextureGenEngine::Canvas2D::~Canvas2D()
 
 void TextureGenEngine::Canvas2D::AddNode(Node *node)
 {
-    m_nodes.push_back(node);
     node->SetParent(this);
     node->SetManager(m_manager);
+    m_nodes.push_back(node);
     node->Init(m_width, m_height);
 }
 
@@ -42,9 +42,10 @@ TextureGenEngine::Component *TextureGenEngine::Canvas2D::SelectObject(double x, 
 {
     for (auto &node : m_nodes)
     {
-        if (node->CheckCollision(x, y) && node->IsSelectable())
+        Component* nodeSubElement = node->SelectObject(x, y);
+        if (nodeSubElement)
         {
-            return node;
+            return nodeSubElement;
         }
     }
     if (m_selectable)

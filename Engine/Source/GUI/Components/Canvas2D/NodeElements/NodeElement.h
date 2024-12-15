@@ -10,12 +10,12 @@ namespace TextureGenEngine
     {
     private:
         std::string m_elementType;
-        Node* m_parentNode = nullptr;
     public:
-    
+
         NodeElement(/* args */);
         ~NodeElement();
-        void Setup();
-        void AddParentNode(Node* node) { m_parentNode = node; }
+        virtual void OnMouseDrag(double x, double y) override;
+        virtual void Setup(int x ,int y);
+        virtual Component *SelectObject(double x, double y) override { return nullptr; };
     };
 } // namespace TextureGenEngine

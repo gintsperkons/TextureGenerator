@@ -20,6 +20,7 @@ namespace TextureGenEngine
     public:
         TAPI TextInput(int x, int y, int width, int height);
         ~TextInput();
+        virtual void Init(int width, int height) override;
         void Draw() override;
         void AddChar(unsigned int codepoint);
         void RemoveCharBefore();
@@ -28,5 +29,6 @@ namespace TextureGenEngine
         void DeSelect() override { m_showCursor = false; };
         void MoveCursorLeft();
         void MoveCursorRight();
+        void SetPosition(float x, float y) override;
     };
 }

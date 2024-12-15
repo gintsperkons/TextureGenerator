@@ -60,6 +60,7 @@ void TextureGenEngine::GUIManager::Update()
 
 void TextureGenEngine::GUIManager::Draw()
 {
+    if (currentObject ) LOG_DEBUG("selected object %s\n", currentObject->GetType().c_str());
     for (auto &child : m_children)
     {
         child->Draw();

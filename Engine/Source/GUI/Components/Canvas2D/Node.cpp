@@ -24,25 +24,38 @@ void TextureGenEngine::Node::Init(int width, int height)
         m_dataBackground->SetPosition(m_x, m_y-100);
     }
     Component::Init(width, height);
+    for (auto &element : m_elements)
+    {
+        element->Init(width, height);
+    }
 }
 
 void TextureGenEngine::Node::Draw()
 {
     Component::Draw();
     m_dataBackground->Draw();
+    for (auto &element : m_elements)
+    {
+        element->Draw();
+    }
 }
 
 void TextureGenEngine::Node::AddElement(NodeElement *element)
 {
+    element->SetParent(this);
+    element->SetManager(m_manager);
+    element->Setup(m_x,m_y);
     m_elements.push_back(element);
-    element->AddParentNode(this);
-    element->Setup();
 }
 
 void TextureGenEngine::Node::OnMouseDrag(double x, double y)
 {
     Component::OnMouseDrag(x, y);
     m_dataBackground->Move(x, y);
+    for (auto &element : m_elements)
+    {
+        element->OnMouseDrag(x, y);
+    }
 }
 
 bool TextureGenEngine::Node::CheckCollision(float x, float y)
@@ -63,6 +76,32 @@ m_manager->GetOldSize(oldWidth, oldHeight);
         return true;
     }
     return false;
+}
+
+float TextureGenEngine::Node::GetOffset(NodeElement *element)
+{
+    float offset = c_titleHeight;
+    return offset;
+}
+
+TextureGenEngine::Component *TextureGenEngine::Node::SelectObject(double x, double y)
+{
+    for (auto &element : m_elements)
+    {
+        if (element->CheckCollision(x, y))
+        {
+            Component* subElement = element->SelectObject(x, y);
+            if (subElement)
+            {
+                return subElement;
+            }
+        }
+    }
+    if (m_selectable && CheckCollision(x, y))
+    {
+        return this;
+    }
+    return nullptr;
 }
 
 TextureGenEngine::Node::~Node()
