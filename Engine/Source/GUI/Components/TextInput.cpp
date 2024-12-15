@@ -57,7 +57,7 @@ void TextureGenEngine::TextInput::AddChar(unsigned int codepoint)
     m_cursor->SetPosition(m_x + textBeforeSize, m_y);
 }
 
-void TextureGenEngine::TextInput::RemoveChar()
+void TextureGenEngine::TextInput::RemoveCharBefore()
 {
     if (m_text.length() > 0 && m_cursorPosition > 0)
     {
@@ -71,6 +71,21 @@ void TextureGenEngine::TextInput::RemoveChar()
         }
         if (m_textDrawOffset != 0)
             m_textDrawOffset = 0;
+        m_cursor->SetPosition(m_x + m_textMesh->GetTextWidth(m_text.substr(0, m_cursorPosition), 12), m_y);
+    }
+}
+
+void TextureGenEngine::TextInput::RemoveCharAfter()
+{
+    if (m_cursorPosition < m_text.length())
+    {
+        m_text.erase(m_cursorPosition, 1);
+        float textBeforeSize = m_textMesh->GetTextWidth(m_text.substr(0, m_cursorPosition), 12);
+        if (textBeforeSize > m_width)
+        {
+            m_textDrawOffset = m_x - textBeforeSize + m_width - 5;
+            return;
+        }
         m_cursor->SetPosition(m_x + m_textMesh->GetTextWidth(m_text.substr(0, m_cursorPosition), 12), m_y);
     }
 }

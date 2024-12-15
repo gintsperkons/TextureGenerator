@@ -22,7 +22,8 @@ namespace TextureGenEngine
         ~TextInput();
         void Draw() override;
         void AddChar(unsigned int codepoint);
-        void RemoveChar();
+        void RemoveCharBefore();
+        void RemoveCharAfter();
         void Select() override { m_showCursor = true; };
         void DeSelect() override { m_showCursor = false; };
         void MoveCursorLeft();

@@ -175,7 +175,11 @@ void TextureGenEngine::GUIManager::KeyAction(int key, int scancode, int action, 
             }
             if (key == Key::Backspace)
             {
-                ((TextInput *)currentObject)->RemoveChar();
+                ((TextInput *)currentObject)->RemoveCharBefore();
+            }
+            if (key == Key::Delete)
+            {
+                ((TextInput *)currentObject)->RemoveCharAfter();
             }
         }
     }
