@@ -25,6 +25,7 @@ TextureGenEngine::Text::Text(bool staticSize):m_staticSize(staticSize)
     m_shader = TextureGenEngine::Engine::Get()->GetRenderer()->GetShader("text");
 }
 
+
 float TextureGenEngine::Text::CalculateScale(std::string text, int textSize, int &textHeight, int &textWidth, int &maxDescender)
 {
     float totalWidth = 0.0f;
@@ -45,11 +46,11 @@ float TextureGenEngine::Text::CalculateScale(std::string text, int textSize, int
         }
 
         totalWidth += (ch.Advance >> 6);                               // Advance is in 1/64th pixels, convert to pixels
-        hBelowBase = std::max((float)hBelowBase, (float)ch.Bearing.y); // Track the maximum height below the baseline
-        hAboveBase = std::max((float)hAboveBase, (float)(ch.Size.y - ch.Bearing.y));
+        hAboveBase = std::max((float)hAboveBase, (float)ch.Bearing.y); // Track the maximum height below the baseline
+        hBelowBase = std::max((float)hBelowBase, (float)(ch.Size.y - ch.Bearing.y));
         maxDescender = std::min(maxDescender, (int)(ch.Bearing.y - ch.Size.y));
     }
-    totalHeight = hBelowBase;
+    totalHeight = hAboveBase;
     textHeight = hAboveBase + hBelowBase;
     textWidth = totalWidth;
     // Calculate the maximum scale based on height (height constraint)
@@ -87,12 +88,13 @@ void TextureGenEngine::Text::Draw(std::string text, float x, float y, int frameH
     int textWidth = 0;
     int maxDescender = 0;
     float scale = CalculateScale(text, textSize, textHeight, textWidth, maxDescender);
+    LOG_DEBUG("Text height: %d, Text width: %d, Max Descender: %d, scale: %f\n", textHeight, textWidth, maxDescender, scale);
     std::string::const_iterator c;
 
     if(vAlign == AlignmentVertical::CENTER)
-        y = y + maxDescender * scale - (frameHeight - textHeight) / 2; // VCenter
+        y = y + (frameHeight - textSize) / 2; // VCenter
     else if(vAlign == AlignmentVertical::BOTTOM)
-        y = y; //VBottom
+        y = y; //VBottom   
     else if(vAlign == AlignmentVertical::TOP)
         y = y + (frameHeight - textHeight * scale) - maxDescender * scale; // Adjust for descenders VTop
 
