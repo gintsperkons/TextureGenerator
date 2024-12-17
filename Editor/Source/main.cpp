@@ -6,9 +6,12 @@
 #include <GUI/Color.h>
 #include <GUI/ScalingType.h>
 #include <GUI/NodeElements.h>
+#include <Core/Input/Input.h>
+#include <Core/Input/InputEvents.h>
 
 int main()
 {
+	std::vector<TextureGenEngine::Node *> nodes;
 	TextureGenEngine::Engine::Init();
 	TextureGenEngine::Engine *engine = TextureGenEngine::Engine::Get();
 
@@ -26,9 +29,11 @@ int main()
 	menu2->SetBackground(TextureGenEngine::Color(0.0f, 1.0f, 0.0f, 1.0f));
 	menuBar->AddMenu(menu2);
 
-	TextureGenEngine::Panel *panelList = new TextureGenEngine::Panel(0, 300, 300, 100, TextureGenEngine::ScalingType::FIXED, TextureGenEngine::ScalingType::FILL);
-	panelList->SetBackground(TextureGenEngine::Color(1.0f, 1.0f, 0.0f, 1.0f));
-	guiManager->AddComponent(panelList);
+	TextureGenEngine::Panel *scrollView = new TextureGenEngine::Panel(0, 300, 300, 100, TextureGenEngine::ScalingType::FIXED, TextureGenEngine::ScalingType::FILL);
+	scrollView->SetBackground(TextureGenEngine::Color(1.0f, 1.0f, 0.0f, 1.0f));
+	guiManager->AddComponent(scrollView);
+
+	TextureGenEngine::Label *label = new TextureGenEngine::Label(0, 0, 100, 100, "");
 
 	TextureGenEngine::Panel *panelPreview = new TextureGenEngine::Panel(0, 0, 300, 300, TextureGenEngine::ScalingType::FIXED, TextureGenEngine::ScalingType::FIXED);
 	panelPreview->SetBackground(TextureGenEngine::Color(0.0f, 0.0f, 1.0f, 1.0f));
@@ -38,17 +43,16 @@ int main()
 	canvasNodeGraph->SetBackground(TextureGenEngine::Color(1.0f, 0.0f, 0.0f, 1.0f));
 	guiManager->AddComponent(canvasNodeGraph);
 
-	TextureGenEngine::Node *node = new TextureGenEngine::Node(0, 0);
-	node->SetBackground(TextureGenEngine::Color(0.0f, 1.0f, 1.0f, 1.0f));
-	node->AddElement(new TextureGenEngine::IntegerElement());
-	canvasNodeGraph->AddNode(node);
-
-	TextureGenEngine::Node *node2 = new TextureGenEngine::Node(100, 100);
-	node2->SetBackground(TextureGenEngine::Color(0.6f, 1.0f, 0.5f, 1.0f));
-	canvasNodeGraph->AddNode(node2);
-
-	TextureGenEngine::TextualInputElement *textElement = new TextureGenEngine::TextualInputElement();
-	node2->AddElement(textElement);
+	TextureGenEngine::Input::OnKeyPress([&](KeyEvent e)
+										{
+		if (TextureGenEngine::Key::KeyCode::F1 == e.key && TextureGenEngine::Key::KeyAction::Press == e.action){
+		TextureGenEngine::Node *temp = new TextureGenEngine::Node(100, 200);
+		temp->SetBackground(TextureGenEngine::Color(0.6f, 1.0f, 0.5f, 1.0f));
+		TextureGenEngine::TextualInputElement *textElement = new TextureGenEngine::TextualInputElement();
+		textElement->SetBackground(TextureGenEngine::Color(0.0f, 0.0f, 1.0f, 1.0f));
+		canvasNodeGraph->AddNode(temp); 
+		temp->AddElement(textElement);
+		} }, engine->GetMainWindow());
 
 	engine->GetMainWindow()->AddGUI(guiManager);
 

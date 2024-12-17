@@ -2,6 +2,7 @@
 #include "Core/Window/Window.h"
 #include "GLFW/glfw3.h"
 #include "Core/Logger/Logger.h"
+#include "Engine.h"
 
 void keyCallback(GLFWwindow *window, int key, int scancode, int action, int mods)
 {
@@ -105,4 +106,9 @@ void TextureGenEngine::Input::SubscribeToKeyEvents(std::function<void(KeyEvent)>
     KeyEventSub sub;
     sub.callback = subscriber;
     m_keyEventSubs.push_back(sub);
+}
+
+void TextureGenEngine::Input::OnKeyPress(std::function<void(KeyEvent)> subscriber,Window* win)
+{
+    win->GetInput()->SubscribeToKeyEvents(subscriber);
 }

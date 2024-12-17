@@ -5,3 +5,4 @@
 #include "Components/Canvas2D/Canvas2D.h"
 #include "Components/Canvas2D/Node.h"
 #include "Components/TextInput.h"
+#include "Components/ScrollView.h"

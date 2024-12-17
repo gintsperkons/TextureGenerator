@@ -2,6 +2,11 @@
 #include "Defines.h"
 #include <vector>
 #include "Core/Input/InputEvents.h"
+struct ScissorsData
+{
+    int x,y,width,height;
+    ScissorsData(int x, int y, int width, int height) : x(x), y(y), width(width), height(height) {}
+};
 
 namespace TextureGenEngine
 {
@@ -15,7 +20,7 @@ namespace TextureGenEngine
         std::vector<Component *> m_children;
         Window *m_window;
         int m_mouseButtonStates[Mouse::ButtonLast+1] = {0};
-
+    std::vector<ScissorsData> m_scissors;
         Component * currentObject = nullptr;
         void SelectObject(double x, double y);
 
@@ -30,12 +35,11 @@ namespace TextureGenEngine
         void Resize(int width, int height);
         void Init(int width, int height);
         void GetOldSize(float &width, float &height);
-        void Scissors(int x, int y, int width, int height);
         void MouseMove(MouseMoveEvent e);
         void MouseClick(MouseButtonEvent e);
         void CharEventAction(CharEvent e);
         void KeyAction(int key, int scancode, int action, int mods);
-        
-        void ScissorsReset();
+        void ScissorsPush(int x, int y, int width, int height);
+        void ScissorsPop();
     };
 } // namespace TextureGenEngine

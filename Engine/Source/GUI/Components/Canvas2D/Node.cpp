@@ -43,8 +43,8 @@ void TextureGenEngine::Node::Draw()
 void TextureGenEngine::Node::AddElement(NodeElement *element)
 {
     element->SetParent(this);
-    element->SetManager(m_manager);
-    element->Setup(m_x,m_y);
+    element->SetManager(m_manager); 
+    element->Setup(m_x, m_y);
     m_elements.push_back(element);
 }
 

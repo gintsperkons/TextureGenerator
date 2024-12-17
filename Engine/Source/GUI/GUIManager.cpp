@@ -10,6 +10,10 @@ void TextureGenEngine::GUIManager::SelectObject(double x, double y)
 {
     for (auto &child : m_children)
     {
+        if (currentObject)
+        {
+            currentObject->DeSelect();
+        }
         if (child->CheckCollision(x, y))
         {
             Component *element = child->SelectObject(x, y);
@@ -27,10 +31,7 @@ void TextureGenEngine::GUIManager::SelectObject(double x, double y)
             }
         }
     }
-    if (currentObject)
-    {
-        currentObject->DeSelect();
-    }
+
     currentObject = nullptr;
 }
 
@@ -60,7 +61,6 @@ void TextureGenEngine::GUIManager::Update()
 
 void TextureGenEngine::GUIManager::Draw()
 {
-    if (currentObject ) LOG_DEBUG("selected object %s\n", currentObject->GetType().c_str());
     for (auto &child : m_children)
     {
         child->Draw();
@@ -114,10 +114,7 @@ void TextureGenEngine::GUIManager::GetOldSize(float &width, float &height)
     height = m_oldHeight;
 }
 
-void TextureGenEngine::GUIManager::Scissors(int x, int y, int width, int height)
-{
-    m_window->Scissors(x, y, width, height);
-}
+
 
 void TextureGenEngine::GUIManager::MouseMove(MouseMoveEvent e)
 {
@@ -186,7 +183,36 @@ void TextureGenEngine::GUIManager::KeyAction(int key, int scancode, int action, 
     }
 }
 
-void TextureGenEngine::GUIManager::ScissorsReset()
+void TextureGenEngine::GUIManager::ScissorsPush(int x, int y, int width, int height)
 {
-    m_window->ScissorsReset();
+    if (m_scissors.size() > 0)
+    {
+        if (x < m_scissors.back().x)
+        {
+            x = m_scissors.back().x;
+            width = width - (m_scissors.back().x - x);
+        }
+        if (y < m_scissors.back().y)
+        {
+            y = m_scissors.back().y;
+            height = height - (m_scissors.back().y - y);
+        }
+    }
+    m_scissors.push_back(ScissorsData(x, y, width, height));
+    m_window->Scissors(x, y, width, height);
 }
+
+void TextureGenEngine::GUIManager::ScissorsPop()
+{
+    m_scissors.pop_back();
+    if (m_scissors.size() > 0)
+    {
+        m_window->Scissors(m_scissors.back().x, m_scissors.back().y, m_scissors.back().width, m_scissors.back().height);
+    }
+    else
+    {
+        m_window->ScissorsReset();
+    }
+}
+
+

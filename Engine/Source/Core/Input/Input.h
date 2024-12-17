@@ -53,6 +53,7 @@ namespace TextureGenEngine
         void SubscribeToMouseMoveEvents(std::function<void(MouseMoveEvent)> subscriber);
         void SubscribeToCharEvents(std::function<void(CharEvent)> subscriber);
         void SubscribeToKeyEvents(std::function<void(KeyEvent)> subscriber);
+        static TAPI void OnKeyPress(std::function<void(KeyEvent)> subscriber, Window* win);
     };
 
     

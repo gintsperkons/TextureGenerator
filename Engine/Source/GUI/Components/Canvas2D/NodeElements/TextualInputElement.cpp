@@ -50,10 +50,8 @@ void TextureGenEngine::TextualInputElement::OnMouseDrag(double x, double y)
 
 TextureGenEngine::Component *TextureGenEngine::TextualInputElement::SelectObject(double x, double y)
 {
-    LOG_DEBUG("Text properties %f %f %f %f\n", m_textInput->GetX(), m_textInput->GetY(), m_textInput->GetWidth(), m_textInput->GetHeight());
-    if (m_textInput->CheckCollision(x, y))
+     if (m_textInput->CheckCollision(x, y))
     {
-        LOG_DEBUG("TextualInputElement selected\n");
         return m_textInput;
     }
     return nullptr;

@@ -16,14 +16,14 @@ void TextureGenEngine::Canvas2D::Draw()
 {
     float oldWidth, oldHeight;
     m_manager->GetOldSize(oldWidth, oldHeight);
-    m_manager->Scissors(m_x, m_y, m_width, m_height);
+    m_manager->ScissorsPush(m_x, m_y, m_width, m_height);
     Panel::Draw();
     
     for (auto &node : m_nodes)
     {
         node->Draw();
     }
-    m_manager->ScissorsReset();
+    m_manager->ScissorsPop();
 }
 
 TextureGenEngine::Canvas2D::~Canvas2D()

@@ -39,7 +39,7 @@ void TextureGenEngine::TextInput::Init(int width, int height)
 void TextureGenEngine::TextInput::Draw()
 {
     if (m_manager == nullptr) return;
-    m_manager->Scissors(m_x, m_y, m_width, m_height);
+    m_manager->ScissorsPush(m_x, m_y, m_width, m_height);
     Component::Draw();
     if ((m_cursor && m_textMesh && m_showCursor))
     {
@@ -47,9 +47,10 @@ void TextureGenEngine::TextInput::Draw()
     }
     if (m_textMesh)
     {
+        LOG_DEBUG("position %f %f\n", m_x + m_textDrawOffset, m_y);
         m_textMesh->Draw(m_text, m_x + m_textDrawOffset, m_y, m_height, m_width, 12, glm::vec3(0, 0, 0), AlignmentHorizontal::LEFT, AlignmentVertical::CENTER);
     }
-    m_manager->ScissorsReset();
+    m_manager->ScissorsPop();
 }
 
 void TextureGenEngine::TextInput::AddChar(unsigned int codepoint)
@@ -59,10 +60,11 @@ void TextureGenEngine::TextInput::AddChar(unsigned int codepoint)
 
     float textBeforeSize = m_textMesh->GetTextWidth(m_text.substr(0, m_cursorPosition), 12);
     if (textBeforeSize > m_width)
-    {
-        m_textDrawOffset = m_x - textBeforeSize + m_width - 5;
-        m_cursor->SetPosition(m_x + m_width - 5, m_y);
-        return;
+    {   LOG_DEBUG("position %f %f\n", m_x, m_y);
+    LOG_DEBUG("drawOffset %f\n", m_textDrawOffset);
+    m_textDrawOffset = m_width - 5 - textBeforeSize;
+    m_cursor->SetPosition(m_x + m_width - 5, m_y);
+    return;
     }
     m_cursor->SetPosition(m_x + textBeforeSize, m_y);
 }
@@ -76,7 +78,7 @@ void TextureGenEngine::TextInput::RemoveCharBefore()
         float textBeforeSize = m_textMesh->GetTextWidth(m_text.substr(0, m_cursorPosition), 12);
         if (textBeforeSize > m_width)
         {
-            m_textDrawOffset = m_x - textBeforeSize + m_width - 5;
+            m_textDrawOffset = m_width - 5 - textBeforeSize;
             return;
         }
         if (m_textDrawOffset != 0)
