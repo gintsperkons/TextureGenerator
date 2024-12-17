@@ -177,6 +177,8 @@ void TextureGenEngine::Mesh::Scale(float x, float y)
 {
     m_scales[0] = x;
     m_scales[1] = y;
+    m_size[0] *= x;
+    m_size[1] *= y;
     m_model = glm::scale(m_model, glm::vec3(x, y, 1.0f));
 }
 
