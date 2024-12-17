@@ -4,15 +4,18 @@
 
 namespace TextureGenEngine
 {
+    class Mesh;
     class TextInput;
 
     class TextualInputElement : public NodeElement
     {
     private:
         TextInput *m_textInput;
+        Mesh *m_inputImage;
+        Mesh *m_outputImage;
 
-    public:
-        TAPI TextualInputElement();
+            public : TAPI
+                     TextualInputElement();
         void Draw() override;
         virtual void SetManager(GUIManager *manager) override;
         virtual void Init(int width, int height) override;

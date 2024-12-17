@@ -1,6 +1,7 @@
 #pragma once
 #include "Defines.h"
 #include "GUI/Color.h"
+#include "GUI/Padding.h"
 #include <string>
 
 namespace TextureGenEngine
@@ -9,10 +10,11 @@ namespace TextureGenEngine
     class Mesh;
     class Component
     {
-        
 
     protected:
+        float m_scales[2] = {1, 1};
         GUIManager *m_manager = nullptr;
+        Padding m_padding;
         Color m_backgroundColor;
         Mesh *m_background = nullptr;
         Component *m_parent = nullptr;
@@ -47,7 +49,10 @@ namespace TextureGenEngine
         virtual Component *SelectObject(double x, double y) { return nullptr; }
         virtual void OnMouseDrag(double x, double y);
         virtual void SetDepth(float depth);
-        virtual void SetPosition(float x, float y) { m_x = x; m_y = y; };
-
+        virtual void SetPosition(float x, float y)
+        {
+            m_x = x;
+            m_y = y;
+        };
     };
 } // namespace TextureGenEngine

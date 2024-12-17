@@ -21,7 +21,7 @@ void TextureGenEngine::Node::Init(int width, int height)
     {
         m_x = m_parent->GetX() + m_x;
         m_y = m_parent->GetY() + m_y;
-        m_dataBackground->SetPosition(m_x, m_y-100);
+        m_dataBackground->SetPosition(m_x, m_y - m_dataBackgroundHeight);
     }
     Component::Init(width, height);
     for (auto &element : m_elements)
@@ -46,12 +46,35 @@ void TextureGenEngine::Node::AddElement(NodeElement *element)
     element->SetManager(m_manager); 
     element->Setup(m_x, m_y);
     m_elements.push_back(element);
+    float maxWidth = 0;
+    float totalHeight = 10;
+    for (auto &element : m_elements)
+    {
+        if (element->GetWidth() > maxWidth)
+        {
+            maxWidth = element->GetWidth();
+        }
+        totalHeight += element->GetHeight();
+    }
+    LOG_DEBUG("Max width %f\n", maxWidth);
+    LOG_DEBUG("Total height %f\n", totalHeight);
+    m_scales[0] = maxWidth/m_width;
+    m_scales[1] = totalHeight / m_dataBackgroundHeight;
+    LOG_DEBUG("Scales %f %f\n", m_scales[0], m_scales[1]);
+    LOG_DEBUG("total height %f, height %f\n", totalHeight, m_height);
+    m_dataBackground->Scale(m_scales[0], m_scales[1]);
+    // m_dataBackground->SetSize(maxWidth, totalHeight);
+
+    m_dataBackground->SetPosition(m_x, m_y-totalHeight);
+    m_background->Scale(m_scales[0], 1);
+    m_width = maxWidth;
+    m_dataBackgroundHeight = totalHeight;
 }
 
 void TextureGenEngine::Node::OnMouseDrag(double x, double y)
 {
     Component::OnMouseDrag(x, y);
-    m_dataBackground->Move(x, y);
+    m_dataBackground->Move(x,y);
     for (auto &element : m_elements)
     {
         element->OnMouseDrag(x, y);

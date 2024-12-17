@@ -14,6 +14,7 @@ namespace TextureGenEngine
 		glm::mat4 m_model;
 		Shader *m_shader;
 		unsigned int m_indexCount;
+		float m_scales[2] = { 1, 1 };
 
 	public:
 		Mesh(Vertex3D vertices[], unsigned int vertexCount, unsigned int indices[], unsigned int indexCount);
@@ -22,6 +23,7 @@ namespace TextureGenEngine
 		void Move(float x, float y);
 		void SetPosition(float x, float y);
 		void Scale(float x, float y);
+		void SetSize(float width, float height);
 		void ChangeColor(float r, float g, float b, float a);
 		void ChangeShader(std::string shaderName);
 		void SetDepth(float depth);

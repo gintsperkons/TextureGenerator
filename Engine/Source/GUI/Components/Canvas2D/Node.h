@@ -11,6 +11,7 @@ namespace TextureGenEngine
     {
         Mesh *m_dataBackground = nullptr;
     std::vector<NodeElement *> m_elements;
+    float m_dataBackgroundHeight = 100;
     public:
         TAPI Node(int x, int y);
         void Init(int width, int height) override;

@@ -88,7 +88,6 @@ void TextureGenEngine::Text::Draw(std::string text, float x, float y, int frameH
     int textWidth = 0;
     int maxDescender = 0;
     float scale = CalculateScale(text, textSize, textHeight, textWidth, maxDescender);
-    LOG_DEBUG("Text height: %d, Text width: %d, Max Descender: %d, scale: %f\n", textHeight, textWidth, maxDescender, scale);
     std::string::const_iterator c;
 
     if(vAlign == AlignmentVertical::CENTER)

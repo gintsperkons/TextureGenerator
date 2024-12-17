@@ -143,7 +143,8 @@ bool TextureGenEngine::Mesh::CheckClickCollision(float x, float y)
 
 void TextureGenEngine::Mesh::Move(float x, float y)
 {
-    m_model = glm::translate(m_model, glm::vec3(x, -y, 0.0f));
+
+    m_model = glm::translate(m_model, glm::vec3(x / m_scales[0], -y / m_scales[1], 0.0f));
 }
 
 void TextureGenEngine::Mesh::SetPosition(float x, float y)
@@ -162,8 +163,13 @@ void TextureGenEngine::Mesh::SetPosition(float x, float y)
 }
 void TextureGenEngine::Mesh::Scale(float x, float y)
 {
-    
+    m_scales[0] = x;
+    m_scales[1] = y;
     m_model = glm::scale(m_model, glm::vec3(x, y, 1.0f));
+}
+
+void TextureGenEngine::Mesh::SetSize(float width, float height)
+{
 }
 
 void TextureGenEngine::Mesh::ChangeColor(float r, float g, float b, float a)
