@@ -17,6 +17,18 @@ TextureGenEngine::Mesh::Mesh(Vertex3D vertices[], unsigned int vertexCount, unsi
 {
     m_vertices = std::vector<Vertex3D>(vertices, vertices + vertexCount);
     m_indices = std::vector<unsigned int>(indices, indices + indexCount);
+    float minX, minY, maxX, maxY;
+    minX = minY = 9999.0f;
+    maxX = maxY = -9999.0f;
+    for (int i = 0; i < vertexCount; i++)
+    {
+        minX = std::min(minX, vertices[i].Position.x);
+        minY = std::min(minY, vertices[i].Position.y);
+        maxX = std::max(maxX, vertices[i].Position.x);
+        maxY = std::max(maxY, vertices[i].Position.y);
+    }
+    m_size[0] = maxX - minX;
+    m_size[1] = maxY - minY;
 
     glGenVertexArrays(1, &VAO);
     glGenBuffers(1, &VBO);
@@ -170,6 +182,11 @@ void TextureGenEngine::Mesh::Scale(float x, float y)
 
 void TextureGenEngine::Mesh::SetSize(float width, float height)
 {
+    m_scales[0] = width / m_size[0];
+    m_scales[1] = height / m_size[1];
+    m_model = glm::scale(m_model, glm::vec3(m_scales[0], m_scales[1], 1.0f));
+    m_size[0] = width;
+    m_size[1] = height;
 }
 
 void TextureGenEngine::Mesh::ChangeColor(float r, float g, float b, float a)

@@ -62,8 +62,8 @@ void TextureGenEngine::Node::AddElement(NodeElement *element)
     m_scales[1] = totalHeight / m_dataBackgroundHeight;
     LOG_DEBUG("Scales %f %f\n", m_scales[0], m_scales[1]);
     LOG_DEBUG("total height %f, height %f\n", totalHeight, m_height);
-    m_dataBackground->Scale(m_scales[0], m_scales[1]);
-    // m_dataBackground->SetSize(maxWidth, totalHeight);
+    // m_dataBackground->Scale(m_scales[0], m_scales[1]);
+    m_dataBackground->SetSize(maxWidth, totalHeight);
 
     m_dataBackground->SetPosition(m_x, m_y-totalHeight);
     m_background->Scale(m_scales[0], 1);

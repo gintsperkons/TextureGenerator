@@ -48,10 +48,10 @@ int main()
 		if (TextureGenEngine::Key::KeyCode::F1 == e.key && TextureGenEngine::Key::KeyAction::Press == e.action){
 		TextureGenEngine::Node *temp = new TextureGenEngine::Node(100, 200);
 		temp->SetBackground(TextureGenEngine::Color(0.6f, 1.0f, 0.5f, 1.0f));
-		TextureGenEngine::TextualInputElement *textElement = new TextureGenEngine::TextualInputElement();
-		textElement->SetBackground(TextureGenEngine::Color(0.0f, 0.0f, 1.0f, 1.0f));
-		canvasNodeGraph->AddNode(temp); 
-		temp->AddElement(textElement);
+		TextureGenEngine::IntegerElement *intElement = new TextureGenEngine::IntegerElement();
+		intElement->SetBackground(TextureGenEngine::Color(0.0f, 0.0f, 1.0f, 1.0f));
+		canvasNodeGraph->AddNode(temp);
+		temp->AddElement(intElement);
 		} }, engine->GetMainWindow());
 
 	engine->GetMainWindow()->AddGUI(guiManager);

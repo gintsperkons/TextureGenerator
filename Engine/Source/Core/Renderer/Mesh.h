@@ -15,6 +15,7 @@ namespace TextureGenEngine
 		Shader *m_shader;
 		unsigned int m_indexCount;
 		float m_scales[2] = { 1, 1 };
+		float m_size[2] = { 1, 1 };
 
 	public:
 		Mesh(Vertex3D vertices[], unsigned int vertexCount, unsigned int indices[], unsigned int indexCount);
