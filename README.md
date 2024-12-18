@@ -20,6 +20,9 @@
 3. Run ```make```
 4. Run ```./run.sh``` if not working the executable should be located in Binaries/runtime-...-...-.../
 
+### KEY CONTROLS 
+F1 spawns node
+
 ## Acknowledgements
 ### Used Libraries
 
