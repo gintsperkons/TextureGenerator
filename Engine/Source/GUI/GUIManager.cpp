@@ -50,6 +50,10 @@ TextureGenEngine::GUIManager::~GUIManager()
 
 void TextureGenEngine::GUIManager::Update()
 {
+    if (currentObject)
+    {
+        LOG_DEBUG("Current object %s\n", currentObject->GetType().c_str());
+    }
     for (int i = 0; i <= Mouse::ButtonLast; i++)
     {
         if (m_mouseButtonStates[i] == Mouse::Pressed)

@@ -4,8 +4,7 @@
 #include "GUI/GUIManager.h"
 #include "Core/Logger/Logger.h"
 
-TextureGenEngine::Component::Component(int x, int y, int width, int height):
-m_x(static_cast<float>(x)), m_y(static_cast<float>(y)), m_width(static_cast<float>(width)), m_height(static_cast<float>(height))
+TextureGenEngine::Component::Component(int x, int y, int width, int height) : m_x(static_cast<float>(x)), m_y(static_cast<float>(y)), m_width(static_cast<float>(width)), m_height(static_cast<float>(height))
 {
     LOG_DEBUG("Width %f\n", m_width);
     m_background = ObjectFactory::CreateSquare(width, height);
@@ -14,7 +13,7 @@ m_x(static_cast<float>(x)), m_y(static_cast<float>(y)), m_width(static_cast<floa
 void TextureGenEngine::Component::Draw()
 {
     if (m_background)
-    { 
+    {
         m_background->Draw();
     }
 }
@@ -28,9 +27,9 @@ void TextureGenEngine::Component::Resize(int width, int height)
 
     float oldWidth, oldHeight;
     m_manager->GetOldSize(oldWidth, oldHeight);
-    float newWidth = m_width*width/oldWidth;
-    float newHeight = m_height*height/oldHeight;
-    m_background->Scale(newWidth/m_width, newHeight/m_height);
+    float newWidth = m_width * width / oldWidth;
+    float newHeight = m_height * height / oldHeight;
+    m_background->Scale(newWidth / m_width, newHeight / m_height);
     m_width = newWidth;
     m_height = newHeight;
 }
@@ -80,4 +79,19 @@ void TextureGenEngine::Component::OnMouseDrag(double x, double y)
 void TextureGenEngine::Component::SetDepth(float depth)
 {
     m_background->SetDepth(depth);
+}
+
+void TextureGenEngine::Component::SetPosition(float x, float y)
+{
+
+    m_x = x;
+    m_y = y;
+    m_background->SetPosition(x, y);
+}
+
+void TextureGenEngine::Component::Move(float x, float y)
+{
+    m_x += x;
+    m_y -= y;
+    m_background->Move(x, y);
 }

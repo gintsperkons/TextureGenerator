@@ -49,10 +49,8 @@ namespace TextureGenEngine
         virtual Component *SelectObject(double x, double y) { return nullptr; }
         virtual void OnMouseDrag(double x, double y);
         virtual void SetDepth(float depth);
-        virtual void SetPosition(float x, float y)
-        {
-            m_x = x;
-            m_y = y;
-        };
+        virtual void SetPosition(float x, float y);
+        virtual void Move(float x, float y);
+        
     };
 } // namespace TextureGenEngine

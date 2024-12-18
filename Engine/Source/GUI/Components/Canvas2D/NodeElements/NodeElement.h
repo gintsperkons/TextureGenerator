@@ -6,16 +6,21 @@
 namespace TextureGenEngine
 {
     class Node;
-    class NodeElement: public Component
+    class OutputConnector;
+    class InputConnector;
+    class NodeElement : public Component
     {
-    private:
+    protected:
         std::string m_elementType;
-    public:
 
+        InputConnector *m_inputImage;
+        OutputConnector *m_outputImage;
+
+    public:
         NodeElement(/* args */);
         ~NodeElement();
         virtual void OnMouseDrag(double x, double y) override;
-        virtual void Setup(int x ,int y);
-        virtual Component *SelectObject(double x, double y) override { return nullptr; };
+        virtual void Setup(int x, int y);
+        virtual Component *SelectObject(double x, double y) override;
     };
 } // namespace TextureGenEngine

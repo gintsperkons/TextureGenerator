@@ -93,7 +93,7 @@ void TextureGenEngine::TextInput::RemoveCharAfter()
         float textBeforeSize = m_textMesh->GetTextWidth(m_text.substr(0, m_cursorPosition), 12);
         if (textBeforeSize > m_width)
         {
-            m_textDrawOffset = m_x - textBeforeSize + m_width - 5;
+            m_textDrawOffset = m_width - textBeforeSize - 5;
             return;
         }
         m_cursor->SetPosition(m_x + m_textMesh->GetTextWidth(m_text.substr(0, m_cursorPosition), 12), m_y);
@@ -108,7 +108,7 @@ void TextureGenEngine::TextInput::MoveCursorLeft()
         float textBeforeSize = m_textMesh->GetTextWidth(m_text.substr(0, m_cursorPosition), 12);
         if (textBeforeSize > m_width)
         {
-            m_textDrawOffset = m_x - textBeforeSize + m_width - 5;
+            m_textDrawOffset = m_width - textBeforeSize - 5;
             m_cursor->SetPosition(m_x + m_width - 5, m_y);
             return;
         }
@@ -127,7 +127,7 @@ void TextureGenEngine::TextInput::MoveCursorRight()
         float textBeforeSize = m_textMesh->GetTextWidth(m_text.substr(0, m_cursorPosition), 12);
         if (textBeforeSize > m_width)
         {
-            m_textDrawOffset = m_x - textBeforeSize + m_width - 5;
+            m_textDrawOffset = m_width - textBeforeSize - 5;
             m_cursor->SetPosition(m_x + m_width - 5, m_y);
             return;
         }
@@ -135,11 +135,18 @@ void TextureGenEngine::TextInput::MoveCursorRight()
     }
 }
 
+
+
 void TextureGenEngine::TextInput::SetPosition(float x, float y)
 {
-    m_x = x;
-    m_y = y;
+    Component::SetPosition(x, y);
     m_cursor->SetPosition(x, y);
-    m_background->SetPosition(x, y);
     m_textMesh->Draw(m_text, m_x, m_y, m_height, m_width, 12, glm::vec3(0, 0, 0), AlignmentHorizontal::LEFT, AlignmentVertical::CENTER);
+}
+
+void TextureGenEngine::TextInput::Move(float x, float y)
+{
+    Component::Move(x, y);
+    m_cursor->Move(x, y);
+    
 }

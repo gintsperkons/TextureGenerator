@@ -30,5 +30,6 @@ namespace TextureGenEngine
         void MoveCursorLeft();
         void MoveCursorRight();
         void SetPosition(float x, float y) override;
+        void Move(float x, float y) override;
     };
 }

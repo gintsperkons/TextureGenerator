@@ -11,8 +11,6 @@ namespace TextureGenEngine
     {
     private:
         TextInput *m_textInput;
-        Mesh *m_inputImage;
-        Mesh *m_outputImage;
 
             public : TAPI
                      TextualInputElement();

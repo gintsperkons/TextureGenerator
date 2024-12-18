@@ -113,6 +113,7 @@ TextureGenEngine::Component *TextureGenEngine::Node::SelectObject(double x, doub
     {
         if (element->CheckCollision(x, y))
         {
+            LOG_DEBUG("Selecting element\n");
             Component* subElement = element->SelectObject(x, y);
             if (subElement)
             {
