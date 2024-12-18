@@ -51,6 +51,7 @@ namespace TextureGenEngine
         virtual void SetDepth(float depth);
         virtual void SetPosition(float x, float y);
         virtual void Move(float x, float y);
+        virtual void MouseRelease(){};
         
     };
 } // namespace TextureGenEngine

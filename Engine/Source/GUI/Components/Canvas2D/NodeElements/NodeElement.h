@@ -21,6 +21,8 @@ namespace TextureGenEngine
         ~NodeElement();
         virtual void OnMouseDrag(double x, double y) override;
         virtual void Setup(int x, int y);
+        virtual void SetManager(GUIManager *manager) override;
+        
         virtual Component *SelectObject(double x, double y) override;
     };
 } // namespace TextureGenEngine

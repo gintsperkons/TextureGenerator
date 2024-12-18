@@ -41,5 +41,6 @@ namespace TextureGenEngine
         void KeyAction(int key, int scancode, int action, int mods);
         void ScissorsPush(int x, int y, int width, int height);
         void ScissorsPop();
+        void GetMousePosition(float &x, float &y);
     };
 } // namespace TextureGenEngine

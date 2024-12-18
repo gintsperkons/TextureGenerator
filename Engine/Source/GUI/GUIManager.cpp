@@ -146,7 +146,10 @@ void TextureGenEngine::GUIManager::MouseClick(MouseButtonEvent e)
     }
     if (e.button == Mouse::ButtonLeft && !e.down)
     {
-
+        if (currentObject)
+        {
+            currentObject->MouseRelease();
+        }
         LOG_DEBUG("Mouse button released\n");
     }
 }
@@ -219,4 +222,10 @@ void TextureGenEngine::GUIManager::ScissorsPop()
     }
 }
 
-
+void TextureGenEngine::GUIManager::GetMousePosition(float &x, float &y)
+{
+    double xpos, ypos;
+    m_window->GetInput()->GetMousePosition(xpos, ypos);
+    x = xpos;
+    y = ypos;
+}

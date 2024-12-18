@@ -96,7 +96,7 @@ TextureGenEngine::Mesh* TextureGenEngine::ObjectFactory::CreateCircle()
 
 TextureGenEngine::Line *TextureGenEngine::ObjectFactory::CreateLine(int xStart, int yStart, int xEnd, int yEnd)
 {
-    Vertex3D start = Vertex3D{glm::vec3(xStart, yStart,1), glm::vec3(0.5f, 0.5f, 0.0f), glm::vec2(1.0f, 1.0f)};
-    Vertex3D end = Vertex3D{glm::vec3(xEnd, yEnd,1), glm::vec3(0.5f, 0.5f, 0.0f), glm::vec2(1.0f, 1.0f)};
+    Vertex3D start = Vertex3D{glm::vec3(xStart, yStart,0.1), glm::vec3(0.5f, 0.5f, 0.0f), glm::vec2(1.0f, 1.0f)};
+    Vertex3D end = Vertex3D{glm::vec3(xEnd, yEnd,0.1), glm::vec3(0.5f, 0.5f, 0.0f), glm::vec2(1.0f, 1.0f)};
     return new Line(start, end);
 }

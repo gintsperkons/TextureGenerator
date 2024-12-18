@@ -31,6 +31,7 @@ void TextureGenEngine::TextualInputElement::Draw()
 
 void TextureGenEngine::TextualInputElement::SetManager(GUIManager *manager)
 {
+    NodeElement::SetManager(manager);
     m_manager = manager;
     LOG_DEBUG("Setting manager for TextualInputElement%d\n", m_manager);
     m_textInput->SetManager(manager);
@@ -57,8 +58,6 @@ void TextureGenEngine::TextualInputElement::OnMouseDrag(double x, double y)
 {
     NodeElement::OnMouseDrag(x, y);
     m_textInput->Move(x, y);
-    m_inputImage->Move(x, y);
-    m_outputImage->Move(x, y);
 }
 
 TextureGenEngine::Component *TextureGenEngine::TextualInputElement::SelectObject(double x, double y)

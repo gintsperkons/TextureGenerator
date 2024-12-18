@@ -31,5 +31,7 @@ namespace TextureGenEngine
 
         // Method to check if the line was clicked (collision detection with point)
         bool CheckClickCollision(float x, float y);
+        void UpdateEndPosition(float x, float y);
+        void MoveStart(float x, float y);
     };
 }

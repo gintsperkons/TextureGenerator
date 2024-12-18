@@ -5,12 +5,14 @@
 #include <Core/Logger/Logger.h>
 
 TextureGenEngine::NodeElement::NodeElement() : Component(0, 0, 100, 100)
-{
+{ 
     m_draggable = false;
     m_type = "NodeElement";
     m_elementType = "base";
     m_inputImage = new InputConnector();
+    m_inputImage->SetManager(m_manager);
     m_outputImage = new OutputConnector();
+    m_outputImage->SetManager(m_manager);
 }
 
 TextureGenEngine::NodeElement::~NodeElement()
@@ -21,7 +23,10 @@ void TextureGenEngine::NodeElement::OnMouseDrag(double x, double y)
 {
     m_x += x;
     m_y -= y;
+    m_inputImage->Move(x, y);
+    m_outputImage->Move(x, y);
 }
+
 
 void TextureGenEngine::NodeElement::Setup(int x, int y)
 {
@@ -36,6 +41,13 @@ void TextureGenEngine::NodeElement::Setup(int x, int y)
         m_x = x;
         m_y = y;
     }
+}
+
+void TextureGenEngine::NodeElement::SetManager(GUIManager *manager)
+{
+    m_manager = manager;
+    m_inputImage->SetManager(manager);
+    m_outputImage->SetManager(manager);
 }
 
 TextureGenEngine::Component *TextureGenEngine::NodeElement::SelectObject(double x, double y)

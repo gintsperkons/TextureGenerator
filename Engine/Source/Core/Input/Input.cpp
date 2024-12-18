@@ -112,3 +112,9 @@ void TextureGenEngine::Input::OnKeyPress(std::function<void(KeyEvent)> subscribe
 {
     win->GetInput()->SubscribeToKeyEvents(subscriber);
 }
+
+void TextureGenEngine::Input::GetMousePosition(double &x, double &y)
+{
+    glfwGetCursorPos(m_window->GetWindow(), &x, &y);
+    y = m_window->GetHeight()-y;
+}
