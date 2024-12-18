@@ -151,3 +151,11 @@ void TextureGenEngine::Line::MoveStart(float x, float y)
     glBufferSubData(GL_ARRAY_BUFFER, 0, m_vertices.size() * sizeof(Vertex3D), &m_vertices[0]); // Update data
     glBindBuffer(GL_ARRAY_BUFFER, 0);                                                          // Unbind the VBO
 }
+
+void TextureGenEngine::Line::MoveEnd(float x, float y)
+{
+    m_vertices[1].Position = m_vertices[1].Position + glm::vec3(x, -y, 0.0f); // Update the end position
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);                                                        // Bind the VBO
+    glBufferSubData(GL_ARRAY_BUFFER, 0, m_vertices.size() * sizeof(Vertex3D), &m_vertices[0]); // Update data
+    glBindBuffer(GL_ARRAY_BUFFER, 0);                                                          // Unbind the VBO
+}

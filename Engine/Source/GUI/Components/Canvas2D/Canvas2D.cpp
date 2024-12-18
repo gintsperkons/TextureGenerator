@@ -2,6 +2,7 @@
 #include "GUI/GUIManager.h"
 #include "GUI/Components/MenuComponent/MenuComponent.h"
 #include "Core/Logger/Logger.h"
+#include "GUI/Components/Canvas2D/NodeElements/InputConnector.h"
 #include "Node.h"
 
 TextureGenEngine::Canvas2D::Canvas2D(int x, int y, int width, int height, ScalingType xScaling, ScalingType yScaling) : Panel(x, y, width, height, xScaling, yScaling)
@@ -14,11 +15,21 @@ TextureGenEngine::Canvas2D::Canvas2D(int x, int y, int width, int height, Scalin
 
 void TextureGenEngine::Canvas2D::Draw()
 {
+    // float x, y;
+    //     m_manager->GetMousePosition(x, y);
+    //     if (GetInputConnector((double)x, (double)y))
+    //     {
+    //         LOG_DEBUG("Hand cursor\n");
+    //     }
+    //     else
+    //     {
+    //         LOG_DEBUG("Arrow cursor\n");
+    //     }
     float oldWidth, oldHeight;
     m_manager->GetOldSize(oldWidth, oldHeight);
     m_manager->ScissorsPush(m_x, m_y, m_width, m_height);
     Panel::Draw();
-    
+
     for (auto &node : m_nodes)
     {
         node->Draw();
@@ -42,7 +53,7 @@ TextureGenEngine::Component *TextureGenEngine::Canvas2D::SelectObject(double x, 
 {
     for (auto &node : m_nodes)
     {
-        Component* nodeSubElement = node->SelectObject(x, y);
+        Component *nodeSubElement = node->SelectObject(x, y);
         if (nodeSubElement)
         {
             return nodeSubElement;
@@ -61,4 +72,17 @@ void TextureGenEngine::Canvas2D::OnMouseDrag(double x, double y)
     {
         node->OnMouseDrag(x, y);
     }
+}
+
+TextureGenEngine::InputConnector *TextureGenEngine::Canvas2D::GetInputConnector(double x, double y)
+{
+    for (auto &node : m_nodes)
+    {
+        InputConnector *inputConnector = node->GetInputConnector(x, y);
+        if (inputConnector)
+        {
+            return inputConnector;
+        }
+    }
+    return nullptr;
 }

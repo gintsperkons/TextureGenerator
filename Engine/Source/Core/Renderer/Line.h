@@ -33,5 +33,6 @@ namespace TextureGenEngine
         bool CheckClickCollision(float x, float y);
         void UpdateEndPosition(float x, float y);
         void MoveStart(float x, float y);
+        void MoveEnd(float x, float y);
     };
 }

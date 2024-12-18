@@ -5,8 +5,10 @@
 
 namespace TextureGenEngine
 {
+    class InputConnector;
     class NodeElement;
     class Mesh;
+    class Canvas2D;
     class Node : public Component
     {
         Mesh *m_dataBackground = nullptr;
@@ -22,7 +24,8 @@ namespace TextureGenEngine
         float GetOffset(NodeElement* element);
         Component *SelectObject(double x, double y) override;
         ~Node();
-
+        InputConnector* GetInputConnector(double x, double y);
+        Canvas2D* GetCanvas();
         static inline int c_titleHeight = 25;
     };
 }

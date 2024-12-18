@@ -12,9 +12,9 @@ namespace TextureGenEngine
     {
     protected:
         std::string m_elementType;
-
         InputConnector *m_inputImage;
         OutputConnector *m_outputImage;
+        Node* m_node;
 
     public:
         NodeElement(/* args */);
@@ -22,7 +22,9 @@ namespace TextureGenEngine
         virtual void OnMouseDrag(double x, double y) override;
         virtual void Setup(int x, int y);
         virtual void SetManager(GUIManager *manager) override;
-        
+        virtual void SetNode(Node* node) { m_node = node; }
         virtual Component *SelectObject(double x, double y) override;
+        InputConnector *GetInputConnector(double x, double y);
+        Node * GetNode() { return m_node; }
     };
 } // namespace TextureGenEngine

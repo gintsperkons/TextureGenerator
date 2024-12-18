@@ -5,6 +5,8 @@
 #include "GUI/GUIManager.h"
 #include "Core/Window/Window.h"
 #include "NodeElements/NodeElement.h"
+#include "NodeElements/InputConnector.h"
+#include "Canvas2D.h"
 
 TextureGenEngine::Node::Node(int x, int y):
 Component(x, y, 100, c_titleHeight)
@@ -45,6 +47,7 @@ void TextureGenEngine::Node::AddElement(NodeElement *element)
     element->SetParent(this);
     element->SetManager(m_manager); 
     element->Setup(m_x, m_y);
+    element->SetNode(this);
     m_elements.push_back(element);
     float maxWidth = 0;
     float totalHeight = 10;
@@ -130,4 +133,22 @@ TextureGenEngine::Component *TextureGenEngine::Node::SelectObject(double x, doub
 
 TextureGenEngine::Node::~Node()
 {
+}
+
+TextureGenEngine::InputConnector *TextureGenEngine::Node::GetInputConnector(double x, double y)
+{
+    for (auto &element : m_elements)
+    {
+        InputConnector *input = element->GetInputConnector(x, y);
+        if (input)
+        {
+            return input;
+        }
+    }
+    return nullptr;
+}
+
+TextureGenEngine::Canvas2D *TextureGenEngine::Node::GetCanvas()
+{
+    return dynamic_cast<Canvas2D *>(m_parent);
 }

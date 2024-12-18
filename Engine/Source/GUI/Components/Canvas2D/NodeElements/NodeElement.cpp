@@ -11,8 +11,10 @@ TextureGenEngine::NodeElement::NodeElement() : Component(0, 0, 100, 100)
     m_elementType = "base";
     m_inputImage = new InputConnector();
     m_inputImage->SetManager(m_manager);
+    m_inputImage->SetParent(this);
     m_outputImage = new OutputConnector();
     m_outputImage->SetManager(m_manager);
+    m_outputImage->SetParent(this);
 }
 
 TextureGenEngine::NodeElement::~NodeElement()
@@ -64,6 +66,15 @@ TextureGenEngine::Component *TextureGenEngine::NodeElement::SelectObject(double 
     {
         LOG_DEBUG("Selecting output\n");
         return m_outputImage;
+    }
+    return nullptr;
+}
+
+TextureGenEngine::InputConnector *TextureGenEngine::NodeElement::GetInputConnector(double x, double y)
+{
+    if (m_inputImage->CheckCollision(x, y))
+    {
+        return m_inputImage;
     }
     return nullptr;
 }
