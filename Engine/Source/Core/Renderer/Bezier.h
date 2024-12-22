@@ -21,12 +21,13 @@ namespace TextureGenEngine
         unsigned int m_segments;             // Number of segments to approximate the Bezier
 
         Vertex3D CalculatePosition(Vertex3D start, Vertex3D end, float t);
-        Vertex3D CalculateBezierPoint(Vertex3D start, Vertex3D end, float t, Vertex3D controlPoint);
+        Vertex3D CalculateBezierPoint(Vertex3D start, Vertex3D end, float t, Vertex3D controlPoint1 , Vertex3D controlPoint2);
+        void RecalculateControls();
         void RecalculateCurve();
 
     public:
         // Constructor to initialize the Bezier with start and end points
-        Bezier(Vertex3D start, Vertex3D firstControl, Vertex3D lastControl, Vertex3D end, unsigned int segments);
+        Bezier(Vertex3D start, Vertex3D end, unsigned int segments);
 
         // Destructor to cleanup OpenGL resources
         ~Bezier();

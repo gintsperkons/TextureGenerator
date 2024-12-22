@@ -45,10 +45,8 @@ void TextureGenEngine::OutputConnector::OnMouseDrag(double x, double y)
 void TextureGenEngine::OutputConnector::Draw()
 {
     Component::Draw();
-    LOG_DEBUG("Lines size %d\n", m_lines.size());
     for (auto &line : m_lines)
     {
-        LOG_DEBUG("Draw Linwe");
         line->Draw();
     }
 }

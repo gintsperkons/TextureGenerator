@@ -7,27 +7,19 @@
 #include "Core/Renderer/Renderer.h"
 #include <glm/gtc/type_ptr.hpp>
 
-TextureGenEngine::Bezier::Bezier(Vertex3D start, Vertex3D firstControl, Vertex3D lastControl, Vertex3D end, unsigned int segments)
+TextureGenEngine::Bezier::Bezier(Vertex3D start,Vertex3D end, unsigned int segments)
     : m_shader(nullptr), m_indexCount(2)
 {
     m_segments = segments;
-    m_controlPoints[0] = firstControl;
-    m_controlPoints[1] = lastControl;
     // Initialize vertices with start and end points
     m_start = start;
     m_end = end;
+    RecalculateControls();
     for (unsigned int i = 0; i < segments; ++i)
     {
         float t = static_cast<float>(i) / static_cast<float>(segments);
         Vertex3D center = CalculatePosition(m_start, m_end, 0.5);
-        if (t < 0.5f)
-        {
-            m_vertices.push_back(CalculateBezierPoint(m_start, center, t, m_controlPoints[0]));
-        }
-        else
-        {
-            m_vertices.push_back(CalculateBezierPoint(center, m_end, t, m_controlPoints[1]));
-        }
+        m_vertices.push_back(CalculateBezierPoint(m_start, m_end, t, m_controlPoints[0], m_controlPoints[1]));
     }
     m_shader = TextureGenEngine::Engine::Get()->GetRenderer()->GetShader("base");
     // Define indices for the Bezier (2 vertices make 1 Bezier)
@@ -90,29 +82,50 @@ Vertex3D TextureGenEngine::Bezier::CalculatePosition(Vertex3D start, Vertex3D en
     return point;
 }
 
-Vertex3D TextureGenEngine::Bezier::CalculateBezierPoint(Vertex3D start, Vertex3D end, float t, Vertex3D controlPoint)
+Vertex3D TextureGenEngine::Bezier::CalculateBezierPoint(Vertex3D start, Vertex3D end, float t, Vertex3D controlPoint1, Vertex3D controlPoint2)
 {
-    // Quadratic Bezier curve formula
+    // Cubic Bezier curve formula
     float u = 1.0f - t;
     float tt = t * t;
     float uu = u * u;
+    float uuu = uu * u;
+    float ttt = tt * t;
 
     Vertex3D point;
-    point.Position.x = uu * start.Position.x + 2 * u * t * controlPoint.Position.x + tt * end.Position.x;
-    point.Position.y = uu * start.Position.y + 2 * u * t * controlPoint.Position.y + tt * end.Position.y;
-    point.Position.z = uu * start.Position.z + 2 * u * t * controlPoint.Position.z + tt * end.Position.z;
 
+    // Calculate the position using the cubic Bezier formula
+    point.Position.x = uuu * start.Position.x +
+                       3 * uu * t * controlPoint1.Position.x +
+                       3 * u * tt * controlPoint2.Position.x +
+                       ttt * end.Position.x;
+
+    point.Position.y = uuu * start.Position.y +
+                       3 * uu * t * controlPoint1.Position.y +
+                       3 * u * tt * controlPoint2.Position.y +
+                       ttt * end.Position.y;
+
+    point.Position.z = uuu * start.Position.z +
+                       3 * uu * t * controlPoint1.Position.z +
+                       3 * u * tt * controlPoint2.Position.z +
+                       ttt * end.Position.z;
+
+    // Interpolate colors and texture coordinates along the curve
     point.Color = glm::mix(start.Color, end.Color, t);             // Interpolate colors
     point.TexCoords = glm::mix(start.TexCoords, end.TexCoords, t); // Interpolate texture coordinates
 
     return point;
 }
 
+void TextureGenEngine::Bezier::RecalculateControls()
+{
+    int centerX = static_cast<int>((m_start.Position.x + m_end.Position.x) / 2.0f);
+    int centerY = static_cast<int>((m_start.Position.y + m_end.Position.y) / 2.0f);
+    m_controlPoints[0].Position = glm::vec3(centerX, m_start.Position.y, m_controlPoints[0].Position.z);
+    m_controlPoints[1].Position = glm::vec3(centerX, m_end.Position.y, m_controlPoints[1].Position.z);
+}
+
 void TextureGenEngine::Bezier::RecalculateCurve()
 {
-    // Recalculate the curve vertices based on the updated end point
-    Vertex3D start = m_vertices[0];                   // Start point
-    Vertex3D end = m_vertices[m_vertices.size() - 1]; // End point
 
     m_vertices.clear();
 
@@ -121,14 +134,7 @@ void TextureGenEngine::Bezier::RecalculateCurve()
     {
         float t = static_cast<float>(i) / static_cast<float>(m_segments);
         Vertex3D center = CalculatePosition(m_start, m_end, 0.5);
-        if (t < 0.5f)
-        {
-            m_vertices.push_back(CalculateBezierPoint(m_start, center, t, m_controlPoints[0]));
-        }
-        else
-        {
-            m_vertices.push_back(CalculateBezierPoint(center, m_end, t, m_controlPoints[1]));
-        }
+        m_vertices.push_back(CalculateBezierPoint(m_start, m_end, t, m_controlPoints[0], m_controlPoints[1]));
     }
 
     // Rebuild the indices based on the new vertices
@@ -240,18 +246,21 @@ bool TextureGenEngine::Bezier::CheckClickCollision(float x, float y)
 
 void TextureGenEngine::Bezier::UpdateEndPosition(float x, float y)
 {
-    m_end.Position = glm::vec3(x, y, m_end.Position.z); // Update the end position
-    RecalculateCurve();                                 // Recalculate the curve
+    m_end.Position = glm::vec3(x, y, m_end.Position.z);
+    RecalculateControls();
+    RecalculateCurve();
 }
 
 void TextureGenEngine::Bezier::MoveStart(float x, float y)
 {
-    m_start.Position = m_start.Position + glm::vec3(x, -y, 0.0f); // Update the start position
-    RecalculateCurve();                                           // Recalculate the curve
+    m_start.Position = m_start.Position + glm::vec3(x, -y, 0.0f);
+    RecalculateControls();
+    RecalculateCurve();
 }
 
 void TextureGenEngine::Bezier::MoveEnd(float x, float y)
 {
-    m_end.Position = m_end.Position + glm::vec3(x, -y, 0.0f); // Update the end position
-    RecalculateCurve();                                       // Recalculate the curve
+    m_end.Position = m_end.Position + glm::vec3(x, -y, 0.0f);
+    RecalculateControls();
+    RecalculateCurve();
 }
