@@ -12,6 +12,6 @@ namespace TextureGenEngine
 		Mesh* CreateCircle();
 
 		Line* CreateLine(int xStart, int yStart, int xEnd, int yEnd);
-		Bezier* CreateBezier(Vertex3D start, Vertex3D control1, Vertex3D control2, Vertex3D end, unsigned int segments = 10);
+		Bezier *CreateBezier(int xStart, int yStart, int xEnd, int yEnd, unsigned int segments = 100);
 	}
 }

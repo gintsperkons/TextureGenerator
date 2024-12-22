@@ -102,7 +102,18 @@ TextureGenEngine::Line *TextureGenEngine::ObjectFactory::CreateLine(int xStart, 
     return new Line(start, end);
 }
 
-TextureGenEngine::Bezier* TextureGenEngine::ObjectFactory::CreateBezier(Vertex3D start, Vertex3D control1, Vertex3D control2, Vertex3D end, unsigned int segments)
+TextureGenEngine::Bezier* TextureGenEngine::ObjectFactory::CreateBezier(int xStart, int yStart, int xEnd, int yEnd, unsigned int segments)
 {
+    Vertex3D start = Vertex3D{glm::vec3(xStart, yStart,0.1), glm::vec3(0.5f, 0.5f, 0.0f), glm::vec2(1.0f, 1.0f)};
+    int centerX = (xStart + xEnd) / 2;
+    int centerY = (yStart + yEnd) / 2;
+    int xControlPointFirst = centerX;
+    int yControlPointFirst = yStart;
+    int xControlPointSecond = centerX;
+    int yControlPointSecond = yEnd;
+
+    Vertex3D control1 = Vertex3D{glm::vec3(xControlPointFirst, yControlPointFirst,0.1), glm::vec3(0.5f, 0.5f, 0.0f), glm::vec2(1.0f, 1.0f)};
+    Vertex3D control2 = Vertex3D{glm::vec3(xControlPointSecond, yControlPointSecond,0.1), glm::vec3(0.5f, 0.5f, 0.0f), glm::vec2(1.0f, 1.0f)};
+    Vertex3D end = Vertex3D{glm::vec3(xEnd, yEnd,0.1), glm::vec3(0.5f, 0.5f, 0.0f), glm::vec2(1.0f, 1.0f)};
     return new Bezier(start, control1, control2, end, segments);
 }

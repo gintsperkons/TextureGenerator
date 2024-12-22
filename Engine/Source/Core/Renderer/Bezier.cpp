@@ -7,27 +7,40 @@
 #include "Core/Renderer/Renderer.h"
 #include <glm/gtc/type_ptr.hpp>
 
-TextureGenEngine::Bezier::Bezier(Vertex3D start, Vertex3D control1, Vertex3D control2, Vertex3D end, unsigned int segments)
-    : m_shader(nullptr), m_indexCount(0), m_segments(segments)
+TextureGenEngine::Bezier::Bezier(Vertex3D start, Vertex3D firstControl, Vertex3D lastControl, Vertex3D end, unsigned int segments)
+    : m_shader(nullptr), m_indexCount(2)
 {
-    // Initialize the start, control, and end points
-    m_controlPoints[0] = control1;
-    m_controlPoints[1] = control2;
-    m_vertices.push_back(start);
-
-    // Generate vertices for the Bezier curve based on the number of segments
+    m_segments = segments;
+    m_controlPoints[0] = firstControl;
+    m_controlPoints[1] = lastControl;
+    // Initialize vertices with start and end points
+    m_start = start;
+    m_end = end;
     for (unsigned int i = 0; i < segments; ++i)
     {
         float t = static_cast<float>(i) / static_cast<float>(segments);
-        m_vertices.push_back(CalculateBezierPoint(start, end, t));
+        Vertex3D center = CalculatePosition(m_start, m_end, 0.5);
+        if (t < 0.5f)
+        {
+            m_vertices.push_back(CalculateBezierPoint(m_start, center, t, m_controlPoints[0]));
+        }
+        else
+        {
+            m_vertices.push_back(CalculateBezierPoint(center, m_end, t, m_controlPoints[1]));
+        }
     }
+    m_shader = TextureGenEngine::Engine::Get()->GetRenderer()->GetShader("base");
+    // Define indices for the Bezier (2 vertices make 1 Bezier)
+    m_indices.clear();
+    for (unsigned int i = 0; i < m_vertices.size(); ++i)
+    {
+        m_indices.push_back(i);
+    }
+    m_indexCount = m_vertices.size();
 
-    m_vertices.push_back(end); // Add the end point
+    // Default model matrix is identity
+    m_model = glm::mat4(1.0f);
 
-    // Set the shader
-    m_shader = TextureGenEngine::Engine::Get()->GetRenderer()->GetShader("line");
-
-    // Create OpenGL buffers
     glGenVertexArrays(1, &VAO);
     glGenBuffers(1, &VBO);
     glGenBuffers(1, &EBO);
@@ -38,40 +51,46 @@ TextureGenEngine::Bezier::Bezier(Vertex3D start, Vertex3D control1, Vertex3D con
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
     glBufferData(GL_ARRAY_BUFFER, m_vertices.size() * sizeof(Vertex3D), &m_vertices[0], GL_STATIC_DRAW);
 
-    // Element buffer setup (we'll use lines to draw the curve)
-    m_indices.resize(m_vertices.size());
-    for (unsigned int i = 0; i < m_vertices.size(); ++i)
-    {
-        m_indices[i] = i;
-    }
-
+    // Element buffer setup
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_indices.size() * sizeof(unsigned int), m_indices.data(), GL_STATIC_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_indices.size() * sizeof(unsigned int), &m_indices[0], GL_STATIC_DRAW);
 
-    // Set up the vertex attribute pointers
+    // Vertex attribute pointer for position (location = 0)
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex3D), (void *)offsetof(Vertex3D, Position));
     glEnableVertexAttribArray(0);
 
+    // Vertex attribute pointer for color (location = 1)
     glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex3D), (void *)offsetof(Vertex3D, Color));
     glEnableVertexAttribArray(1);
 
+    // Vertex attribute pointer for texCoords (location = 2)
     glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex3D), (void *)offsetof(Vertex3D, TexCoords));
     glEnableVertexAttribArray(2);
+    glLineWidth(5.0f); // Set Bezier width to 3 pixels (can adjust as needed)
 
-    // Set line width for rendering
-    glLineWidth(5.0f);
-
-    glBindVertexArray(0); // Unbind VAO
+    // Unbind VAO to avoid unintended modifications
+    glBindVertexArray(0);
 }
 
 TextureGenEngine::Bezier::~Bezier()
-{
+{ // Delete OpenGL buffers when the Bezier object is destroyed
     glDeleteVertexArrays(1, &VAO);
     glDeleteBuffers(1, &VBO);
     glDeleteBuffers(1, &EBO);
 }
 
-Vertex3D TextureGenEngine::Bezier::CalculateBezierPoint(Vertex3D start, Vertex3D end, float t)
+Vertex3D TextureGenEngine::Bezier::CalculatePosition(Vertex3D start, Vertex3D end, float t)
+{
+    Vertex3D point;
+    point.Color = glm::mix(start.Color, end.Color, t);             // Interpolate colors
+    point.TexCoords = glm::mix(start.TexCoords, end.TexCoords, t); // Interpolate texture coordinates
+    point.Position.x = (1 - t) * start.Position.x + t * end.Position.x;
+    point.Position.y = (1 - t) * start.Position.y + t * end.Position.y;
+    point.Position.z = (1 - t) * start.Position.z + t * end.Position.z;
+    return point;
+}
+
+Vertex3D TextureGenEngine::Bezier::CalculateBezierPoint(Vertex3D start, Vertex3D end, float t, Vertex3D controlPoint)
 {
     // Quadratic Bezier curve formula
     float u = 1.0f - t;
@@ -79,7 +98,10 @@ Vertex3D TextureGenEngine::Bezier::CalculateBezierPoint(Vertex3D start, Vertex3D
     float uu = u * u;
 
     Vertex3D point;
-    point.Position = start.Position * uu + 2 * u * t * m_controlPoints[0].Position + tt * end.Position;
+    point.Position.x = uu * start.Position.x + 2 * u * t * controlPoint.Position.x + tt * end.Position.x;
+    point.Position.y = uu * start.Position.y + 2 * u * t * controlPoint.Position.y + tt * end.Position.y;
+    point.Position.z = uu * start.Position.z + 2 * u * t * controlPoint.Position.z + tt * end.Position.z;
+
     point.Color = glm::mix(start.Color, end.Color, t);             // Interpolate colors
     point.TexCoords = glm::mix(start.TexCoords, end.TexCoords, t); // Interpolate texture coordinates
 
@@ -93,16 +115,21 @@ void TextureGenEngine::Bezier::RecalculateCurve()
     Vertex3D end = m_vertices[m_vertices.size() - 1]; // End point
 
     m_vertices.clear();
-    m_vertices.push_back(start); // Start point
 
     // Loop through the segments, excluding the start and end points
-    for (unsigned int i = 1; i < m_segments; ++i)
-    { // Start at 1 to skip start point
+    for (unsigned int i = 0; i < m_segments; ++i)
+    {
         float t = static_cast<float>(i) / static_cast<float>(m_segments);
-        m_vertices.push_back(CalculateBezierPoint(start, end, t));
+        Vertex3D center = CalculatePosition(m_start, m_end, 0.5);
+        if (t < 0.5f)
+        {
+            m_vertices.push_back(CalculateBezierPoint(m_start, center, t, m_controlPoints[0]));
+        }
+        else
+        {
+            m_vertices.push_back(CalculateBezierPoint(center, m_end, t, m_controlPoints[1]));
+        }
     }
-
-    m_vertices.push_back(end); // End point, add it only once
 
     // Rebuild the indices based on the new vertices
     m_indices.clear();
@@ -143,61 +170,88 @@ void TextureGenEngine::Bezier::Draw()
         return;
     }
 
-    LOG_INFO("Drawing Bezier curve");
-
+    // Use the shader program
     m_shader->Use();
 
+    // Retrieve and set the uniform locations
     GLint projectionLoc = glGetUniformLocation(m_shader->GetID(), "projection");
     GLint modelLoc = glGetUniformLocation(m_shader->GetID(), "model");
 
-    if (projectionLoc != -1)
+    if (projectionLoc == -1)
+    {
+        LOG_ERROR("Uniform 'projection' not found in shader.");
+    }
+    else
+    {
         glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(TextureGenEngine::Engine::Get()->GetRenderer()->GetProjectionMatrix()));
+    }
 
-    if (modelLoc != -1)
+    if (modelLoc == -1)
+    {
+        LOG_ERROR("Uniform 'model' not found in shader.");
+    }
+    else
+    {
         glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(m_model));
+    }
 
+    // Initialize OpenGL buffers if they haven't been set up yet
+
+    // Bind the VAO and draw the Bezier
     glBindVertexArray(VAO);
+
+    // Check for potential OpenGL errors before drawing
     GLenum error;
     while ((error = glGetError()) != GL_NO_ERROR)
     {
         LOG_ERROR("OpenGL error before drawing: 0x%X", error);
     }
-    LOG_INFO("Drawing with %d vertices.\n", m_vertices.size());
 
-    glDrawElements(GL_LINE_STRIP, m_indices.size(), GL_UNSIGNED_INT, 0);
+    glDrawElements(GL_LINE_STRIP, m_indexCount, GL_UNSIGNED_INT, 0);
 
-    glBindVertexArray(0);
+    glBindVertexArray(0); // Unbind the VAO after rendering
 }
 
 void TextureGenEngine::Bezier::ChangeColor(float r, float g, float b, float a)
 {
+    // Iterate through all vertices and update the color
     for (auto &vertex : m_vertices)
     {
         vertex.Color = glm::vec3(r, g, b); // Update color
     }
 
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferSubData(GL_ARRAY_BUFFER, 0, m_vertices.size() * sizeof(Vertex3D), &m_vertices[0]);
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    // Re-upload the vertex data to the GPU with the updated color
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);                                                        // Bind the VBO
+    glBufferSubData(GL_ARRAY_BUFFER, 0, m_vertices.size() * sizeof(Vertex3D), &m_vertices[0]); // Update data
+    glBindBuffer(GL_ARRAY_BUFFER, 0);                                                          // Unbind the VBO
+
+    // Check for OpenGL errors
+    int error = glGetError();
+    if (error != GL_NO_ERROR)
+    {
+        LOG_WARN("Failed to update vertex buffer with new color: %d\n", error);
+    }
 }
 
 bool TextureGenEngine::Bezier::CheckClickCollision(float x, float y)
 {
-    // Implement collision detection if needed
     return false;
-}
-
-void TextureGenEngine::Bezier::UpdateControlPointPosition(int pointIndex, float x, float y)
-{
-    if (pointIndex >= 0 && pointIndex < 2)
-    {
-        m_controlPoints[pointIndex].Position = glm::vec3(x, y, 0.0f);
-        RecalculateCurve();
-    }
 }
 
 void TextureGenEngine::Bezier::UpdateEndPosition(float x, float y)
 {
-    m_vertices[m_vertices.size() - 1].Position = glm::vec3(x, y, 0.0f);
-    RecalculateCurve();
+    m_end.Position = glm::vec3(x, y, m_end.Position.z); // Update the end position
+    RecalculateCurve();                                 // Recalculate the curve
+}
+
+void TextureGenEngine::Bezier::MoveStart(float x, float y)
+{
+    m_start.Position = m_start.Position + glm::vec3(x, -y, 0.0f); // Update the start position
+    RecalculateCurve();                                           // Recalculate the curve
+}
+
+void TextureGenEngine::Bezier::MoveEnd(float x, float y)
+{
+    m_end.Position = m_end.Position + glm::vec3(x, -y, 0.0f); // Update the end position
+    RecalculateCurve();                                       // Recalculate the curve
 }

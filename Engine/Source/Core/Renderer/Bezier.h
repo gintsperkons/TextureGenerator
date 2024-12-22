@@ -10,33 +10,37 @@ namespace TextureGenEngine
     {
     private:
         unsigned int VBO, VAO, EBO;       // OpenGL Buffers
-        std::vector<Vertex3D> m_vertices; // Store vertices for the Bezier curve
-        Vertex3D m_controlPoints[2];      // Store control points for the Bezier curve
-        std::vector<unsigned int> m_indices;        // Store index for drawing the curve
-        glm::mat4 m_model;                // Transformation matrix (position, rotation, scale)
-        Shader *m_shader;                 // Shader to render the curve
-        unsigned int m_indexCount;        // Index count
-        unsigned int m_segments;          // Number of segments for drawing the curve
+        std::vector<Vertex3D> m_vertices; // Store two points (start and end)
+        Vertex3D m_controlPoints[2];
+        Vertex3D m_start;
+        Vertex3D m_end;
+        std::vector<unsigned int> m_indices; // Store index for drawing the Bezier
+        glm::mat4 m_model;                   // Transformation matrix (position, rotation, scale)
+        Shader *m_shader;                    // Shader to render the Bezier
+        unsigned int m_indexCount;           // Index count
+        unsigned int m_segments;             // Number of segments to approximate the Bezier
 
-        // Function to calculate a point on the Bezier curve given t (from 0 to 1)
-        Vertex3D CalculateBezierPoint(Vertex3D start, Vertex3D end, float t);
+        Vertex3D CalculatePosition(Vertex3D start, Vertex3D end, float t);
+        Vertex3D CalculateBezierPoint(Vertex3D start, Vertex3D end, float t, Vertex3D controlPoint);
         void RecalculateCurve();
+
     public:
-        // Constructor to initialize the curve with start, end, and control points
-        Bezier(Vertex3D start, Vertex3D control1, Vertex3D control2, Vertex3D end, unsigned int segments = 100);
+        // Constructor to initialize the Bezier with start and end points
+        Bezier(Vertex3D start, Vertex3D firstControl, Vertex3D lastControl, Vertex3D end, unsigned int segments);
 
         // Destructor to cleanup OpenGL resources
         ~Bezier();
 
-        // Draw the curve using the specified shader
+        // Draw the Bezier using the specified shader
         void Draw();
 
-        // Change the color of the curve
+        // Change the color of the Bezier
         void ChangeColor(float r, float g, float b, float a);
 
-        // Method to check if the curve was clicked (collision detection with point)
+        // Method to check if the Bezier was clicked (collision detection with point)
         bool CheckClickCollision(float x, float y);
-        void UpdateControlPointPosition(int pointIndex, float x, float y);
         void UpdateEndPosition(float x, float y);
+        void MoveStart(float x, float y);
+        void MoveEnd(float x, float y);
     };
 }
