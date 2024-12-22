@@ -21,7 +21,7 @@ TextureGenEngine::InputConnector::~InputConnector()
 void TextureGenEngine::InputConnector::ConnectLine(Bezier* line)
 {
     m_line = line;
-    //m_line->UpdateEndPosition(m_x, m_y+m_height/2);
+    m_line->UpdateEndPosition(m_x, m_y+m_height/2);
 }
 
 void TextureGenEngine::InputConnector::Move(float x, float y)
@@ -29,6 +29,6 @@ void TextureGenEngine::InputConnector::Move(float x, float y)
     Component::Move(x, y);
     if (m_line)
     {
-        //m_line->MoveEnd(x,y);
+        m_line->MoveEnd(x,y);
     }
 }

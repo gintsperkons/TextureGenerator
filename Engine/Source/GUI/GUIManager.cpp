@@ -5,9 +5,6 @@
 #include "Core/Window/Window.h"
 #include "Core/Input/Input.h"
 #include "Components/TextInput.h"
-#include "Core/Renderer/Line.h" 
-#include "Core/Renderer/Bezier.h"
-#include "Core/World/ObjectFactory.h"
 
 void TextureGenEngine::GUIManager::SelectObject(double x, double y)
 {
@@ -68,8 +65,6 @@ void TextureGenEngine::GUIManager::Draw()
     {
         child->Draw();
     }
-    //m_line->Draw();
-    m_bezier->Draw();
 }
 
 void TextureGenEngine::GUIManager::AddComponent(Component *component)
@@ -111,11 +106,6 @@ void TextureGenEngine::GUIManager::Init(int width, int height)
     {
         child->Init(width, height);
     }
-    m_line = ObjectFactory::CreateLine(100, 100, 200, 200);
-    m_line->ChangeColor(1, 0, 0, 1);
-
-    m_bezier = ObjectFactory::CreateBezier(100, 100, 400, 400,100);
-    m_bezier->ChangeColor(0, 1, 0, 1);
 }
 
 void TextureGenEngine::GUIManager::GetOldSize(float &width, float &height)

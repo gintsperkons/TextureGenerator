@@ -15,7 +15,7 @@ TextureGenEngine::Bezier::Bezier(Vertex3D start,Vertex3D end, unsigned int segme
     m_start = start;
     m_end = end;
     RecalculateControls();
-    for (unsigned int i = 0; i < segments; ++i)
+    for (unsigned int i = 0; i <= segments; ++i)
     {
         float t = static_cast<float>(i) / static_cast<float>(segments);
         Vertex3D center = CalculatePosition(m_start, m_end, 0.5);
@@ -130,7 +130,7 @@ void TextureGenEngine::Bezier::RecalculateCurve()
     m_vertices.clear();
 
     // Loop through the segments, excluding the start and end points
-    for (unsigned int i = 0; i < m_segments; ++i)
+    for (unsigned int i = 0; i <= m_segments; ++i)
     {
         float t = static_cast<float>(i) / static_cast<float>(m_segments);
         Vertex3D center = CalculatePosition(m_start, m_end, 0.5);

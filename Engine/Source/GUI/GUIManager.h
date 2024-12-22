@@ -10,8 +10,6 @@ struct ScissorsData
 
 namespace TextureGenEngine
 {
-    class Line;
-    class Bezier;
     class Window;
     class Component;
     class GUIManager
@@ -19,8 +17,6 @@ namespace TextureGenEngine
         float m_oldHeight;
         float m_width;
         float m_height;
-        Line * m_line;
-        Bezier* m_bezier;
         std::vector<Component *> m_children;
         Window *m_window;
         int m_mouseButtonStates[Mouse::ButtonLast+1] = {0};

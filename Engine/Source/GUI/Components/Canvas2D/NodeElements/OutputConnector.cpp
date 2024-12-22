@@ -28,7 +28,7 @@ void TextureGenEngine::OutputConnector::OnMouseDrag(double x, double y)
     {
         LOG_DEBUG("Creating line\n");
         LOG_DEBUG("x %f y %f\n", m_x, m_y);
-        m_line = ObjectFactory::CreateBezier(m_x, m_y, m_x+100, m_y+100, 100);
+        m_line = ObjectFactory::CreateBezier(m_x+m_width, m_y+m_height/2, m_x+100, m_y+100, 100);
         m_line->ChangeColor(1.0f, 0.0f, 1.0f, 1.0f);
         m_lines.push_back(m_line);
     }
