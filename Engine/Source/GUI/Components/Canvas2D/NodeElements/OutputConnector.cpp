@@ -1,6 +1,6 @@
 #include "OutputConnector.h"
 #include "Core/Renderer/Mesh.h"
-#include "Core/Renderer/Line.h"
+#include "Core/Renderer/Bezier.h"
 #include "Core/World/ObjectFactory.h"
 #include "Core/Logger/Logger.h"
 #include "GUI/GUIManager.h"
@@ -28,7 +28,10 @@ void TextureGenEngine::OutputConnector::OnMouseDrag(double x, double y)
     {
         LOG_DEBUG("Creating line\n");
         LOG_DEBUG("x %f y %f\n", m_x, m_y);
-        m_line = ObjectFactory::CreateLine(m_x + m_width, m_y + m_height / 2, m_x + 100, m_y - 100);
+        m_line = ObjectFactory::CreateBezier(Vertex3D{glm::vec3(m_x, m_y, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(0.0f, 0.0f)},
+                                              Vertex3D{glm::vec3(m_x+10, m_y, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(0.0f, 0.0f)},
+                                              Vertex3D{glm::vec3(m_x+50, m_y+100, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(0.0f, 0.0f)},
+                                              Vertex3D{glm::vec3(m_x+100, m_y+100, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(0.0f, 0.0f)});
         m_line->ChangeColor(1.0f, 0.0f, 1.0f, 1.0f);
         m_lines.push_back(m_line);
     }
@@ -89,6 +92,6 @@ void TextureGenEngine::OutputConnector::Move(float x, float y)
     Component::Move(x, y);
     for (auto &line : m_lines)
     {
-        line->MoveStart(x, y);
+        //line->MoveStart(x, y);
     }
 }

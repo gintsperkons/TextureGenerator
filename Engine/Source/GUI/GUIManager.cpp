@@ -188,6 +188,7 @@ void TextureGenEngine::GUIManager::KeyAction(int key, int scancode, int action, 
 
 void TextureGenEngine::GUIManager::ScissorsPush(int x, int y, int width, int height)
 {
+    return;
     if (m_scissors.size() > 0)
     {
         if (x < m_scissors.back().x)
@@ -207,6 +208,10 @@ void TextureGenEngine::GUIManager::ScissorsPush(int x, int y, int width, int hei
 
 void TextureGenEngine::GUIManager::ScissorsPop()
 {
+    if (m_scissors.size() == 0)
+    {
+        return;
+    }
     m_scissors.pop_back();
     if (m_scissors.size() > 0)
     {

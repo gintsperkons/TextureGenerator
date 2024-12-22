@@ -4,11 +4,11 @@
 
 namespace TextureGenEngine
 {
-    class Line;
+    class Bezier;
     class OutputConnector : public Component
     {
-        Line * m_line = nullptr;
-        std::vector<Line *> m_lines;
+        Bezier * m_line = nullptr;
+        std::vector<Bezier *> m_lines;
     public:
         OutputConnector();
         ~OutputConnector();

@@ -3,16 +3,16 @@
 
 namespace TextureGenEngine
 {
-    class Line;
+    class Bezier;
     class InputConnector : public Component
     {
-        Line *m_line = nullptr;
+        Bezier *m_line = nullptr;
     public:
         InputConnector();
 
         void Draw() override;
         ~InputConnector();
-        void ConnectLine(Line *line);
+        void ConnectLine(Bezier *line);
         void Move(float x, float y) override;
     };
 } // namespace TextureGenEngine

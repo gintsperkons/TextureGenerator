@@ -4,6 +4,7 @@
 #include "Core/Renderer/Structures/Vertex3D.h"
 #include "Core/Logger/Logger.h"
 #include "Core/Renderer/Line.h"
+#include "Core/Renderer/Bezier.h"
 
 TextureGenEngine::Mesh* TextureGenEngine::ObjectFactory::CreateTriangle()
 {
@@ -99,4 +100,9 @@ TextureGenEngine::Line *TextureGenEngine::ObjectFactory::CreateLine(int xStart, 
     Vertex3D start = Vertex3D{glm::vec3(xStart, yStart,0.1), glm::vec3(0.5f, 0.5f, 0.0f), glm::vec2(1.0f, 1.0f)};
     Vertex3D end = Vertex3D{glm::vec3(xEnd, yEnd,0.1), glm::vec3(0.5f, 0.5f, 0.0f), glm::vec2(1.0f, 1.0f)};
     return new Line(start, end);
+}
+
+TextureGenEngine::Bezier* TextureGenEngine::ObjectFactory::CreateBezier(Vertex3D start, Vertex3D control1, Vertex3D control2, Vertex3D end, unsigned int segments)
+{
+    return new Bezier(start, control1, control2, end, segments);
 }

@@ -11,6 +11,8 @@
 float near = -1.f;
 float far = 1.f;
 
+
+
 TextureGenEngine::Renderer::Renderer(int width, int height) : m_clearColor(1.0f, 0.5f, 1.0f, 1.0f)
 {
 	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
@@ -25,8 +27,11 @@ TextureGenEngine::Renderer::Renderer(int width, int height) : m_clearColor(1.0f,
 	glFrontFace(GL_CCW);
 	glEnable(GL_DEPTH_TEST); 
 	glDepthMask(GL_TRUE);
-	glDepthFunc(GL_LEQUAL); 
-
+	glDepthFunc(GL_LEQUAL);
+	glEnable(GLFW_CONTEXT_DEBUG);
+	glfwSetErrorCallback([](int error, const char *description) {
+		LOG_ERROR("GLFW Error: %s\n", description);
+	});
 
 	glViewport(0, 0, width, height);
 	m_projectionMatrix = glm::ortho(0.0f, (float)width, 0.0f, (float)height, near, far);
