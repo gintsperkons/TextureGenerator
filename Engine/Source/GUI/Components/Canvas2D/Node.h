@@ -16,18 +16,18 @@ namespace TextureGenEngine
     std::vector<NodeElement *> m_elements;
     float m_dataBackgroundHeight = 100;
     public:
-        TAPI Node(int x, int y);
-        void Init(int width, int height) override;
+        TAPI Node(float x, float y);
+        void Init(float width, float height) override;
         void Draw() override;
         void TAPI AddElement(NodeElement *element);
-        void OnMouseDrag(double x, double y) override;
+        void OnMouseDrag(float x, float y) override;
         bool CheckCollision(float x, float y) override;
         float GetOffset(NodeElement* element);
-        Component *SelectObject(double x, double y) override;
+        Component *SelectObject(float x, float y) override;
         ~Node();
-        InputConnector* GetInputConnector(double x, double y);
-        OutputConnector* GetOutputConnector(double x, double y);
+        InputConnector* GetInputConnector(float x, float y);
+        OutputConnector* GetOutputConnector(float x, float y);
         Canvas2D* GetCanvas();
-        static inline int c_titleHeight = 25;
+        static inline float c_titleHeight = 25;
     };
 }

@@ -26,7 +26,7 @@ TextureGenEngine::Text::Text(bool staticSize):m_staticSize(staticSize)
 }
 
 
-float TextureGenEngine::Text::CalculateScale(std::string text, int textSize, int &textHeight, int &textWidth, int &maxDescender)
+float TextureGenEngine::Text::CalculateScale(std::string text, float textSize, float &textHeight, float &textWidth, float &maxDescender)
 {
     float totalWidth = 0.0f;
     float totalHeight = 0.0f;
@@ -48,7 +48,7 @@ float TextureGenEngine::Text::CalculateScale(std::string text, int textSize, int
         totalWidth += (ch.Advance >> 6);                               // Advance is in 1/64th pixels, convert to pixels
         hAboveBase = std::max((float)hAboveBase, (float)ch.Bearing.y); // Track the maximum height below the baseline
         hBelowBase = std::max((float)hBelowBase, (float)(ch.Size.y - ch.Bearing.y));
-        maxDescender = std::min(maxDescender, (int)(ch.Bearing.y - ch.Size.y));
+        maxDescender = std::min(maxDescender, (float)(ch.Bearing.y - ch.Size.y));
     }
     totalHeight = hAboveBase;
     textHeight = hAboveBase + hBelowBase;
@@ -84,10 +84,10 @@ void TextureGenEngine::Text::Draw(std::string text, float x, float y, int frameH
     glUniform3f(textColorLoc, color.x, color.y, color.z);
     glActiveTexture(GL_TEXTURE0);
     glBindVertexArray(VAO);
-    int textHeight = 0;
-    int textWidth = 0;
-    int maxDescender = 0;
-    float scale = CalculateScale(text, textSize, textHeight, textWidth, maxDescender);
+    float textHeight = 0;
+    float textWidth = 0;
+    float maxDescender = 0;
+    float scale = CalculateScale(text,(float)textSize, textHeight, textWidth, maxDescender);
     std::string::const_iterator c;
 
     if(vAlign == AlignmentVertical::CENTER)

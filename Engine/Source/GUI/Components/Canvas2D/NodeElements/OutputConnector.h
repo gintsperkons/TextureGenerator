@@ -13,7 +13,7 @@ namespace TextureGenEngine
     public:
         OutputConnector();
         ~OutputConnector();
-        void OnMouseDrag(double x, double y) override;
+        void OnMouseDrag(float x, float y) override;
         void Draw() override;
         void MouseRelease() override;
         void Move(float x, float y) override;

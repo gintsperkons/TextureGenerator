@@ -21,7 +21,7 @@ TextureGenEngine::OutputConnector::~OutputConnector()
 {
 }
 
-void TextureGenEngine::OutputConnector::OnMouseDrag(double x, double y)
+void TextureGenEngine::OutputConnector::OnMouseDrag(float x, float y)
 {
     // SpawnConnectorLine();
     if (m_connector == nullptr)

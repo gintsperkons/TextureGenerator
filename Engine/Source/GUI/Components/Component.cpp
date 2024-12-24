@@ -4,7 +4,7 @@
 #include "GUI/GUIManager.h"
 #include "Core/Logger/Logger.h"
 
-TextureGenEngine::Component::Component(int x, int y, int width, int height) : m_x(static_cast<float>(x)), m_y(static_cast<float>(y)), m_width(static_cast<float>(width)), m_height(static_cast<float>(height))
+TextureGenEngine::Component::Component(float x, float y, float width, float height) : m_x(static_cast<float>(x)), m_y(static_cast<float>(y)), m_width(static_cast<float>(width)), m_height(static_cast<float>(height))
 {
     LOG_DEBUG("Width %f\n", m_width);
     m_background = ObjectFactory::CreateSquare(width, height);
@@ -22,7 +22,7 @@ TextureGenEngine::Component::~Component()
 {
 }
 
-void TextureGenEngine::Component::Resize(int width, int height)
+void TextureGenEngine::Component::Resize(float width, float height)
 {
 
     float oldWidth, oldHeight;
@@ -40,7 +40,7 @@ void TextureGenEngine::Component::SetBackground(Color color)
     m_background->ChangeColor(color.r, color.g, color.b, color.a);
 }
 
-void TextureGenEngine::Component::Init(int width, int height)
+void TextureGenEngine::Component::Init(float width, float height)
 {
     m_background->SetPosition(m_x, m_y);
     m_background->ChangeColor(m_backgroundColor.r, m_backgroundColor.g, m_backgroundColor.b, m_backgroundColor.a);
@@ -64,7 +64,7 @@ bool TextureGenEngine::Component::CheckCollision(float x, float y)
     return false;
 }
 
-void TextureGenEngine::Component::OnMouseDrag(double x, double y)
+void TextureGenEngine::Component::OnMouseDrag(float x, float y)
 {
     LOG_DEBUG("Dragging\n");
     if (m_draggable)

@@ -13,14 +13,14 @@ namespace TextureGenEngine
     {
         std::vector<Node *> m_nodes;
     public:
-        TAPI Canvas2D(int x, int y, int width, int height, ScalingType xScaling, ScalingType yScaling);
+        TAPI Canvas2D(float x, float y, float width, float height, ScalingType xScaling, ScalingType yScaling);
         void Draw() override;
         ~Canvas2D();
         void TAPI AddNode(Node *node);
-        Component *SelectObject(double x, double y) override;
-        void OnMouseDrag(double x, double y) override;
-        InputConnector* GetInputConnector(double x, double y);
-        OutputConnector* GetOutputConnector(double x, double y);
+        Component *SelectObject(float x, float y) override;
+        void OnMouseDrag(float x, float y) override;
+        InputConnector* GetInputConnector(float x, float y);
+        OutputConnector* GetOutputConnector(float x, float y);
         void RemoveChild(Component *child) override;
     };
 } // namespace TextureGenEngine

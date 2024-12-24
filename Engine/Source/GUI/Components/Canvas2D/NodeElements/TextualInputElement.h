@@ -16,10 +16,10 @@ namespace TextureGenEngine
                      TextualInputElement();
         void Draw() override;
         virtual void SetManager(GUIManager *manager) override;
-        virtual void Init(int width, int height) override;
-        virtual void Setup(int x, int y) override;
-        virtual void OnMouseDrag(double x, double y) override;
-        virtual Component *SelectObject(double x, double y) override;
+        virtual void Init(float width, float height) override;
+        virtual void Setup(float x, float y) override;
+        virtual void OnMouseDrag(float x, float y) override;
+        virtual Component *SelectObject(float x, float y) override;
         ~TextualInputElement();
     };
 } // namespace TextureGenEngine

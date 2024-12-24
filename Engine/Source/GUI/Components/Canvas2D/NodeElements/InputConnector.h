@@ -15,7 +15,7 @@ namespace TextureGenEngine
         bool ExistConnection(Connector *connector);
          void Draw() override;
         ~InputConnector();
-        void OnMouseDrag(double x, double y) override;
+        void OnMouseDrag(float x, float y) override;
         void MouseRelease() override;
         void ConnectLine(Connector *connector);
         void DisconnectLine();

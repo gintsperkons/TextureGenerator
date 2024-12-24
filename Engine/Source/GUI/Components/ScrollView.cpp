@@ -1,6 +1,6 @@
 #include "ScrollView.h"
 
-TextureGenEngine::ScrollView::ScrollView(int x, int y, int width, int height, ScalingType xScaling, ScalingType yScaling)
+TextureGenEngine::ScrollView::ScrollView(float x, float y, float width, float height, ScalingType xScaling, ScalingType yScaling)
     : Panel(x, y, width, height, xScaling, yScaling)
 {
     m_draggable = true;
@@ -10,7 +10,7 @@ TextureGenEngine::ScrollView::ScrollView(int x, int y, int width, int height, Sc
 
 void TextureGenEngine::ScrollView::Draw()
 {
-    ScrollView::Draw();
+    Panel::Draw();
 }
 
 TextureGenEngine::ScrollView::~ScrollView()

@@ -20,13 +20,13 @@ namespace TextureGenEngine
     public:
         NodeElement(/* args */);
         ~NodeElement();
-        virtual void OnMouseDrag(double x, double y) override;
-        virtual void Setup(int x, int y);
+        virtual void OnMouseDrag(float x, float y) override;
+        virtual void Setup(float x, float y);
         virtual void SetManager(GUIManager *manager) override;
         virtual void SetNode(Node* node) { m_node = node; }
-        virtual Component *SelectObject(double x, double y) override;
-        InputConnector *GetInputConnector(double x, double y);
-        OutputConnector *GetOutputConnector(double x, double y);
+        virtual Component *SelectObject(float x, float y) override;
+        InputConnector *GetInputConnector(float x, float y);
+        OutputConnector *GetOutputConnector(float x, float y);
         Node * GetNode() { return m_node; }
     };
 } // namespace TextureGenEngine

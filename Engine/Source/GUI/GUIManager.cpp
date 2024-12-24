@@ -6,7 +6,7 @@
 #include "Core/Input/Input.h"
 #include "Components/TextInput.h"
 
-void TextureGenEngine::GUIManager::SelectObject(double x, double y)
+void TextureGenEngine::GUIManager::SelectObject(float x, float y)
 {
     for (auto &child : m_children)
     {
@@ -80,7 +80,7 @@ bool TextureGenEngine::GUIManager::IsSelected(Component *component)
     return component == currentObject;
 }
 
-void TextureGenEngine::GUIManager::Resize(int width, int height)
+void TextureGenEngine::GUIManager::Resize(float width, float height)
 {
     m_oldWidth = m_width;
     m_oldHeight = m_height;
@@ -93,7 +93,7 @@ void TextureGenEngine::GUIManager::Resize(int width, int height)
     }
 }
 
-void TextureGenEngine::GUIManager::Init(int width, int height)
+void TextureGenEngine::GUIManager::Init(float width, float height)
 {
     m_oldWidth = m_width;
     m_oldHeight = m_height;
@@ -123,7 +123,7 @@ void TextureGenEngine::GUIManager::MouseMove(MouseMoveEvent e)
 
     if (currentObject && m_mouseButtonStates[Mouse::ButtonLeft] == Mouse::Held)
     {
-        currentObject->OnMouseDrag(e.x, e.y);
+        currentObject->OnMouseDrag((float)e.x, (float)e.y);
     }
 }
 
@@ -132,12 +132,12 @@ void TextureGenEngine::GUIManager::MouseClick(MouseButtonEvent e)
     m_mouseButtonStates[e.button] = e.down ? Mouse::Pressed : Mouse::Released;
     if (e.button == Mouse::ButtonLeft && e.down)
     {
-        SelectObject(e.x, e.y);
+        SelectObject((float)e.x, (float)e.y);
         for (auto &child : m_children)
         {
-            if (child->CheckCollision(e.x, e.y))
+            if (child->CheckCollision((float)e.x, (float)e.y))
             {
-                child->Click(e.x, e.y);
+                child->Click((float)e.x, (float)e.y);
             }
             // child->OnMouseClick(button, action);
         }
@@ -197,7 +197,7 @@ void TextureGenEngine::GUIManager::KeyAction(int key, int scancode, int action, 
     }
 }
 
-void TextureGenEngine::GUIManager::ScissorsPush(int x, int y, int width, int height)
+void TextureGenEngine::GUIManager::ScissorsPush(float x, float y, float width, float height)
 {
     if (m_scissors.size() > 0)
     {
@@ -237,6 +237,6 @@ void TextureGenEngine::GUIManager::GetMousePosition(float &x, float &y)
 {
     double xpos, ypos;
     m_window->GetInput()->GetMousePosition(xpos, ypos);
-    x = xpos;
-    y = ypos;
+    x = (float)xpos;
+    y = (float)ypos;
 }

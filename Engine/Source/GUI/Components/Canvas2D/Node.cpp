@@ -9,7 +9,7 @@
 #include "NodeElements/OutputConnector.h"
 #include "Canvas2D.h"
 
-TextureGenEngine::Node::Node(int x, int y):
+TextureGenEngine::Node::Node(float x, float y):
 Component(x, y, 100, c_titleHeight)
 {
     m_dataBackground = ObjectFactory::CreateSquare(100, 100);
@@ -18,7 +18,7 @@ Component(x, y, 100, c_titleHeight)
     m_type = "Node";
 }
 
-void TextureGenEngine::Node::Init(int width, int height)
+void TextureGenEngine::Node::Init(float width, float height)
 {
     if (m_parent)
     {
@@ -75,7 +75,7 @@ void TextureGenEngine::Node::AddElement(NodeElement *element)
     m_dataBackgroundHeight = totalHeight;
 }
 
-void TextureGenEngine::Node::OnMouseDrag(double x, double y)
+void TextureGenEngine::Node::OnMouseDrag(float x, float y)
 {
     Component::OnMouseDrag(x, y);
     m_dataBackground->Move(x,y);
@@ -111,7 +111,7 @@ float TextureGenEngine::Node::GetOffset(NodeElement *element)
     return offset;
 }
 
-TextureGenEngine::Component *TextureGenEngine::Node::SelectObject(double x, double y)
+TextureGenEngine::Component *TextureGenEngine::Node::SelectObject(float x, float y)
 {
     for (auto &element : m_elements)
     {
@@ -148,7 +148,7 @@ TextureGenEngine::Node::~Node()
     }
 }
 
-TextureGenEngine::InputConnector *TextureGenEngine::Node::GetInputConnector(double x, double y)
+TextureGenEngine::InputConnector *TextureGenEngine::Node::GetInputConnector(float x, float y)
 {
     for (auto &element : m_elements)
     {
@@ -161,7 +161,7 @@ TextureGenEngine::InputConnector *TextureGenEngine::Node::GetInputConnector(doub
     return nullptr;
 }
 
-TextureGenEngine::OutputConnector *TextureGenEngine::Node::GetOutputConnector(double x, double y)
+TextureGenEngine::OutputConnector *TextureGenEngine::Node::GetOutputConnector(float x, float y)
 {
     for (auto &element : m_elements)
     {

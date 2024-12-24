@@ -11,9 +11,9 @@ namespace TextureGenEngine
         std::vector<MenuComponent*> m_menus;
     public:
         TAPI MenuBar();
-        void Init(int width, int height) override;
+        void Init(float width, float height) override;
         void Draw() override;
-        void Resize(int width, int height) override;
+        void Resize(float width, float height) override;
         TAPI void AddMenu(MenuComponent* menu);
         ~MenuBar();
     };

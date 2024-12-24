@@ -4,8 +4,8 @@
 #include "Core/Input/InputEvents.h"
 struct ScissorsData
 {
-    int x,y,width,height;
-    ScissorsData(int x, int y, int width, int height) : x(x), y(y), width(width), height(height) {}
+    float x, y, width, height;
+    ScissorsData(float x, float y, float width, float height) : x(x), y(y), width(width), height(height) {}
 };
 
 namespace TextureGenEngine
@@ -22,7 +22,7 @@ namespace TextureGenEngine
         int m_mouseButtonStates[Mouse::ButtonLast+1] = {0};
     std::vector<ScissorsData> m_scissors;
         Component * currentObject = nullptr;
-        void SelectObject(double x, double y);
+        void SelectObject(float x, float y);
 
     public:
         TAPI GUIManager();
@@ -32,14 +32,14 @@ namespace TextureGenEngine
         TAPI void AddComponent(Component *component);
         bool IsSelected(Component *component);
         void SetWindow(Window *window) { m_window = window; }
-        void Resize(int width, int height);
-        void Init(int width, int height);
+        void Resize(float width, float height);
+        void Init(float width, float height);
         void GetOldSize(float &width, float &height);
         void MouseMove(MouseMoveEvent e);
         void MouseClick(MouseButtonEvent e);
         void CharEventAction(CharEvent e);
         void KeyAction(int key, int scancode, int action, int mods);
-        void ScissorsPush(int x, int y, int width, int height);
+        void ScissorsPush(float x, float y, float width, float height);
         void ScissorsPop();
         void GetMousePosition(float &x, float &y);
     };

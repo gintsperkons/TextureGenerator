@@ -10,7 +10,7 @@ namespace TextureGenEngine
    {
       Text* m_text = nullptr;
     public:
-        TAPI Label(int x, int y, int width, int height, const std::string &text);
+        TAPI Label(float x, float y, float width, float height, const std::string &text);
         ~Label();
         void Draw() override;
    };

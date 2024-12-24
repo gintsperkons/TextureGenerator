@@ -8,12 +8,12 @@ namespace TextureGenEngine
     private:
         /* data */
     public:
-        MenuComponent(int height = MenuComponent::height);
-        void Init(int width, int height) override;
+        MenuComponent(float height = MenuComponent::height);
+        void Init(float width, float height) override;
         void Draw() override;
-        void Resize(int width, int height) override;
+        void Resize(float width, float height) override;
         ~MenuComponent();
-        static inline int height = 25;
+        static inline float height = 25;
     };
 
 } // namespace TextureGenEngine

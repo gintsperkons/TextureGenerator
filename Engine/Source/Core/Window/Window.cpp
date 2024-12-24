@@ -88,10 +88,10 @@ void TextureGenEngine::Window::Resize(int width, int height)
     }
 }
 
-void TextureGenEngine::Window::Scissors(int x, int y, int width, int height)
+void TextureGenEngine::Window::Scissors(float x, float y, float width, float height)
 {
     glEnable(GL_SCISSOR_TEST);
-    glScissor(x, y, width, height);
+    glScissor((int)x, (int)y, (int)width, (int)height);
 }
 
 void TextureGenEngine::Window::ScissorsReset()
@@ -107,7 +107,7 @@ void TextureGenEngine::Window::AddGUI(TextureGenEngine::GUIManager *gui)
     }
     gui->SetWindow(this);
     m_resizeSubs.push_back({[gui](ResizeEvent e)
-                            { gui->Resize(e.width, e.height); }});
+                            { gui->Resize(static_cast<float>(e.width), static_cast<float>(e.height)); }});
     m_input->SubscribeToMouseClickEvents([gui](MouseButtonEvent e)
                                          { gui->MouseClick(e); });
     m_input->SubscribeToMouseMoveEvents([gui](MouseMoveEvent e)
@@ -116,7 +116,7 @@ void TextureGenEngine::Window::AddGUI(TextureGenEngine::GUIManager *gui)
                                    { gui->CharEventAction(e); });
     m_input->SubscribeToKeyEvents([gui](KeyEvent e)
                                     { gui->KeyAction(e.key, e.scancode, e.action, e.mods); });
-    gui->Init(m_width, m_height);
+    gui->Init((float)m_width, (float)m_height);
     m_gui = gui;
 }
 

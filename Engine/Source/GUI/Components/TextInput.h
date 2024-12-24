@@ -18,9 +18,9 @@ namespace TextureGenEngine
 
         void CheckCursorInView();
     public:
-        TAPI TextInput(int x, int y, int width, int height);
+        TAPI TextInput(float x, float y, float width, float height);
         ~TextInput();
-        virtual void Init(int width, int height) override;
+        virtual void Init(float width, float height) override;
         void Draw() override;
         void AddChar(unsigned int codepoint);
         void RemoveCharBefore();

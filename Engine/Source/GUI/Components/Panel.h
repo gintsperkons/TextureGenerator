@@ -11,10 +11,10 @@ namespace TextureGenEngine
         ScalingType m_scalingTypeY;
 
     public:
-        TAPI Panel(int x, int y, int width, int height, ScalingType xScaling, ScalingType yScaling);
-        void Init(int width, int height) override;
-        void Resize(int width, int height) override;
-        Component *SelectObject(double x, double y) override { return nullptr; };
+        TAPI Panel(float x, float y, float width, float height, ScalingType xScaling, ScalingType yScaling);
+        void Init(float width, float height) override;
+        void Resize(float width, float height) override;
+        Component *SelectObject(float x, float y) override { return nullptr; };
         ~Panel();
     };
 

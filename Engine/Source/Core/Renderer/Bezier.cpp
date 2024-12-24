@@ -28,7 +28,7 @@ TextureGenEngine::Bezier::Bezier(Vertex3D start, Vertex3D end, unsigned int segm
     {
         m_indices.push_back(i);
     }
-    m_indexCount = m_vertices.size();
+    m_indexCount = static_cast<unsigned int>(m_vertices.size());
 
     // Default model matrix is identity
     m_model = glm::mat4(1.0f);

@@ -5,12 +5,12 @@
 #include "GUI/Components/MenuComponent/MenuComponent.h"
 
 
-TextureGenEngine::Panel::Panel(int x, int y, int width, int height, ScalingType xScaling, ScalingType yScaling)
+TextureGenEngine::Panel::Panel(float x, float y, float width, float height, ScalingType xScaling, ScalingType yScaling)
 : Component(x,y,width,height), m_scalingTypeX(xScaling), m_scalingTypeY(yScaling)
 {
 }
 
-void TextureGenEngine::Panel::Init(int width, int height)
+void TextureGenEngine::Panel::Init(float width, float height)
 {
 Component::Init(width, height);
 LOG_DEBUG("Panel Init %d %d\n", width, height);
@@ -21,7 +21,7 @@ if (width == 0 || height == 0)
     Resize(width, height);
 }
 
-void TextureGenEngine::Panel::Resize(int width, int height)
+void TextureGenEngine::Panel::Resize(float width, float height)
 {
     float xScale = 1;
     float yScale = 1;

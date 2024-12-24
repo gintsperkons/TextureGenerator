@@ -24,7 +24,7 @@ TextureGenEngine::Mesh* TextureGenEngine::ObjectFactory::CreateTriangle()
     return new Mesh(vertices, vertexCount, indices, indexCount);
 }
 
-TextureGenEngine::Mesh* TextureGenEngine::ObjectFactory::CreateSquare( int width, int height)
+TextureGenEngine::Mesh* TextureGenEngine::ObjectFactory::CreateSquare( float width, float height)
 {
        Vertex3D vertices[] = {
         Vertex3D{glm::vec3(width, 0,0), glm::vec3(0.5f, 0.5f, 0.0f), glm::vec2(1.0f, 1.0f)},   // top right
@@ -45,14 +45,14 @@ TextureGenEngine::Mesh* TextureGenEngine::ObjectFactory::CreateSquare( int width
 }
 
 
-TextureGenEngine::Line *TextureGenEngine::ObjectFactory::CreateLine(int xStart, int yStart, int xEnd, int yEnd)
+TextureGenEngine::Line *TextureGenEngine::ObjectFactory::CreateLine(float xStart, float yStart, float xEnd, float yEnd)
 {
     Vertex3D start = Vertex3D{glm::vec3(xStart, yStart,0.1), glm::vec3(0.5f, 0.5f, 0.0f), glm::vec2(1.0f, 1.0f)};
     Vertex3D end = Vertex3D{glm::vec3(xEnd, yEnd,0.1), glm::vec3(0.5f, 0.5f, 0.0f), glm::vec2(1.0f, 1.0f)};
     return new Line(start, end);
 }
 
-TextureGenEngine::Bezier* TextureGenEngine::ObjectFactory::CreateBezier(int xStart, int yStart, int xEnd, int yEnd, unsigned int segments)
+TextureGenEngine::Bezier* TextureGenEngine::ObjectFactory::CreateBezier(float xStart, float yStart, float xEnd, float yEnd, unsigned int segments)
 {
     Vertex3D start = Vertex3D{glm::vec3(xStart, yStart,0.1), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(1.0f, 1.0f)};
     Vertex3D end = Vertex3D{glm::vec3(xEnd, yEnd,0.1), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(1.0f, 1.0f)};

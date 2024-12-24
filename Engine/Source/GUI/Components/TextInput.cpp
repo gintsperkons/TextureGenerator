@@ -10,12 +10,12 @@ void TextureGenEngine::TextInput::CheckCursorInView()
 {
 }
 
-TextureGenEngine::TextInput::TextInput(int x, int y, int width, int height) : Component(x, y, width, height)
+TextureGenEngine::TextInput::TextInput(float x, float y, float width, float height) : Component(x, y, width, height)
 {
     m_textMesh = new Text();
     m_cursor = ObjectFactory::CreateSquare(4, height);
     m_cursor->ChangeColor(0, 0, 0, 1);
-    m_cursor->SetPosition(x, y);
+    m_cursor->SetPosition(x,y);
     m_type = "TextInput";
     m_selectable = true;
 
@@ -26,7 +26,7 @@ TextureGenEngine::TextInput::~TextInput()
 {
 }
 
-void TextureGenEngine::TextInput::Init(int width, int height)
+void TextureGenEngine::TextInput::Init(float width, float height)
 {
     m_x = m_parent->GetX() + m_x;
     m_y = m_parent->GetY() + m_y;
@@ -47,7 +47,7 @@ void TextureGenEngine::TextInput::Draw()
     }
     if (m_textMesh)
     {
-        m_textMesh->Draw(m_text, m_x + m_textDrawOffset, m_y, m_height, m_width, 12, glm::vec3(0, 0, 0), AlignmentHorizontal::LEFT, AlignmentVertical::CENTER);
+        m_textMesh->Draw(m_text, m_x + m_textDrawOffset, m_y, (int)m_height, (int)m_width, 12, glm::vec3(0, 0, 0), AlignmentHorizontal::LEFT, AlignmentVertical::CENTER);
     }
     m_manager->ScissorsPop();
 }
@@ -141,7 +141,7 @@ void TextureGenEngine::TextInput::SetPosition(float x, float y)
 {
     Component::SetPosition(x, y);
     m_cursor->SetPosition(x, y);
-    m_textMesh->Draw(m_text, m_x, m_y, m_height, m_width, 12, glm::vec3(0, 0, 0), AlignmentHorizontal::LEFT, AlignmentVertical::CENTER);
+    m_textMesh->Draw(m_text, m_x, m_y, (int)m_height, (int)m_width, 12, glm::vec3(0, 0, 0), AlignmentHorizontal::LEFT, AlignmentVertical::CENTER);
 }
 
 void TextureGenEngine::TextInput::Move(float x, float y)

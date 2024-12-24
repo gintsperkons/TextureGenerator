@@ -31,7 +31,7 @@ TextureGenEngine::InputConnector::~InputConnector()
 {
 }
 
-void TextureGenEngine::InputConnector::OnMouseDrag(double x, double y)
+void TextureGenEngine::InputConnector::OnMouseDrag(float x, float y)
 {
     // SpawnConnectorLine();
     if (m_tempConnection == nullptr)

@@ -6,11 +6,12 @@ namespace TextureGenEngine
 	class Mesh;
 	class Line;
 	class Bezier;
-	namespace ObjectFactory {
-		Mesh* CreateTriangle();
-		Mesh *CreateSquare(int width, int height);
+	namespace ObjectFactory
+	{
+		Mesh *CreateTriangle();
+		Mesh *CreateSquare(float width, float height);
 
-		Line* CreateLine(int xStart, int yStart, int xEnd, int yEnd);
-		Bezier *CreateBezier(int xStart, int yStart, int xEnd, int yEnd, unsigned int segments = 100);
+		Line *CreateLine(float xStart, float yStart, float xEnd, float yEnd);
+		Bezier *CreateBezier(float xStart, float yStart, float xEnd, float yEnd, unsigned int segments = 100);
 	}
 }

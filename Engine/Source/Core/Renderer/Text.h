@@ -13,7 +13,7 @@ namespace TextureGenEngine
         unsigned int VBO, VAO;
         Shader *m_shader;
         /* data */
-        float CalculateScale(std::string text, int textSize, int &textHeight, int &textWidth, int &maxDescender);
+        float CalculateScale(std::string text, float textSize, float &textHeight, float &textWidth, float &maxDescender);
 
     public:
         Text(bool staticSize = true);

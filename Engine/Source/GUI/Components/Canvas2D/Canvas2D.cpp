@@ -6,7 +6,7 @@
 #include "GUI/Components/Canvas2D/NodeElements/OutputConnector.h"
 #include "Node.h"
 
-TextureGenEngine::Canvas2D::Canvas2D(int x, int y, int width, int height, ScalingType xScaling, ScalingType yScaling) : Panel(x, y, width, height, xScaling, yScaling)
+TextureGenEngine::Canvas2D::Canvas2D(float x, float y, float width, float height, ScalingType xScaling, ScalingType yScaling) : Panel(x, y, width, height, xScaling, yScaling)
 
 {
     m_draggable = true;
@@ -18,7 +18,7 @@ void TextureGenEngine::Canvas2D::Draw()
 {
     // float x, y;
     //     m_manager->GetMousePosition(x, y);
-    //     if (GetInputConnector((double)x, (double)y))
+    //     if (GetInputConnector((float)x, (float)y))
     //     {
     //         LOG_DEBUG("Hand cursor\n");
     //     }
@@ -50,7 +50,7 @@ void TextureGenEngine::Canvas2D::AddNode(Node *node)
     node->Init(m_width, m_height);
 }
 
-TextureGenEngine::Component *TextureGenEngine::Canvas2D::SelectObject(double x, double y)
+TextureGenEngine::Component *TextureGenEngine::Canvas2D::SelectObject(float x, float y)
 {
     for (auto &node : m_nodes)
     {
@@ -67,7 +67,7 @@ TextureGenEngine::Component *TextureGenEngine::Canvas2D::SelectObject(double x, 
     return nullptr;
 }
 
-void TextureGenEngine::Canvas2D::OnMouseDrag(double x, double y)
+void TextureGenEngine::Canvas2D::OnMouseDrag(float x, float y)
 {
     for (auto &node : m_nodes)
     {
@@ -75,7 +75,7 @@ void TextureGenEngine::Canvas2D::OnMouseDrag(double x, double y)
     }
 }
 
-TextureGenEngine::InputConnector *TextureGenEngine::Canvas2D::GetInputConnector(double x, double y)
+TextureGenEngine::InputConnector *TextureGenEngine::Canvas2D::GetInputConnector(float x, float y)
 {
     for (auto &node : m_nodes)
     {
@@ -88,7 +88,7 @@ TextureGenEngine::InputConnector *TextureGenEngine::Canvas2D::GetInputConnector(
     return nullptr;
 }
 
-TextureGenEngine::OutputConnector *TextureGenEngine::Canvas2D::GetOutputConnector(double x, double y)
+TextureGenEngine::OutputConnector *TextureGenEngine::Canvas2D::GetOutputConnector(float x, float y)
 {
     for (auto &node : m_nodes)
     {

@@ -7,7 +7,7 @@ MenuComponent(25)
 {
 }
 
-void TextureGenEngine::MenuBar::Init(int width, int height)
+void TextureGenEngine::MenuBar::Init(float width, float height)
 {
     MenuComponent::Init(width, height);
     m_y = height - m_height;
@@ -28,7 +28,7 @@ void TextureGenEngine::MenuBar::Draw()
     }
 }
 
-void TextureGenEngine::MenuBar::Resize(int width, int height)
+void TextureGenEngine::MenuBar::Resize(float width, float height)
 {
     m_background->Scale(width / (float)m_width, 1);
     m_y = height - m_height;
@@ -43,7 +43,7 @@ void TextureGenEngine::MenuBar::Resize(int width, int height)
 
 void TextureGenEngine::MenuBar::AddMenu(MenuComponent *menu)
 {
-    dynamic_cast<Menu*>(menu)->SetMenuBar(m_menus.size() * 100, m_y, 100, MenuComponent::height);
+    dynamic_cast<Menu *>(menu)->SetMenuBar(m_menus.size() * (float)100, m_y, 100.f, MenuComponent::height);
     m_menus.push_back(menu);
     menu->SetManager(m_manager);
     menu->Init(m_width, m_height);

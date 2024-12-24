@@ -38,7 +38,7 @@ namespace TextureGenEngine
         void Update();
         void Draw();
         void Resize(int width, int height);
-        void Scissors(int x, int y, int width, int height);
+        void Scissors(float x, float y, float width, float height);
         void ScissorsReset();
         TAPI void AddGUI(GUIManager *gui);
         GLFWwindow *GetWindow() { return m_window; }

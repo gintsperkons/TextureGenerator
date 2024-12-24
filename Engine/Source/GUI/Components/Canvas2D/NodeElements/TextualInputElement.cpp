@@ -40,14 +40,14 @@ void TextureGenEngine::TextualInputElement::SetManager(GUIManager *manager)
     m_textInput->SetManager(manager);
 }
 
-void TextureGenEngine::TextualInputElement::Init(int width, int height)
+void TextureGenEngine::TextualInputElement::Init(float width, float height)
 {
     m_width = width;
     m_height = height;
     m_textInput->Init(width, height);
 }
 
-void TextureGenEngine::TextualInputElement::Setup(int x, int y)
+void TextureGenEngine::TextualInputElement::Setup(float x, float y)
 {
     NodeElement::Setup(x, y);
     LOG_DEBUG("Setting up TextualInputElement\n");
@@ -57,13 +57,13 @@ void TextureGenEngine::TextualInputElement::Setup(int x, int y)
     m_outputImage->SetPosition(m_x+120, m_y);
 }
 
-void TextureGenEngine::TextualInputElement::OnMouseDrag(double x, double y)
+void TextureGenEngine::TextualInputElement::OnMouseDrag(float x, float y)
 {
     NodeElement::OnMouseDrag(x, y);
     m_textInput->Move(x, y);
 }
 
-TextureGenEngine::Component *TextureGenEngine::TextualInputElement::SelectObject(double x, double y)
+TextureGenEngine::Component *TextureGenEngine::TextualInputElement::SelectObject(float x, float y)
 {
     Component* element = NodeElement::SelectObject(x, y);
     if (element) return element;

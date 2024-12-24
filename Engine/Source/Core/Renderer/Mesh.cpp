@@ -20,7 +20,7 @@ TextureGenEngine::Mesh::Mesh(Vertex3D vertices[], unsigned int vertexCount, unsi
     float minX, minY, maxX, maxY;
     minX = minY = 9999.0f;
     maxX = maxY = -9999.0f;
-    for (int i = 0; i < vertexCount; i++)
+    for (unsigned int i = 0; i < vertexCount; i++)
     {
         minX = std::min(minX, vertices[i].Position.x);
         minY = std::min(minY, vertices[i].Position.y);
@@ -73,7 +73,7 @@ void TextureGenEngine::Mesh::Draw()
     GLint timeLoc = glGetUniformLocation(m_shader->GetID(), "time");
     if (timeLoc != -1)
     {
-        glUniform1f(timeLoc, Engine::Get()->GetTime());
+        glUniform1f(timeLoc, static_cast<float>(Engine::Get()->GetTime()));
     }
 
     THAUMA_ASSERT_MSG(projectionLoc != -1, "Failed to get projection uniform location");

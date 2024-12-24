@@ -21,7 +21,7 @@ TextureGenEngine::NodeElement::~NodeElement()
 {
 }
 
-void TextureGenEngine::NodeElement::OnMouseDrag(double x, double y)
+void TextureGenEngine::NodeElement::OnMouseDrag(float x, float y)
 {
     m_x += x;
     m_y -= y;
@@ -29,8 +29,7 @@ void TextureGenEngine::NodeElement::OnMouseDrag(double x, double y)
     m_outputImage->Move(x, y);
 }
 
-
-void TextureGenEngine::NodeElement::Setup(int x, int y)
+void TextureGenEngine::NodeElement::Setup(float x, float y)
 {
     Node *parent = dynamic_cast<Node *>(m_parent);
     if (parent)
@@ -52,7 +51,7 @@ void TextureGenEngine::NodeElement::SetManager(GUIManager *manager)
     m_outputImage->SetManager(manager);
 }
 
-TextureGenEngine::Component *TextureGenEngine::NodeElement::SelectObject(double x, double y)
+TextureGenEngine::Component *TextureGenEngine::NodeElement::SelectObject(float x, float y)
 {
     LOG_DEBUG("Selecting object----\n");
     LOG_DEBUG("x %f y %f\n", x, y);
@@ -70,7 +69,7 @@ TextureGenEngine::Component *TextureGenEngine::NodeElement::SelectObject(double 
     return nullptr;
 }
 
-TextureGenEngine::InputConnector *TextureGenEngine::NodeElement::GetInputConnector(double x, double y)
+TextureGenEngine::InputConnector *TextureGenEngine::NodeElement::GetInputConnector(float x, float y)
 {
     if (m_inputImage->CheckCollision(x, y))
     {
@@ -79,7 +78,7 @@ TextureGenEngine::InputConnector *TextureGenEngine::NodeElement::GetInputConnect
     return nullptr;
 }
 
-TextureGenEngine::OutputConnector *TextureGenEngine::NodeElement::GetOutputConnector(double x, double y)
+TextureGenEngine::OutputConnector *TextureGenEngine::NodeElement::GetOutputConnector(float x, float y)
 {
     if (m_outputImage->CheckCollision(x, y))
     {

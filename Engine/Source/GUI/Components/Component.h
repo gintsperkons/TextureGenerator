@@ -27,13 +27,13 @@ namespace TextureGenEngine
         bool m_draggable = false;
 
     public:
-        Component(int x, int y, int width, int height);
+        Component(float x, float y, float width, float height);
         virtual void Draw();
         virtual ~Component();
-        virtual void Resize(int width, int height);
+        virtual void Resize(float width, float height);
         TAPI virtual void SetBackground(Color color);
         virtual void SetManager(GUIManager *manager) { m_manager = manager; }
-        virtual void Init(int width, int height);
+        virtual void Init(float width, float height);
         void SetParent(Component *parent) { m_parent = parent; }
         float GetX() { return m_x; }
         float GetY() { return m_y; }
@@ -46,8 +46,8 @@ namespace TextureGenEngine
         virtual void DeSelect() {};
         virtual void Click(float x, float y) {};
         virtual bool CheckCollision(float x, float y);
-        virtual Component *SelectObject(double x, double y) { return nullptr; }
-        virtual void OnMouseDrag(double x, double y);
+        virtual Component *SelectObject(float x, float y) { return nullptr; }
+        virtual void OnMouseDrag(float x, float y);
         virtual void SetDepth(float depth);
         virtual void SetPosition(float x, float y);
         virtual void Move(float x, float y);
