@@ -7,7 +7,7 @@
 #include "Core/Renderer/Renderer.h"
 #include <glm/gtc/type_ptr.hpp>
 
-TextureGenEngine::Bezier::Bezier(Vertex3D start,Vertex3D end, unsigned int segments)
+TextureGenEngine::Bezier::Bezier(Vertex3D start, Vertex3D end, unsigned int segments)
     : m_shader(nullptr), m_indexCount(2)
 {
     m_segments = segments;
@@ -244,6 +244,13 @@ bool TextureGenEngine::Bezier::CheckClickCollision(float x, float y)
 void TextureGenEngine::Bezier::UpdateEndPosition(float x, float y)
 {
     m_end.Position = glm::vec3(x, y, m_end.Position.z);
+    RecalculateControls();
+    RecalculateCurve();
+}
+
+void TextureGenEngine::Bezier::UpdateStartPosition(float x, float y)
+{
+    m_start.Position = glm::vec3(x, y, m_start.Position.z);
     RecalculateControls();
     RecalculateCurve();
 }

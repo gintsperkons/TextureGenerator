@@ -1,12 +1,16 @@
 #include "InputConnector.h"
 #include "Core/Renderer/Mesh.h"
-#include "Core/Renderer/Bezier.h"
+#include "Connector.h"
 
-TextureGenEngine::InputConnector::InputConnector():
-Component(0, 0, 20, 20)
+TextureGenEngine::InputConnector::InputConnector() : Component(0, 0, 20, 20)
 {
     m_background->ChangeColor(1.0f, 1.0f, 0.0f, 1.0f);
     m_type = "InputConnector";
+}
+
+bool TextureGenEngine::InputConnector::ExistConnection(Connector *connector)
+{
+    return m_connector == connector;
 }
 
 void TextureGenEngine::InputConnector::Draw()
@@ -18,17 +22,22 @@ TextureGenEngine::InputConnector::~InputConnector()
 {
 }
 
-void TextureGenEngine::InputConnector::ConnectLine(Bezier* line)
+void TextureGenEngine::InputConnector::ConnectLine(Connector *connector)
 {
-    m_line = line;
-    m_line->UpdateEndPosition(m_x, m_y+m_height/2);
+    m_connector = connector;
+    m_connector->UpdateEndPosition(m_x, m_y + m_height / 2);
+}
+
+void TextureGenEngine::InputConnector::DisconnectLine()
+{
+    m_connector = nullptr;
 }
 
 void TextureGenEngine::InputConnector::Move(float x, float y)
 {
     Component::Move(x, y);
-    if (m_line)
+    if (m_connector)
     {
-        m_line->MoveEnd(x,y);
+        m_connector->MoveEnd(x, y);
     }
 }

@@ -7,7 +7,7 @@
 #include "NodeElement.h"
 #include "GUI/Components/Canvas2D/Node.h"
 #include "GUI/Components/Canvas2D/Canvas2D.h"
-#include "InputConnector.h"
+#include "Connector.h"
 
 TextureGenEngine::OutputConnector::OutputConnector() : Component(0, 0, 20, 20)
 {
@@ -24,13 +24,13 @@ TextureGenEngine::OutputConnector::~OutputConnector()
 void TextureGenEngine::OutputConnector::OnMouseDrag(double x, double y)
 {
     // SpawnConnectorLine();
-    if (m_line == nullptr)
+    if (m_connector == nullptr)
     {
         LOG_DEBUG("Creating line\n");
         LOG_DEBUG("x %f y %f\n", m_x, m_y);
-        m_line = ObjectFactory::CreateBezier(m_x+m_width, m_y+m_height/2, m_x+100, m_y+100, 100);
-        m_line->ChangeColor(1.0f, 0.0f, 1.0f, 1.0f);
-        m_lines.push_back(m_line);
+        m_connector = new Connector("text");
+        m_connector->UpdateStartPosition(m_x+m_width, m_y + m_height / 2);
+        m_connectors.push_back(m_connector);
     }
     if (m_manager == nullptr)
     {
@@ -39,13 +39,13 @@ void TextureGenEngine::OutputConnector::OnMouseDrag(double x, double y)
     }
     float posX, posY;
     m_manager->GetMousePosition(posX, posY);
-    m_line->UpdateEndPosition(posX, posY);
+    m_connector->UpdateEndPosition(posX, posY);
 }
 
 void TextureGenEngine::OutputConnector::Draw()
 {
     Component::Draw();
-    for (auto &line : m_lines)
+    for (auto &line : m_connectors)
     {
         line->Draw();
     }
@@ -55,7 +55,7 @@ void TextureGenEngine::OutputConnector::MouseRelease()
 {
     float posX, posY;
     m_manager->GetMousePosition(posX, posY);
-    m_line->UpdateEndPosition(posX, posY);
+    if (m_connector == nullptr) return;
 
     if (dynamic_cast<NodeElement *>(m_parent) == nullptr)
     {
@@ -70,25 +70,61 @@ void TextureGenEngine::OutputConnector::MouseRelease()
     InputConnector *input = static_cast<Node *>(static_cast<NodeElement *>(m_parent)->GetNode())->GetCanvas()->GetInputConnector(posX, posY);
     if (input != nullptr)
     {
-        input->ConnectLine(m_line);
+        m_connector->MakeConnection(this, input);
     }
     else
     {
 
-        m_lines.pop_back();
-        delete m_line;
+        m_connectors.pop_back();
+        delete m_connector;
     }
-    if (m_line != nullptr)
+    if (m_connector != nullptr)
     {
-        m_line = nullptr;
+        m_connector = nullptr;
     }
 }
 
 void TextureGenEngine::OutputConnector::Move(float x, float y)
 {
     Component::Move(x, y);
-    for (auto &line : m_lines)
+    for (auto &line : m_connectors)
     {
         line->MoveStart(x, y);
     }
+}
+
+void TextureGenEngine::OutputConnector::ConnectLine(Connector *connector)
+{
+    connector->UpdateStartPosition(m_x + m_width, m_y + m_height / 2);
+    if (connector != m_connector){
+        m_connectors.push_back(connector);
+    }
+}
+
+void TextureGenEngine::OutputConnector::DisconnectLine(Connector *connector)
+{
+    if (m_connector == connector)
+    {
+        m_connector = nullptr;
+    }
+    for (auto it = m_connectors.begin(); it != m_connectors.end(); ++it)
+    {
+        if (*it == connector)
+        {
+            m_connectors.erase(it);
+            break;
+        }
+    }
+}
+
+bool TextureGenEngine::OutputConnector::ExistConnection(Connector *connector)
+{
+    for (auto &line : m_connectors)
+    {
+        if (line == connector)
+        {
+            return true;
+        }
+    }
+    return false;
 }

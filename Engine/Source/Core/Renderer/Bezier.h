@@ -21,7 +21,7 @@ namespace TextureGenEngine
         unsigned int m_segments;             // Number of segments to approximate the Bezier
 
         Vertex3D CalculatePosition(Vertex3D start, Vertex3D end, float t);
-        Vertex3D CalculateBezierPoint(Vertex3D start, Vertex3D end, float t, Vertex3D controlPoint1 , Vertex3D controlPoint2);
+        Vertex3D CalculateBezierPoint(Vertex3D start, Vertex3D end, float t, Vertex3D controlPoint1, Vertex3D controlPoint2);
         void RecalculateControls();
         void RecalculateCurve();
 
@@ -41,6 +41,7 @@ namespace TextureGenEngine
         // Method to check if the Bezier was clicked (collision detection with point)
         bool CheckClickCollision(float x, float y);
         void UpdateEndPosition(float x, float y);
+        void UpdateStartPosition(float x, float y);
         void MoveStart(float x, float y);
         void MoveEnd(float x, float y);
     };

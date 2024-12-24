@@ -3,16 +3,21 @@
 
 namespace TextureGenEngine
 {
-    class Bezier;
+    class Connector;
     class InputConnector : public Component
     {
-        Bezier *m_line = nullptr;
+        Connector *m_connector = nullptr;
+        std::string m_type;
+
     public:
         InputConnector();
-
-        void Draw() override;
+        bool ExistConnection(Connector *connector);
+         void Draw() override;
         ~InputConnector();
-        void ConnectLine(Bezier *line);
+        void ConnectLine(Connector *connector);
+        void DisconnectLine();
+        TextureGenEngine::Connector *GetConnection() { return m_connector; }
         void Move(float x, float y) override;
+        void SetType(std::string type) { m_type = type; }
     };
 } // namespace TextureGenEngine

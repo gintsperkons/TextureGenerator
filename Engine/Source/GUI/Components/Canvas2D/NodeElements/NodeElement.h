@@ -15,6 +15,7 @@ namespace TextureGenEngine
         InputConnector *m_inputImage;
         OutputConnector *m_outputImage;
         Node* m_node;
+        std::string m_dataType;
 
     public:
         NodeElement(/* args */);
