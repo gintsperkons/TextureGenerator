@@ -7,6 +7,7 @@
 #include "Core/Renderer/Renderer.h"
 #include "Core/Font/FontManager.h"
 #include "Core/Asserts.h"
+#include "Core/AssetManager/AssetManager.h"
 
 void TextureGenEngine::Engine::Init()
 {
@@ -38,6 +39,7 @@ TextureGenEngine::Engine::Engine() :
 m_windowManager(new WindowManager()),
 m_renderer(new Renderer(m_windowManager->GetMainWindow()->GetWidth(), m_windowManager->GetMainWindow()->GetHeight())),
 m_fontManager(new FontManager()),
+m_assetManager(new AssetManager()),
 m_running(true)
 {
 }
