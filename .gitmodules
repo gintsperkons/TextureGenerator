@@ -10,3 +10,6 @@
 [submodule "Scripts"]
 	path = Scripts
 	url = https://github.com/gintsperkons/Scripts.git
+[submodule "Vendor/Libraries/STB"]
+	path = Vendor/Libraries/STB
+	url = https://github.com/nothings/stb.git

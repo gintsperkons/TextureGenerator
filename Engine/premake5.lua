@@ -7,7 +7,7 @@ visibility "Hidden"
 
 files {"Source\\**.h", "Source\\**.cpp", "Source\\glad.c"}
 
-includedirs {"Source", IncludeDir["GLFW"], IncludeDir["GLM"], IncludeDir["GLAD"], IncludeDir["FreeType"]}
+includedirs {"Source", IncludeDir["GLFW"], IncludeDir["GLM"], IncludeDir["GLAD"], IncludeDir["FreeType"], IncludeDir["STB"]}
 
 targetdir("%{wks.location}\\Binaries\\" .. OutputDir .. "\\%{prj.name}")
 objdir("%{wks.location}\\Binaries\\Intermediates\\" .. OutputDir .. "\\%{prj.name}")
