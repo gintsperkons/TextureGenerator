@@ -134,6 +134,18 @@ TextureGenEngine::Component *TextureGenEngine::Node::SelectObject(double x, doub
 
 TextureGenEngine::Node::~Node()
 {
+    if (m_dataBackground)
+    {
+        delete m_dataBackground;
+    }
+    for (auto &element : m_elements)
+    {
+        delete element;
+    }
+    if (m_parent)
+    {
+        m_parent->RemoveChild(this);
+    }
 }
 
 TextureGenEngine::InputConnector *TextureGenEngine::Node::GetInputConnector(double x, double y)

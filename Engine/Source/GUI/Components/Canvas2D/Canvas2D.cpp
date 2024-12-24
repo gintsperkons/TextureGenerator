@@ -100,3 +100,15 @@ TextureGenEngine::OutputConnector *TextureGenEngine::Canvas2D::GetOutputConnecto
     }
     return nullptr;
 }
+
+void TextureGenEngine::Canvas2D::RemoveChild(Component *child)
+{
+    for (auto it = m_nodes.begin(); it != m_nodes.end(); ++it)
+    {
+        if (*it == child)
+        {
+            m_nodes.erase(it);
+            break;
+        }
+    }
+}

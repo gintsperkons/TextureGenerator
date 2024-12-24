@@ -21,5 +21,6 @@ namespace TextureGenEngine
         void OnMouseDrag(double x, double y) override;
         InputConnector* GetInputConnector(double x, double y);
         OutputConnector* GetOutputConnector(double x, double y);
+        void RemoveChild(Component *child) override;
     };
 } // namespace TextureGenEngine

@@ -52,6 +52,7 @@ namespace TextureGenEngine
         virtual void SetPosition(float x, float y);
         virtual void Move(float x, float y);
         virtual void MouseRelease(){};
+        virtual void RemoveChild(Component *child){};
         
     };
 } // namespace TextureGenEngine

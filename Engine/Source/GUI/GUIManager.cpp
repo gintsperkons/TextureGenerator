@@ -165,6 +165,15 @@ void TextureGenEngine::GUIManager::KeyAction(int key, int scancode, int action, 
 {
     if (action == Key::KeyAction::Press || action == Key::KeyAction::Repeat)
     {
+        if (currentObject && currentObject->GetType() == "Node") {
+            if (key == Key::Delete)
+            {
+                        delete currentObject;
+                        currentObject = nullptr;
+                        return;
+               
+            }
+        }
         if (currentObject && currentObject->GetType() == "TextInput")
         {
 
