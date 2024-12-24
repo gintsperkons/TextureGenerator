@@ -26,6 +26,7 @@ namespace TextureGenEngine
         virtual void SetNode(Node* node) { m_node = node; }
         virtual Component *SelectObject(double x, double y) override;
         InputConnector *GetInputConnector(double x, double y);
+        OutputConnector *GetOutputConnector(double x, double y);
         Node * GetNode() { return m_node; }
     };
 } // namespace TextureGenEngine

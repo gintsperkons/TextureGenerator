@@ -78,3 +78,12 @@ TextureGenEngine::InputConnector *TextureGenEngine::NodeElement::GetInputConnect
     }
     return nullptr;
 }
+
+TextureGenEngine::OutputConnector *TextureGenEngine::NodeElement::GetOutputConnector(double x, double y)
+{
+    if (m_outputImage->CheckCollision(x, y))
+    {
+        return m_outputImage;
+    }
+    return nullptr;
+}

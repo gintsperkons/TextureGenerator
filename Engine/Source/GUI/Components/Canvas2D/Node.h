@@ -6,6 +6,7 @@
 namespace TextureGenEngine
 {
     class InputConnector;
+    class OutputConnector;
     class NodeElement;
     class Mesh;
     class Canvas2D;
@@ -25,6 +26,7 @@ namespace TextureGenEngine
         Component *SelectObject(double x, double y) override;
         ~Node();
         InputConnector* GetInputConnector(double x, double y);
+        OutputConnector* GetOutputConnector(double x, double y);
         Canvas2D* GetCanvas();
         static inline int c_titleHeight = 25;
     };

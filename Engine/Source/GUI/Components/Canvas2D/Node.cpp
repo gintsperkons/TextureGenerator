@@ -6,6 +6,7 @@
 #include "Core/Window/Window.h"
 #include "NodeElements/NodeElement.h"
 #include "NodeElements/InputConnector.h"
+#include "NodeElements/OutputConnector.h"
 #include "Canvas2D.h"
 
 TextureGenEngine::Node::Node(int x, int y):
@@ -143,6 +144,19 @@ TextureGenEngine::InputConnector *TextureGenEngine::Node::GetInputConnector(doub
         if (input)
         {
             return input;
+        }
+    }
+    return nullptr;
+}
+
+TextureGenEngine::OutputConnector *TextureGenEngine::Node::GetOutputConnector(double x, double y)
+{
+    for (auto &element : m_elements)
+    {
+        OutputConnector *output = element->GetOutputConnector(x, y);
+        if (output)
+        {
+            return output;
         }
     }
     return nullptr;

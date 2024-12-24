@@ -3,6 +3,7 @@
 #include "GUI/Components/MenuComponent/MenuComponent.h"
 #include "Core/Logger/Logger.h"
 #include "GUI/Components/Canvas2D/NodeElements/InputConnector.h"
+#include "GUI/Components/Canvas2D/NodeElements/OutputConnector.h"
 #include "Node.h"
 
 TextureGenEngine::Canvas2D::Canvas2D(int x, int y, int width, int height, ScalingType xScaling, ScalingType yScaling) : Panel(x, y, width, height, xScaling, yScaling)
@@ -82,6 +83,19 @@ TextureGenEngine::InputConnector *TextureGenEngine::Canvas2D::GetInputConnector(
         if (inputConnector)
         {
             return inputConnector;
+        }
+    }
+    return nullptr;
+}
+
+TextureGenEngine::OutputConnector *TextureGenEngine::Canvas2D::GetOutputConnector(double x, double y)
+{
+    for (auto &node : m_nodes)
+    {
+        OutputConnector *outputConnector = node->GetOutputConnector(x, y);
+        if (outputConnector)
+        {
+            return outputConnector;
         }
     }
     return nullptr;

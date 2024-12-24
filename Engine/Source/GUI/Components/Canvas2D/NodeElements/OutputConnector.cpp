@@ -119,6 +119,10 @@ void TextureGenEngine::OutputConnector::DisconnectLine(Connector *connector)
 
 bool TextureGenEngine::OutputConnector::ExistConnection(Connector *connector)
 {
+	if (m_connectors.empty())
+	{
+		return false;
+	}
     for (auto &line : m_connectors)
     {
         if (line == connector)
