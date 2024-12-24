@@ -61,6 +61,8 @@ void TextureGenEngine::GUIManager::Update()
 
 void TextureGenEngine::GUIManager::Draw()
 {
+    if (m_width <=  0 || m_height <= 0) return;
+
     for (auto &child : m_children)
     {
         child->Draw();
@@ -188,7 +190,6 @@ void TextureGenEngine::GUIManager::KeyAction(int key, int scancode, int action, 
 
 void TextureGenEngine::GUIManager::ScissorsPush(int x, int y, int width, int height)
 {
-    return;
     if (m_scissors.size() > 0)
     {
         if (x < m_scissors.back().x)

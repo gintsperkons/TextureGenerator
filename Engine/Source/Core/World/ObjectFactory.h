@@ -9,7 +9,6 @@ namespace TextureGenEngine
 	namespace ObjectFactory {
 		Mesh* CreateTriangle();
 		Mesh *CreateSquare(int width, int height);
-		Mesh* CreateCircle();
 
 		Line* CreateLine(int xStart, int yStart, int xEnd, int yEnd);
 		Bezier *CreateBezier(int xStart, int yStart, int xEnd, int yEnd, unsigned int segments = 100);
