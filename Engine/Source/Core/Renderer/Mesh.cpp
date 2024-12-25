@@ -61,16 +61,33 @@ TextureGenEngine::Mesh::Mesh(Vertex3D vertices[], unsigned int vertexCount, unsi
 
 void TextureGenEngine::Mesh::Draw()
 {
-    if (m_texture != nullptr)
+    m_shader->Use();
+    GLint textureExistLoc = glGetUniformLocation(m_shader->GetID(), "ourTextureExists");
+    if (textureExistLoc != -1)
     {
-        m_texture->BindTexture();
+        if (m_texture != nullptr)
+        {
+          
+            // Texture exists, set uniform to 1 (true)
+            glUniform1i(textureExistLoc, 1);
+            m_texture->BindTexture(); // Bind the texture
+            
+        }
+        else
+        {
+            // Texture does not exist, set uniform to 0 (false)
+            glUniform1i(textureExistLoc, 0);
+        }
+    }
+    else
+    {
+        LOG_ERROR("Failed to get 'ourTextureExists' uniform location");
     }
 
-    m_shader->Use();
     if (glGetError() != GL_NO_ERROR)
     {
         GLenum error = glGetError();
-        LOG_ERROR("Shader use error : %d", error);
+        LOG_ERROR("Shader use error : %d\n", error);
     }
 
     GLint projectionLoc = glGetUniformLocation(m_shader->GetID(), "projection");
@@ -239,10 +256,9 @@ void TextureGenEngine::Mesh::SetDepth(float depth)
     m_model = glm::translate(m_model, translation);
     m_model *= glm::mat4_cast(rotation);
     m_model = glm::scale(m_model, scale);
-
 }
 
-void TextureGenEngine::Mesh::ChangeTexture(Texture* texturePtr)
+void TextureGenEngine::Mesh::ChangeTexture(Texture *texturePtr)
 {
     if (texturePtr == nullptr)
     {

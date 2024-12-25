@@ -24,7 +24,7 @@ TextureGenEngine::Texture *TextureGenEngine::AssetManager::LoadTexture(const cha
         return m_textures[fileName];
     }
     Texture *texture = new Texture();
-    texture->LoadTexture(("resources/texture/" + std::string(fileName)).c_str());
+    texture->LoadTexture(("resources/textures/" + std::string(fileName)).c_str());
     m_textures[fileName] = texture;
     return texture;
 }

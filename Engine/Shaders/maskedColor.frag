@@ -12,7 +12,8 @@ void main()
     if (ourTextureExists)
     {
         // Sample texture at normalized coordinates
-        FragColor = texture(ourTexture, TexCoord);
+         vec4 textureColor = texture(ourTexture, TexCoord);
+         FragColor = vec4(ourColor, textureColor.a);
     }
     else 
     {

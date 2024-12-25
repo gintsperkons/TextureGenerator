@@ -7,14 +7,19 @@
 #include "NodeElement.h"
 #include "GUI/Components/Canvas2D/Node.h"
 #include "GUI/Components/Canvas2D/Canvas2D.h"
+#include "Core/AssetManager/AssetManager.h"
+#include "Core/Renderer/Texture.h"
 #include "Connector.h"
 
 TextureGenEngine::OutputConnector::OutputConnector() : Component(0, 0, 20, 20)
 {
-    m_background->ChangeColor(1.0f, 0.0f, 1.0f, 1.0f);
+    m_background->ChangeColor(0.0f, 1.0f, 0.0f, 1.0f);
     m_selectable = true;
     m_draggable = true;
     m_type = "OutputConnector";
+    Texture* texture = TextureGenEngine::LoadTexture("Connector.png");
+    m_background->ChangeShader("maskedColor");
+    m_background->ChangeTexture(texture);
 }
 
 TextureGenEngine::OutputConnector::~OutputConnector()

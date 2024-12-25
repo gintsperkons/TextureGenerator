@@ -11,10 +11,11 @@
 
 TextureGenEngine::InputConnector::InputConnector() : Component(0, 0, 20, 20)
 {
-    m_background->ChangeColor(1.0f, 1.0f, 0.0f, 1.0f);
+    m_background->ChangeColor(1.0f, 0.0f, 0.0f, 1.0f);
     m_type = "InputConnector";
-    m_texture = TextureGenEngine::LoadTexture("Connector.png");
-    m_background->ChangeTexture(m_texture);
+    Texture * texture = TextureGenEngine::LoadTexture("Connector.png");
+    m_background->ChangeShader("maskedColor");
+    m_background->ChangeTexture(texture);
 }
 
 bool TextureGenEngine::InputConnector::ExistConnection(Connector *connector)
