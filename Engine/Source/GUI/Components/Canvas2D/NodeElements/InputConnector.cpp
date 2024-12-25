@@ -4,6 +4,8 @@
 #include "Core/Logger/Logger.h"
 #include "GUI/Components/Canvas2D/Node.h"
 #include "GUI/Components/Canvas2D/Canvas2D.h"
+#include "Core/AssetManager/AssetManager.h"
+#include "Core/Renderer/Texture.h"
 #include "NodeElement.h"
 #include "Connector.h"
 
@@ -11,6 +13,8 @@ TextureGenEngine::InputConnector::InputConnector() : Component(0, 0, 20, 20)
 {
     m_background->ChangeColor(1.0f, 1.0f, 0.0f, 1.0f);
     m_type = "InputConnector";
+    m_texture = TextureGenEngine::LoadTexture("Connector.png");
+    m_background->ChangeTexture(m_texture);
 }
 
 bool TextureGenEngine::InputConnector::ExistConnection(Connector *connector)

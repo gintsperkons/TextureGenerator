@@ -6,6 +6,7 @@
 namespace TextureGenEngine
 {
 	class Shader;
+	class Texture;
 	class Mesh
 	{
 		unsigned int VBO, VAO, EBO;
@@ -13,9 +14,11 @@ namespace TextureGenEngine
 		std::vector<unsigned int> m_indices;
 		glm::mat4 m_model;
 		Shader *m_shader;
+		Texture *m_texture;
 		unsigned int m_indexCount;
 		float m_scales[2] = { 1, 1 };
 		float m_size[2] = { 1, 1 };
+
 
 	public:
 		Mesh(Vertex3D vertices[], unsigned int vertexCount, unsigned int indices[], unsigned int indexCount);
@@ -28,6 +31,7 @@ namespace TextureGenEngine
 		void ChangeColor(float r, float g, float b, float a);
 		void ChangeShader(std::string shaderName);
 		void SetDepth(float depth);
+		void ChangeTexture(Texture* texturePtr);
 		~Mesh();
 	};
 }

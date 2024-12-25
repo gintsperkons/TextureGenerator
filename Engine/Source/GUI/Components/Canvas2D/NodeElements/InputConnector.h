@@ -4,11 +4,13 @@
 namespace TextureGenEngine
 {
     class Connector;
+    class Texture;
     class InputConnector : public Component
     {
         Connector *m_tempConnection = nullptr;
         Connector *m_connector = nullptr;
         std::string m_type;
+        Texture* m_texture = nullptr;
 
     public:
         InputConnector();

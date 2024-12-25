@@ -1,22 +1,20 @@
 #include "Defines.h"
+#include <map>
+#include <string>
 
 namespace TextureGenEngine
 {
-    void LoadTextFile(const char *path);
-    void LoadImage(const char *path);
-    void LoadFont(const char *path);
-
+    class Texture;
+    Texture *LoadTexture(const char *path);
     class AssetManager
     {
     private:
+        std::map<std::string, Texture *> m_textures;
         /* data */
     public:
         AssetManager(/* args */);
         ~AssetManager();
-        void LoadTextFile(const char *path);
-        void LoadImage(const char *path);
-        void LoadFont(const char *path);
+        Texture *LoadTexture(const char *fileName);
     };
-    
 
 } // namespace TextureGenEngine

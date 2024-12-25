@@ -8,12 +8,13 @@
 #include "Core/Renderer/Renderer.h"
 #include "Core/Asserts.h"
 #include "Core/Renderer/Shaders/Shader.h"
+#include "Core/Renderer/Texture.h"
 #include "glm/gtc/type_ptr.hpp"
 #include "glm/gtx/matrix_decompose.hpp"
 #include <limits>
 
 TextureGenEngine::Mesh::Mesh(Vertex3D vertices[], unsigned int vertexCount, unsigned int indices[], unsigned int indexCount)
-    : m_indexCount(indexCount)
+    : m_indexCount(indexCount), m_texture(nullptr)
 {
     m_vertices = std::vector<Vertex3D>(vertices, vertices + vertexCount);
     m_indices = std::vector<unsigned int>(indices, indices + indexCount);
@@ -60,6 +61,11 @@ TextureGenEngine::Mesh::Mesh(Vertex3D vertices[], unsigned int vertexCount, unsi
 
 void TextureGenEngine::Mesh::Draw()
 {
+    if (m_texture != nullptr)
+    {
+        m_texture->BindTexture();
+    }
+
     m_shader->Use();
     if (glGetError() != GL_NO_ERROR)
     {
@@ -107,6 +113,10 @@ void TextureGenEngine::Mesh::Draw()
 
     glBindVertexArray(0);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+    if (m_texture != nullptr)
+    {
+        m_texture->UnbindTexture();
+    }
 }
 
 glm::vec3 screenToWorld(float screenX, float screenY)
@@ -230,6 +240,16 @@ void TextureGenEngine::Mesh::SetDepth(float depth)
     m_model *= glm::mat4_cast(rotation);
     m_model = glm::scale(m_model, scale);
 
+}
+
+void TextureGenEngine::Mesh::ChangeTexture(Texture* texturePtr)
+{
+    if (texturePtr == nullptr)
+    {
+        LOG_ERROR("Texture is null\n");
+        return;
+    }
+    m_texture = texturePtr;
 }
 
 TextureGenEngine::Mesh::~Mesh()
