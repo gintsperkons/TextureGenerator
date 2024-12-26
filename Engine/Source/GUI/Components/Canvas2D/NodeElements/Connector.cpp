@@ -1,6 +1,7 @@
 #include "Connector.h"
 #include "Core/Renderer/Bezier.h"
 #include "Core/World/ObjectFactory.h"
+#include "Core/Logger/Logger.h"
 #include "InputConnector.h"
 #include "OutputConnector.h"
 
@@ -17,6 +18,15 @@ TextureGenEngine::Connector::Connector(std::string type)
 {
     m_type = type;
     m_line = ObjectFactory::CreateBezier(100, 100, 200, 200);
+    LOG_DEBUG("Creating connector type %s\n", type.c_str());
+    if (m_colors.find(type) != m_colors.end())
+    {
+        Color color = m_colors[type];
+        m_line->ChangeColor(color.r, color.g, color.b, color.a);
+        LOG_DEBUG("Color %f %f %f %f\n", color.r, color.g, color.b, color.a);
+    }
+    else
+        m_line->ChangeColor(1.0f, 1.0f, 1.0f, 1.0f);
 }
 
 TextureGenEngine::Connector::~Connector()

@@ -13,7 +13,7 @@ MenuComponent(MenuComponent::height)
 void TextureGenEngine::Menu::Draw()
 {
         MenuComponent::Draw();
-        m_text->Draw(m_title, m_x, m_y, (int)m_height, (int)m_width, 12, glm::vec3(0.0f, 0.0f, 0.0f), AlignmentHorizontal::LEFT, AlignmentVertical::CENTER);
+        m_text->Draw(m_title, m_x, m_y, (int)m_height, (int)m_width, 12, AlignmentHorizontal::LEFT, AlignmentVertical::CENTER);
 }
 
 void TextureGenEngine::Menu::Resize(float width, float height)

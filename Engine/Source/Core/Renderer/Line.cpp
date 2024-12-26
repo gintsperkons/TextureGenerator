@@ -39,7 +39,7 @@ TextureGenEngine::Line::Line(Vertex3D start, Vertex3D end)
     glEnableVertexAttribArray(0);
 
     // Vertex attribute pointer for color (location = 1)
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex3D), (void *)offsetof(Vertex3D, Color));
+    glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex3D), (void *)offsetof(Vertex3D, Color));
     glEnableVertexAttribArray(1);
 
     // Vertex attribute pointer for texCoords (location = 2)
@@ -115,7 +115,7 @@ void TextureGenEngine::Line::ChangeColor(float r, float g, float b, float a)
     // Iterate through all vertices and update the color
     for (auto &vertex : m_vertices)
     {
-        vertex.Color = glm::vec3(r, g, b); // Update color
+        vertex.Color = glm::vec4(r, g, b,a); // Update color
     }
 
     // Re-upload the vertex data to the GPU with the updated color

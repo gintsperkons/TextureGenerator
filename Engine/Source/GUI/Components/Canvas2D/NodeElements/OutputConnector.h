@@ -20,6 +20,6 @@ namespace TextureGenEngine
         void ConnectLine(Connector *connector);
         void DisconnectLine(Connector *connector);
         bool ExistConnection(Connector *connector);
-        void SetType(std::string type) { m_type = type; }
+        void SetType(std::string type);
     };
 } // namespace TextureGenEngine

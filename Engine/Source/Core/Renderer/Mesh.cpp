@@ -46,7 +46,7 @@ TextureGenEngine::Mesh::Mesh(Vertex3D vertices[], unsigned int vertexCount, unsi
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex3D), (void *)offsetof(Vertex3D, Position));
     glEnableVertexAttribArray(0);
 
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex3D), (void *)offsetof(Vertex3D, Color));
+    glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex3D), (void *)offsetof(Vertex3D, Color));
     glEnableVertexAttribArray(1);
 
     glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex3D), (void *)offsetof(Vertex3D, TexCoords));
@@ -223,7 +223,7 @@ void TextureGenEngine::Mesh::ChangeColor(float r, float g, float b, float a)
     // Iterate through all vertices and update the color
     for (auto &vertex : m_vertices)
     {
-        vertex.Color = glm::vec3(r, g, b); // Update color (you can modify this to fit your needs)
+        vertex.Color = glm::vec4(r, g, b, a); // Update color (you can modify this to fit your needs)
     }
 
     // Re-upload the vertex data to the GPU with the updated color

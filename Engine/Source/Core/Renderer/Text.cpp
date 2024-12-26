@@ -64,7 +64,7 @@ float TextureGenEngine::Text::CalculateScale(std::string text, float textSize, f
     return textSize / (lineCount * totalHeight);
 }
 
-void TextureGenEngine::Text::Draw(std::string text, float x, float y, int frameHeight, int frameWidth, int textSize, glm::vec3 color, AlignmentHorizontal hAlign, AlignmentVertical vAlign) // width and height in pixels of text
+void TextureGenEngine::Text::Draw(std::string text, float x, float y, int frameHeight, int frameWidth, int textSize, AlignmentHorizontal hAlign, AlignmentVertical vAlign, glm::vec4 color) // width and height in pixels of text
 {
     m_shader->Use();
     if (glGetError() != GL_NO_ERROR)
@@ -81,7 +81,7 @@ void TextureGenEngine::Text::Draw(std::string text, float x, float y, int frameH
     }
     glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(TextureGenEngine::Engine::Get()->GetRenderer()->GetViewMatrix()));
     glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(TextureGenEngine::Engine::Get()->GetRenderer()->GetProjectionMatrix()));
-    glUniform3f(textColorLoc, color.x, color.y, color.z);
+    glUniform4f(textColorLoc, color.x, color.y, color.z,color.a);
     glActiveTexture(GL_TEXTURE0);
     glBindVertexArray(VAO);
     float textHeight = 0;

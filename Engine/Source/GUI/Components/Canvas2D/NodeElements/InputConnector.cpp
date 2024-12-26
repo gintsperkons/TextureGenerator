@@ -13,7 +13,7 @@ TextureGenEngine::InputConnector::InputConnector() : Component(0, 0, 20, 20)
 {
     m_background->ChangeColor(1.0f, 0.0f, 0.0f, 1.0f);
     m_type = "InputConnector";
-    Texture * texture = TextureGenEngine::LoadTexture("Connector.png");
+    Texture *texture = TextureGenEngine::LoadTexture("Connector.png");
     m_background->ChangeShader("maskedColor");
     m_background->ChangeTexture(texture);
 }
@@ -107,4 +107,15 @@ void TextureGenEngine::InputConnector::Move(float x, float y)
     {
         m_connector->MoveEnd(x, y);
     }
+}
+
+void TextureGenEngine::InputConnector::SetType(std::string type)
+{
+    m_type = type;
+    if (m_colors.find(type) != m_colors.end())
+    {
+        m_background->ChangeColor(m_colors[type].r, m_colors[type].g, m_colors[type].b, m_colors[type].a);
+    }
+    else
+        m_background->ChangeColor(1.0f, 1.0f, 1.0f, 1.0f);
 }

@@ -19,7 +19,6 @@ NodeElement()
     m_type = "TextualInputElement";
     m_textInput = new TextInput(0,200, 100, 20);
     m_textInput->SetParent(this);
-    m_textInput->SetBackground(Color(0.0f, 1.0f, 1.0f, 1.0f));
     m_dataType = "text";
     m_inputImage->SetType(m_dataType);
     m_outputImage->SetType(m_dataType);

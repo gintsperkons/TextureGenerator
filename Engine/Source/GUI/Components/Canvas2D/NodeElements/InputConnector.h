@@ -1,5 +1,6 @@
 #include "Defines.h"
 #include "GUI/Components/Component.h"
+#include <string>
 
 namespace TextureGenEngine
 {
@@ -14,7 +15,7 @@ namespace TextureGenEngine
     public:
         InputConnector();
         bool ExistConnection(Connector *connector);
-         void Draw() override;
+        void Draw() override;
         ~InputConnector();
         void OnMouseDrag(float x, float y) override;
         void MouseRelease() override;
@@ -22,6 +23,6 @@ namespace TextureGenEngine
         void DisconnectLine();
         TextureGenEngine::Connector *GetConnection() { return m_connector; }
         void Move(float x, float y) override;
-        void SetType(std::string type) { m_type = type; }
-    };
-} // namespace TextureGenEngine
+        void SetType(std::string type);
+    }; // namespace TextureGenEngine
+}

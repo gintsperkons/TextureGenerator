@@ -13,11 +13,11 @@ namespace TextureGenEngine
         unsigned int VBO, VAO;
         Shader *m_shader;
         /* data */
-        float CalculateScale(std::string text, float textSize, float &textHeight, float &textWidth, float &maxDescender);
+        float CalculateScale(std::string text, float textSize, float &textHeight, float &textWidth, float &maxDescender); 
 
     public:
         Text(bool staticSize = true);
-        void Draw(std::string text, float x, float y, int frameHeight, int frameWidth, int textSize, glm::vec3 color, AlignmentHorizontal hAlign, AlignmentVertical vAlign);
+        void Draw(std::string text, float x, float y, int frameHeight, int frameWidth, int textSize, AlignmentHorizontal hAlign = AlignmentHorizontal::CENTER, AlignmentVertical vAlign = AlignmentVertical::CENTER,glm::vec4 color = {1.0f,1.0f,1.0f,1.0f});
         ~Text();
         float GetTextWidth(std::string text, int textSize);
     };

@@ -17,7 +17,7 @@ TextureGenEngine::OutputConnector::OutputConnector() : Component(0, 0, 20, 20)
     m_selectable = true;
     m_draggable = true;
     m_type = "OutputConnector";
-    Texture* texture = TextureGenEngine::LoadTexture("Connector.png");
+    Texture *texture = TextureGenEngine::LoadTexture("Connector.png");
     m_background->ChangeShader("maskedColor");
     m_background->ChangeTexture(texture);
 }
@@ -34,7 +34,7 @@ void TextureGenEngine::OutputConnector::OnMouseDrag(float x, float y)
         LOG_DEBUG("Creating line\n");
         LOG_DEBUG("x %f y %f\n", m_x, m_y);
         m_connector = new Connector("text");
-        m_connector->UpdateStartPosition(m_x+m_width, m_y + m_height / 2);
+        m_connector->UpdateStartPosition(m_x + m_width, m_y + m_height / 2);
         m_connectors.push_back(m_connector);
     }
     if (m_manager == nullptr)
@@ -60,7 +60,8 @@ void TextureGenEngine::OutputConnector::MouseRelease()
 {
     float posX, posY;
     m_manager->GetMousePosition(posX, posY);
-    if (m_connector == nullptr) return;
+    if (m_connector == nullptr)
+        return;
 
     if (dynamic_cast<NodeElement *>(m_parent) == nullptr)
     {
@@ -101,7 +102,8 @@ void TextureGenEngine::OutputConnector::Move(float x, float y)
 void TextureGenEngine::OutputConnector::ConnectLine(Connector *connector)
 {
     connector->UpdateStartPosition(m_x + m_width, m_y + m_height / 2);
-    if (connector != m_connector){
+    if (connector != m_connector)
+    {
         m_connectors.push_back(connector);
     }
 }
@@ -124,10 +126,10 @@ void TextureGenEngine::OutputConnector::DisconnectLine(Connector *connector)
 
 bool TextureGenEngine::OutputConnector::ExistConnection(Connector *connector)
 {
-	if (m_connectors.empty())
-	{
-		return false;
-	}
+    if (m_connectors.empty())
+    {
+        return false;
+    }
     for (auto &line : m_connectors)
     {
         if (line == connector)
@@ -136,4 +138,15 @@ bool TextureGenEngine::OutputConnector::ExistConnection(Connector *connector)
         }
     }
     return false;
+}
+
+void TextureGenEngine::OutputConnector::SetType(std::string type)
+{
+    m_type = type;
+    if (m_colors.find(type) != m_colors.end())
+    {
+        m_background->ChangeColor(m_colors[type].r, m_colors[type].g, m_colors[type].b, m_colors[type].a);
+    }
+    else
+        m_background->ChangeColor(1.0f, 1.0f, 1.0f, 1.0f);
 }

@@ -13,6 +13,7 @@ TextureGenEngine::Node::Node(float x, float y):
 Component(x, y, 100, c_titleHeight)
 {
     m_dataBackground = ObjectFactory::CreateSquare(100, 100);
+    m_dataBackground->ChangeColor(0.28125f, 0.25390625f, 0.25390625f, 1.0f);
     m_draggable = true;
     m_selectable = true;
     m_type = "Node";

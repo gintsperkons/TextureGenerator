@@ -2,6 +2,7 @@
 #include <glad/glad.h>
 #include <cstddef>
 #include <iostream>
+#include "Core/Logger/Logger.h"
 #include "Core/FileHandler/FileHandler.h"
 #include <string>
 
@@ -20,8 +21,9 @@ TextureGenEngine::Shader::Shader(std::string name, std::string vertexSource, std
     if (!success)
     {
         glGetShaderInfoLog(vertexShader, 512, NULL, infoLog);
-        std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n"
-                  << infoLog << std::endl;
+        LOG_ERROR("ERROR::SHADER::VERTEX::COMPILATION_FAILED\n%s", infoLog);
+        LOG_ERROR("Shader name: %s", name.c_str());
+        LOG_ERROR("Shader source: %s", vertexSource.c_str());
     }
     // Fragment
 
@@ -34,8 +36,9 @@ TextureGenEngine::Shader::Shader(std::string name, std::string vertexSource, std
     if (!success)
     {
         glGetShaderInfoLog(fragmentShader, 512, NULL, infoLog);
-        std::cout << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n"
-                  << infoLog << std::endl;
+        LOG_ERROR("ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n%s", infoLog);
+        LOG_ERROR("Shader name: %s", name.c_str());
+        LOG_ERROR("Shader source: %s", fragmentSource.c_str());
     }
 
     // Shader Program
@@ -47,8 +50,7 @@ TextureGenEngine::Shader::Shader(std::string name, std::string vertexSource, std
     if (!success)
     {
         glGetProgramInfoLog(m_ID, 512, NULL, infoLog);
-        std::cout << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n"
-                  << infoLog << std::endl;
+        LOG_ERROR("ERROR::SHADER::PROGRAM::LINKING_FAILED\n%s", infoLog);
     }
     glDeleteShader(vertexShader);
     glDeleteShader(fragmentShader);

@@ -5,7 +5,7 @@
 
 namespace TextureGenEngine
 {
-	class Shader;
+	class Shader; 
 	class Texture;
 	class Mesh
 	{
