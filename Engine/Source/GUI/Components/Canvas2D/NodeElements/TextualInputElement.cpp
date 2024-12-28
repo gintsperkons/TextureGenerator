@@ -75,5 +75,7 @@ TextureGenEngine::Component *TextureGenEngine::TextualInputElement::SelectObject
 
 TextureGenEngine::TextualInputElement::~TextualInputElement()
 {
-    delete m_textInput;
+    if (m_textInput != nullptr)
+        delete m_textInput;
+    m_textInput = nullptr;
 }

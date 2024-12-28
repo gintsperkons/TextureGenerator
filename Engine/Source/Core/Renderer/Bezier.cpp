@@ -65,10 +65,16 @@ TextureGenEngine::Bezier::Bezier(Vertex3D start, Vertex3D end, unsigned int segm
 }
 
 TextureGenEngine::Bezier::~Bezier()
-{ // Delete OpenGL buffers when the Bezier object is destroyed
-    glDeleteVertexArrays(1, &VAO);
-    glDeleteBuffers(1, &VBO);
-    glDeleteBuffers(1, &EBO);
+{
+    if (VAO != 0)
+        glDeleteVertexArrays(1, &VAO);
+    VAO = 0;
+    if (VBO != 0)
+        glDeleteBuffers(1, &VBO);
+    VBO = 0;
+    if (EBO != 0)
+        glDeleteBuffers(1, &EBO);
+    EBO = 0;
 }
 
 Vertex3D TextureGenEngine::Bezier::CalculatePosition(Vertex3D start, Vertex3D end, float t)
@@ -220,7 +226,7 @@ void TextureGenEngine::Bezier::ChangeColor(float r, float g, float b, float a)
     // Iterate through all vertices and update the color
     for (auto &vertex : m_vertices)
     {
-        vertex.Color = glm::vec4(r, g, b,a); // Update color
+        vertex.Color = glm::vec4(r, g, b, a); // Update color
     }
 
     // Re-upload the vertex data to the GPU with the updated color

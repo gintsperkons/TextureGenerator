@@ -8,6 +8,9 @@ TextureGenEngine::Label::Label(float x, float y, float width, float height, cons
 
 TextureGenEngine::Label::~Label()
 {
+    if (m_text)
+        delete m_text;
+    m_text = nullptr;
 }
 
 void TextureGenEngine::Label::Draw()

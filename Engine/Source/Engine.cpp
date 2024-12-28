@@ -47,10 +47,18 @@ m_running(true)
 TextureGenEngine::Engine::~Engine()
 {
 	m_running = false;
-	delete m_assetManager;
-	delete m_fontManager;
-	delete m_renderer;
-	delete m_windowManager;
+	if (m_assetManager)
+		delete m_assetManager;
+	m_assetManager = nullptr;
+	if (m_fontManager)
+		delete m_fontManager;
+	m_fontManager = nullptr;
+	if (m_renderer)
+		delete m_renderer;
+	m_renderer = nullptr;
+	if (m_windowManager)
+		delete m_windowManager;
+	m_windowManager = nullptr;
 }
 
 void TextureGenEngine::Engine::Run()

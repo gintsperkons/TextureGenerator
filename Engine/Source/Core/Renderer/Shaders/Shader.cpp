@@ -63,5 +63,7 @@ void TextureGenEngine::Shader::Use()
 
 TextureGenEngine::Shader::~Shader()
 {
-    glDeleteProgram(m_ID);
+    if (m_ID != 0)
+        glDeleteProgram(m_ID);
+    m_ID = 0;
 }

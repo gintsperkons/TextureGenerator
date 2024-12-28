@@ -24,6 +24,7 @@ TextureGenEngine::WindowManager::WindowManager()
         exit(EXIT_FAILURE);
     }
     m_mainWindow = AddWindow("TextureGenEngine", 800, 600);
+
 }
 
 
@@ -31,13 +32,15 @@ TextureGenEngine::WindowManager::WindowManager()
 
 
 TextureGenEngine::WindowManager::~WindowManager()
-{
+{   
     for (Window *window : m_windows)
     {
         delete window;
     }
+    m_mainWindow = nullptr;
     m_windows.clear();
     glfwTerminate();
+    LOG_INFO("Window Manager destroyed\n");
 }
 
 void TextureGenEngine::WindowManager::Update()

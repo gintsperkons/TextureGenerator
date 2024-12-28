@@ -52,10 +52,14 @@ TextureGenEngine::Window::~Window()
 {
     if (m_gui)
         delete m_gui;
+    m_gui = nullptr;
     if (m_input)
         delete m_input;
+    m_input = nullptr;
     if (m_window)
         glfwDestroyWindow(m_window);
+    m_window = nullptr;
+    m_manager = nullptr;
 }
 
 void TextureGenEngine::Window::Update()

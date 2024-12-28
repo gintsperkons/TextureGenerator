@@ -11,7 +11,7 @@ TextureGenEngine::Line::Line(Vertex3D start, Vertex3D end)
     : m_shader(nullptr), m_indexCount(2)
 {
     // Initialize vertices with start and end points
-    m_vertices.push_back(start);  
+    m_vertices.push_back(start);
     m_vertices.push_back(end);
     m_shader = TextureGenEngine::Engine::Get()->GetRenderer()->GetShader("base");
     // Define indices for the line (2 vertices make 1 line)
@@ -52,10 +52,16 @@ TextureGenEngine::Line::Line(Vertex3D start, Vertex3D end)
 }
 
 TextureGenEngine::Line::~Line()
-{ // Delete OpenGL buffers when the Line object is destroyed
-    glDeleteVertexArrays(1, &VAO);
-    glDeleteBuffers(1, &VBO);
-    glDeleteBuffers(1, &EBO);
+{
+    if (VAO != 0)
+        glDeleteVertexArrays(1, &VAO);
+    VAO = 0;
+    if (VBO != 0)
+        glDeleteBuffers(1, &VBO);
+    VBO = 0;
+    if (EBO != 0)
+        glDeleteBuffers(1, &EBO);
+    EBO = 0;
 }
 
 void TextureGenEngine::Line::Draw()
@@ -79,7 +85,7 @@ void TextureGenEngine::Line::Draw()
     }
     else
     {
-       glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(TextureGenEngine::Engine::Get()->GetRenderer()->GetProjectionMatrix()));
+        glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(TextureGenEngine::Engine::Get()->GetRenderer()->GetProjectionMatrix()));
     }
 
     if (modelLoc == -1)
@@ -92,7 +98,6 @@ void TextureGenEngine::Line::Draw()
     }
 
     // Initialize OpenGL buffers if they haven't been set up yet
-    
 
     // Bind the VAO and draw the line
     glBindVertexArray(VAO);
@@ -106,7 +111,6 @@ void TextureGenEngine::Line::Draw()
 
     glDrawElements(GL_LINES, m_indexCount, GL_UNSIGNED_INT, 0);
 
-
     glBindVertexArray(0); // Unbind the VAO after rendering
 }
 
@@ -115,7 +119,7 @@ void TextureGenEngine::Line::ChangeColor(float r, float g, float b, float a)
     // Iterate through all vertices and update the color
     for (auto &vertex : m_vertices)
     {
-        vertex.Color = glm::vec4(r, g, b,a); // Update color
+        vertex.Color = glm::vec4(r, g, b, a); // Update color
     }
 
     // Re-upload the vertex data to the GPU with the updated color
@@ -138,7 +142,7 @@ bool TextureGenEngine::Line::CheckClickCollision(float x, float y)
 
 void TextureGenEngine::Line::UpdateEndPosition(float x, float y)
 {
-    m_vertices[1].Position = glm::vec3(x, y, 0.0f); // Update the end position
+    m_vertices[1].Position = glm::vec3(x, y, 0.0f);                                            // Update the end position
     glBindBuffer(GL_ARRAY_BUFFER, VBO);                                                        // Bind the VBO
     glBufferSubData(GL_ARRAY_BUFFER, 0, m_vertices.size() * sizeof(Vertex3D), &m_vertices[0]); // Update data
     glBindBuffer(GL_ARRAY_BUFFER, 0);                                                          // Unbind the VBO
@@ -146,7 +150,7 @@ void TextureGenEngine::Line::UpdateEndPosition(float x, float y)
 
 void TextureGenEngine::Line::MoveStart(float x, float y)
 {
-    m_vertices[0].Position = m_vertices[0].Position + glm::vec3(x, -y, 0.0f); // Update the start position
+    m_vertices[0].Position = m_vertices[0].Position + glm::vec3(x, -y, 0.0f);                  // Update the start position
     glBindBuffer(GL_ARRAY_BUFFER, VBO);                                                        // Bind the VBO
     glBufferSubData(GL_ARRAY_BUFFER, 0, m_vertices.size() * sizeof(Vertex3D), &m_vertices[0]); // Update data
     glBindBuffer(GL_ARRAY_BUFFER, 0);                                                          // Unbind the VBO
@@ -154,7 +158,7 @@ void TextureGenEngine::Line::MoveStart(float x, float y)
 
 void TextureGenEngine::Line::MoveEnd(float x, float y)
 {
-    m_vertices[1].Position = m_vertices[1].Position + glm::vec3(x, -y, 0.0f); // Update the end position
+    m_vertices[1].Position = m_vertices[1].Position + glm::vec3(x, -y, 0.0f);                  // Update the end position
     glBindBuffer(GL_ARRAY_BUFFER, VBO);                                                        // Bind the VBO
     glBufferSubData(GL_ARRAY_BUFFER, 0, m_vertices.size() * sizeof(Vertex3D), &m_vertices[0]); // Update data
     glBindBuffer(GL_ARRAY_BUFFER, 0);                                                          // Unbind the VBO

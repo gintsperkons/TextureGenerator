@@ -31,10 +31,9 @@ TextureGenEngine::Connector::Connector(std::string type)
 
 TextureGenEngine::Connector::~Connector()
 {
-    if (m_line)
-    {
+    if (m_line != nullptr)
         delete m_line;
-    }
+    m_line = nullptr;
 }
 
 void TextureGenEngine::Connector::Draw()

@@ -143,10 +143,6 @@ TextureGenEngine::Node::~Node()
     {
         delete m_dataBackground;
     }
-    if (m_parent)
-    {
-        m_parent->RemoveChild(this);
-    }
 }
 
 TextureGenEngine::InputConnector *TextureGenEngine::Node::GetInputConnector(float x, float y)

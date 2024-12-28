@@ -15,7 +15,7 @@ TextureGenEngine::TextInput::TextInput(float x, float y, float width, float heig
     m_textMesh = new Text();
     m_cursor = ObjectFactory::CreateSquare(4, height);
     m_cursor->ChangeColor(0, 0, 0, 1);
-    m_cursor->SetPosition(x,y);
+    m_cursor->SetPosition(x, y);
     m_type = "TextInput";
     m_selectable = true;
 
@@ -24,6 +24,12 @@ TextureGenEngine::TextInput::TextInput(float x, float y, float width, float heig
 
 TextureGenEngine::TextInput::~TextInput()
 {
+    if (m_textMesh)
+        delete m_textMesh;
+    m_textMesh = nullptr;
+    if (m_cursor)
+        delete m_cursor;
+    m_cursor = nullptr;
 }
 
 void TextureGenEngine::TextInput::Init(float width, float height)
@@ -38,7 +44,8 @@ void TextureGenEngine::TextInput::Init(float width, float height)
 
 void TextureGenEngine::TextInput::Draw()
 {
-    if (m_manager == nullptr) return;
+    if (m_manager == nullptr)
+        return;
     m_manager->ScissorsPush(m_x, m_y, m_width, m_height);
     Component::Draw();
     if ((m_cursor && m_textMesh && m_showCursor))
@@ -59,10 +66,10 @@ void TextureGenEngine::TextInput::AddChar(unsigned int codepoint)
 
     float textBeforeSize = m_textMesh->GetTextWidth(m_text.substr(0, m_cursorPosition), 12);
     if (textBeforeSize > m_width)
-    {  
-    m_textDrawOffset = m_width - 5 - textBeforeSize;
-    m_cursor->SetPosition(m_x + m_width - 5, m_y);
-    return;
+    {
+        m_textDrawOffset = m_width - 5 - textBeforeSize;
+        m_cursor->SetPosition(m_x + m_width - 5, m_y);
+        return;
     }
     m_cursor->SetPosition(m_x + textBeforeSize, m_y);
 }
@@ -135,8 +142,6 @@ void TextureGenEngine::TextInput::MoveCursorRight()
     }
 }
 
-
-
 void TextureGenEngine::TextInput::SetPosition(float x, float y)
 {
     Component::SetPosition(x, y);
@@ -148,5 +153,4 @@ void TextureGenEngine::TextInput::Move(float x, float y)
 {
     Component::Move(x, y);
     m_cursor->Move(x, y);
-    
 }

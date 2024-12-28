@@ -22,6 +22,9 @@ TextureGenEngine::Component::~Component()
 {
     if (m_background)
         delete m_background;
+    m_background = nullptr;
+    m_parent = nullptr;
+    m_manager = nullptr;
 }
 
 void TextureGenEngine::Component::Resize(float width, float height)

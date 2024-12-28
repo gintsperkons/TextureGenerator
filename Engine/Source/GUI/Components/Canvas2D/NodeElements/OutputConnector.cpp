@@ -24,10 +24,15 @@ TextureGenEngine::OutputConnector::OutputConnector() : Component(0, 0, 20, 20)
 
 TextureGenEngine::OutputConnector::~OutputConnector()
 {
+    if (m_connector != nullptr)
+    {
+        delete m_connector;
+    }
     for (auto &line : m_connectors)
     {
         delete line;
     }
+    m_connectors.clear();
 }
 
 void TextureGenEngine::OutputConnector::OnMouseDrag(float x, float y)

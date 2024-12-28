@@ -39,11 +39,7 @@ TextureGenEngine::InputConnector::~InputConnector()
         delete m_tempConnection;
         m_tempConnection = nullptr;
     }
-    if (m_connector != nullptr)
-    {
-        delete m_connector;
-        m_connector = nullptr;
-    }
+    m_connector = nullptr;
 }
 
 void TextureGenEngine::InputConnector::OnMouseDrag(float x, float y)

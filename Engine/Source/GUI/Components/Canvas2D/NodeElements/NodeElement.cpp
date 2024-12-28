@@ -19,6 +19,13 @@ TextureGenEngine::NodeElement::NodeElement() : Component(0, 0, 100, 100)
 
 TextureGenEngine::NodeElement::~NodeElement()
 {
+    if (m_inputImage != nullptr)
+        delete m_inputImage;
+    m_inputImage = nullptr;
+    if (m_outputImage != nullptr)
+        delete m_outputImage;
+    m_outputImage = nullptr;
+    
 }
 
 void TextureGenEngine::NodeElement::OnMouseDrag(float x, float y)
