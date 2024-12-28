@@ -1,5 +1,6 @@
 #include "Defines.h"
 #include "GUI/Components/Component.h"
+#include "NodeTypes.h"
 #include <vector>
 
 namespace TextureGenEngine
@@ -10,8 +11,9 @@ namespace TextureGenEngine
         Connector * m_connector = nullptr;
         std::vector<Connector *> m_connectors;
         std::string m_type;
+        NodeDataTypes m_dataType;
     public:
-        OutputConnector();
+        TAPI OutputConnector();
         ~OutputConnector();
         void OnMouseDrag(float x, float y) override;
         void Draw() override;
@@ -20,6 +22,6 @@ namespace TextureGenEngine
         void ConnectLine(Connector *connector);
         void DisconnectLine(Connector *connector);
         bool ExistConnection(Connector *connector);
-        void SetType(std::string type);
+        void TAPI SetDataType(NodeDataTypes type);
     };
 } // namespace TextureGenEngine

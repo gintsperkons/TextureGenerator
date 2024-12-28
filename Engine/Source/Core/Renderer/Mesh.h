@@ -5,7 +5,7 @@
 
 namespace TextureGenEngine
 {
-	class Shader; 
+	class Shader;
 	class Texture;
 	class Mesh
 	{
@@ -16,9 +16,8 @@ namespace TextureGenEngine
 		Shader *m_shader;
 		Texture *m_texture;
 		unsigned int m_indexCount;
-		float m_scales[2] = { 1, 1 };
-		float m_size[2] = { 1, 1 };
-
+		float m_scales[2] = {1, 1};
+		float m_size[2] = {1, 1};
 
 	public:
 		Mesh(Vertex3D vertices[], unsigned int vertexCount, unsigned int indices[], unsigned int indexCount);
@@ -27,11 +26,11 @@ namespace TextureGenEngine
 		void Move(float x, float y);
 		void SetPosition(float x, float y);
 		void Scale(float x, float y);
-		void SetSize(float width, float height);
+		void SetSize(float width = -1, float height = -1);
 		void ChangeColor(float r, float g, float b, float a);
 		void ChangeShader(std::string shaderName);
 		void SetDepth(float depth);
-		void ChangeTexture(Texture* texturePtr);
+		void ChangeTexture(Texture *texturePtr);
 		~Mesh();
 	};
 }

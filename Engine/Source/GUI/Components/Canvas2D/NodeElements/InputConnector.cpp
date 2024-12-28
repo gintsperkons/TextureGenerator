@@ -10,7 +10,7 @@
 #include "Connector.h"
 
 TextureGenEngine::InputConnector::InputConnector() : Component(0, 0, 20, 20)
-{
+{ 
     m_background->ChangeColor(1.0f, 0.0f, 0.0f, 1.0f);
     m_type = "InputConnector";
     Texture *texture = TextureGenEngine::LoadTexture("Connector.png");
@@ -48,8 +48,8 @@ void TextureGenEngine::InputConnector::OnMouseDrag(float x, float y)
     if (m_tempConnection == nullptr)
     {
         LOG_DEBUG("Creating line\n");
-        LOG_DEBUG("x %f y %f\n", m_x, m_y);
-        m_tempConnection = new Connector("text");
+         LOG_DEBUG("x %f y %f\n", m_x, m_y);
+        m_tempConnection = new Connector(m_dataType);
         m_tempConnection->UpdateEndPosition(m_x, m_y + m_height / 2);
     }
     if (m_manager == nullptr)
@@ -85,6 +85,14 @@ void TextureGenEngine::InputConnector::MouseRelease()
         m_connector = m_tempConnection;
         m_tempConnection = nullptr;
         m_connector->MakeConnection(output, this);
+        if (m_connector != nullptr)
+        {
+            static_cast<NodeElement *>(m_parent)->LockInput();
+        }
+        else if (m_connector == nullptr)
+        {
+            static_cast<NodeElement *>(m_parent)->UnlockInput();
+        }
     }
     else
     {
@@ -97,8 +105,12 @@ void TextureGenEngine::InputConnector::MouseRelease()
 }
 void TextureGenEngine::InputConnector::ConnectLine(Connector *connector)
 {
+    if (m_connector != nullptr && m_connector != connector)
+    {
+        m_connector->Disconnect();
+    }
     m_connector = connector;
-    m_connector->UpdateEndPosition(m_x, m_y + m_height / 2);
+    connector->UpdateEndPosition(m_x, m_y + m_height / 2);
 }
 
 void TextureGenEngine::InputConnector::DisconnectLine()
@@ -115,9 +127,27 @@ void TextureGenEngine::InputConnector::Move(float x, float y)
     }
 }
 
-void TextureGenEngine::InputConnector::SetType(std::string type)
+void TextureGenEngine::InputConnector::LockInput()
 {
-    m_type = type;
+    if (m_connector != nullptr)
+    {
+        static_cast<NodeElement *>(m_parent)->LockInput();
+    }
+    else if (m_connector == nullptr)
+    {
+        static_cast<NodeElement *>(m_parent)->UnlockInput();
+    }
+}
+
+void TextureGenEngine::InputConnector::UnlockInput()
+{
+    static_cast<NodeElement *>(m_parent)->UnlockInput();
+}
+
+void TextureGenEngine::InputConnector::SetDataType(NodeDataTypes type)
+{
+
+    m_dataType = type;
     if (m_colors.find(type) != m_colors.end())
     {
         m_background->ChangeColor(m_colors[type].r, m_colors[type].g, m_colors[type].b, m_colors[type].a);

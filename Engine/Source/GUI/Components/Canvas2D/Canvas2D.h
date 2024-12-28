@@ -22,5 +22,6 @@ namespace TextureGenEngine
         InputConnector* GetInputConnector(float x, float y);
         OutputConnector* GetOutputConnector(float x, float y);
         void RemoveChild(Component *child) override;
+        TAPI void GetSpawnLocation(float &x, float &y);
     };
 } // namespace TextureGenEngine

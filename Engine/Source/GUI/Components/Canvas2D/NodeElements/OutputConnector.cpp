@@ -9,6 +9,7 @@
 #include "GUI/Components/Canvas2D/Canvas2D.h"
 #include "Core/AssetManager/AssetManager.h"
 #include "Core/Renderer/Texture.h"
+#include "InputConnector.h"
 #include "Connector.h"
 
 TextureGenEngine::OutputConnector::OutputConnector() : Component(0, 0, 20, 20)
@@ -20,6 +21,7 @@ TextureGenEngine::OutputConnector::OutputConnector() : Component(0, 0, 20, 20)
     Texture *texture = TextureGenEngine::LoadTexture("Connector.png");
     m_background->ChangeShader("maskedColor");
     m_background->ChangeTexture(texture);
+    SetDataType(NodeDataTypes::NONE);
 }
 
 TextureGenEngine::OutputConnector::~OutputConnector()
@@ -42,7 +44,7 @@ void TextureGenEngine::OutputConnector::OnMouseDrag(float x, float y)
     {
         LOG_DEBUG("Creating line\n");
         LOG_DEBUG("x %f y %f\n", m_x, m_y);
-        m_connector = new Connector("text");
+        m_connector = new Connector(m_dataType);
         m_connector->UpdateStartPosition(m_x + m_width, m_y + m_height / 2);
         m_connectors.push_back(m_connector);
     }
@@ -72,20 +74,28 @@ void TextureGenEngine::OutputConnector::MouseRelease()
     if (m_connector == nullptr)
         return;
 
-    if (dynamic_cast<NodeElement *>(m_parent) == nullptr)
+    if (dynamic_cast<Node *>(m_parent) == nullptr)
     {
         if (m_parent == nullptr)
         {
             LOG_ERROR("Parent is null\n");
         }
         else
-            LOG_ERROR("Parent is not a NodeElement\n");
+            LOG_ERROR("Parent is not a Node\n");
         return;
     }
-    InputConnector *input = static_cast<Node *>(static_cast<NodeElement *>(m_parent)->GetNode())->GetCanvas()->GetInputConnector(posX, posY);
+    InputConnector *input = static_cast<Node *>(m_parent)->GetCanvas()->GetInputConnector(posX, posY);
     if (input != nullptr)
     {
         m_connector->MakeConnection(this, input);
+        if (m_connector != nullptr)
+        {
+            input->LockInput();
+        }
+        else if (m_connector == nullptr)
+        {
+           input->UnlockInput();
+        }
     }
     else
     {
@@ -149,9 +159,10 @@ bool TextureGenEngine::OutputConnector::ExistConnection(Connector *connector)
     return false;
 }
 
-void TextureGenEngine::OutputConnector::SetType(std::string type)
+
+void TextureGenEngine::OutputConnector::SetDataType(NodeDataTypes type)
 {
-    m_type = type;
+    m_dataType = type;
     if (m_colors.find(type) != m_colors.end())
     {
         m_background->ChangeColor(m_colors[type].r, m_colors[type].g, m_colors[type].b, m_colors[type].a);

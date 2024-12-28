@@ -1,4 +1,5 @@
 #include "GUI/Components/Component.h"
+#include <functional>
 #include <string>
 
 namespace TextureGenEngine
@@ -9,14 +10,17 @@ namespace TextureGenEngine
     class TextInput : public Component
     {
 
+        std::function<void(std::string)> m_onTextChange;
         Text *m_textMesh = nullptr;
         Mesh *m_cursor = nullptr;
         std::string m_text;
+        bool m_enabled = true;
         bool m_showCursor = false;
         int m_cursorPosition = 0;
         float m_textDrawOffset = 0;
 
         void CheckCursorInView();
+
     public:
         TAPI TextInput(float x, float y, float width, float height);
         ~TextInput();
@@ -29,7 +33,10 @@ namespace TextureGenEngine
         void DeSelect() override { m_showCursor = false; };
         void MoveCursorLeft();
         void MoveCursorRight();
+        void SetOnTextChange(std::function<void(std::string)> onTextChange) { m_onTextChange = onTextChange; }
         void SetPosition(float x, float y) override;
         void Move(float x, float y) override;
+        void Disable();
+        void Enable();
     };
 }

@@ -61,6 +61,8 @@ void TextureGenEngine::TextInput::Draw()
 
 void TextureGenEngine::TextInput::AddChar(unsigned int codepoint)
 {
+    if (!m_enabled)
+        return;
     m_text.insert(m_cursorPosition, 1, static_cast<char>(codepoint));
     m_cursorPosition++;
 
@@ -72,10 +74,14 @@ void TextureGenEngine::TextInput::AddChar(unsigned int codepoint)
         return;
     }
     m_cursor->SetPosition(m_x + textBeforeSize, m_y);
+    if (m_onTextChange)
+        m_onTextChange(m_text);
 }
 
 void TextureGenEngine::TextInput::RemoveCharBefore()
 {
+    if (!m_enabled)
+        return;
     if (m_text.length() > 0 && m_cursorPosition > 0)
     {
         m_text.erase(m_cursorPosition - 1, 1);
@@ -89,11 +95,16 @@ void TextureGenEngine::TextInput::RemoveCharBefore()
         if (m_textDrawOffset != 0)
             m_textDrawOffset = 0;
         m_cursor->SetPosition(m_x + m_textMesh->GetTextWidth(m_text.substr(0, m_cursorPosition), 12), m_y);
+
+        if (m_onTextChange)
+            m_onTextChange(m_text);
     }
 }
 
 void TextureGenEngine::TextInput::RemoveCharAfter()
 {
+    if (!m_enabled)
+        return;
     if (m_cursorPosition < m_text.length())
     {
         m_text.erase(m_cursorPosition, 1);
@@ -104,11 +115,16 @@ void TextureGenEngine::TextInput::RemoveCharAfter()
             return;
         }
         m_cursor->SetPosition(m_x + m_textMesh->GetTextWidth(m_text.substr(0, m_cursorPosition), 12), m_y);
+
+        if (m_onTextChange)
+            m_onTextChange(m_text);
     }
 }
 
 void TextureGenEngine::TextInput::MoveCursorLeft()
 {
+    if (!m_enabled)
+        return;
     if (m_cursorPosition > 0)
     {
         m_cursorPosition--;
@@ -128,6 +144,8 @@ void TextureGenEngine::TextInput::MoveCursorLeft()
 
 void TextureGenEngine::TextInput::MoveCursorRight()
 {
+    if (!m_enabled)
+        return;
     if (m_cursorPosition < m_text.length())
     {
         m_cursorPosition++;
@@ -153,4 +171,15 @@ void TextureGenEngine::TextInput::Move(float x, float y)
 {
     Component::Move(x, y);
     m_cursor->Move(x, y);
+}
+
+void TextureGenEngine::TextInput::Disable()
+{
+    m_showCursor = false;
+    m_enabled = false;
+}
+
+void TextureGenEngine::TextInput::Enable()
+{
+    m_enabled = true;
 }

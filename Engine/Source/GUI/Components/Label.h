@@ -9,8 +9,11 @@ namespace TextureGenEngine
    class Label: public Component
    {
       Text* m_text = nullptr;
+      std::string m_textString;
     public:
         TAPI Label(float x, float y, float width, float height, const std::string &text);
+         void SetText(const std::string &text);
+
         ~Label();
         void Draw() override;
    };

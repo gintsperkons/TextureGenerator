@@ -14,11 +14,10 @@ bool TextureGenEngine::Connector::CheckExistingConnection(InputConnector *input,
     return false;
 }
 
-TextureGenEngine::Connector::Connector(std::string type)
+TextureGenEngine::Connector::Connector(NodeDataTypes type)
 {
     m_type = type;
     m_line = ObjectFactory::CreateBezier(100, 100, 200, 200);
-    LOG_DEBUG("Creating connector type %s\n", type.c_str());
     if (m_colors.find(type) != m_colors.end())
     {
         Color color = m_colors[type];

@@ -20,6 +20,8 @@ namespace TextureGenEngine
         virtual void Setup(float x, float y) override;
         virtual void OnMouseDrag(float x, float y) override;
         virtual Component *SelectObject(float x, float y) override;
-        ~TextualInputElement();
+        void LockInput() override;
+        void UnlockInput() override;
+         ~TextualInputElement();
     };
 } // namespace TextureGenEngine

@@ -8,6 +8,7 @@ TextureGenEngine::Component::Component(float x, float y, float width, float heig
 {
     LOG_DEBUG("Width %f\n", m_width);
     m_background = ObjectFactory::CreateSquare(width, height);
+    m_backgroundColor = Color(0.0f, 0.0f, 0.0f, 0.0f);
 }
 
 void TextureGenEngine::Component::Draw()

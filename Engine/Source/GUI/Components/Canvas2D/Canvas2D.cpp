@@ -48,7 +48,7 @@ TextureGenEngine::Canvas2D::~Canvas2D()
 }
 
 void TextureGenEngine::Canvas2D::AddNode(Node *node)
-{
+{   
     node->SetParent(this);
     node->SetManager(m_manager);
     m_nodes.push_back(node);
@@ -116,4 +116,17 @@ void TextureGenEngine::Canvas2D::RemoveChild(Component *child)
             break;
         }
     }
+}
+
+void TextureGenEngine::Canvas2D::GetSpawnLocation(float &x, float &y)
+{
+    m_manager->GetMousePosition(x, y);
+    if (x< m_x || x > m_x + m_width || y < m_y || y > m_y + m_height)
+    {
+        x = m_width / 2;
+        y = m_height / 2;
+        return;
+    }
+    x -= m_x;
+    y -= m_y;
 }

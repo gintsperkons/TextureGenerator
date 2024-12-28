@@ -1,5 +1,6 @@
 #include "Defines.h"
 #include "GUI/Components/Component.h"
+#include "NodeTypes.h"
 #include <string>
 
 namespace TextureGenEngine
@@ -11,6 +12,7 @@ namespace TextureGenEngine
         Connector *m_tempConnection = nullptr;
         Connector *m_connector = nullptr;
         std::string m_type;
+        NodeDataTypes m_dataType;
 
     public:
         InputConnector();
@@ -23,6 +25,8 @@ namespace TextureGenEngine
         void DisconnectLine();
         TextureGenEngine::Connector *GetConnection() { return m_connector; }
         void Move(float x, float y) override;
-        void SetType(std::string type);
+        void LockInput();
+        void UnlockInput();
+        TAPI void SetDataType(NodeDataTypes type);
     }; // namespace TextureGenEngine
 }

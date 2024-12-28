@@ -1,6 +1,7 @@
 #pragma once
 #include "Defines.h"
 #include "GUI/Components/Component.h"
+#include "NodeTypes.h"
 #include <string>
 
 namespace TextureGenEngine
@@ -13,9 +14,8 @@ namespace TextureGenEngine
     protected:
         std::string m_elementType;
         InputConnector *m_inputImage;
-        OutputConnector *m_outputImage;
         Node* m_node;
-        std::string m_dataType;
+        NodeDataTypes m_dataType;
 
     public:
         NodeElement(/* args */);
@@ -24,6 +24,8 @@ namespace TextureGenEngine
         virtual void Setup(float x, float y);
         virtual void SetManager(GUIManager *manager) override;
         virtual void SetNode(Node* node) { m_node = node; }
+        virtual void LockInput(){};
+        virtual void UnlockInput(){};
         virtual Component *SelectObject(float x, float y) override;
         InputConnector *GetInputConnector(float x, float y);
         OutputConnector *GetOutputConnector(float x, float y);

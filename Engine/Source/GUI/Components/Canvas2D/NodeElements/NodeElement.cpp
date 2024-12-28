@@ -12,9 +12,6 @@ TextureGenEngine::NodeElement::NodeElement() : Component(0, 0, 100, 100)
     m_inputImage = new InputConnector();
     m_inputImage->SetManager(m_manager);
     m_inputImage->SetParent(this);
-    m_outputImage = new OutputConnector();
-    m_outputImage->SetManager(m_manager);
-    m_outputImage->SetParent(this);
 }
 
 TextureGenEngine::NodeElement::~NodeElement()
@@ -22,9 +19,6 @@ TextureGenEngine::NodeElement::~NodeElement()
     if (m_inputImage != nullptr)
         delete m_inputImage;
     m_inputImage = nullptr;
-    if (m_outputImage != nullptr)
-        delete m_outputImage;
-    m_outputImage = nullptr;
     
 }
 
@@ -33,7 +27,6 @@ void TextureGenEngine::NodeElement::OnMouseDrag(float x, float y)
     m_x += x;
     m_y -= y;
     m_inputImage->Move(x, y);
-    m_outputImage->Move(x, y);
 }
 
 void TextureGenEngine::NodeElement::Setup(float x, float y)
@@ -55,23 +48,13 @@ void TextureGenEngine::NodeElement::SetManager(GUIManager *manager)
 {
     m_manager = manager;
     m_inputImage->SetManager(manager);
-    m_outputImage->SetManager(manager);
 }
 
 TextureGenEngine::Component *TextureGenEngine::NodeElement::SelectObject(float x, float y)
 {
-    LOG_DEBUG("Selecting object----\n");
-    LOG_DEBUG("x %f y %f\n", x, y);
-    LOG_DEBUG("output x %f y %f\n", m_outputImage->GetX(), m_outputImage->GetY());
-    LOG_DEBUG("output width %f height %f\n", m_outputImage->GetWidth(), m_outputImage->GetHeight());
     if (m_inputImage->CheckCollision(x, y))
     {
         return m_inputImage;
-    }
-    if (m_outputImage->CheckCollision(x, y))
-    {
-        LOG_DEBUG("Selecting output\n");
-        return m_outputImage;
     }
     return nullptr;
 }
@@ -87,9 +70,5 @@ TextureGenEngine::InputConnector *TextureGenEngine::NodeElement::GetInputConnect
 
 TextureGenEngine::OutputConnector *TextureGenEngine::NodeElement::GetOutputConnector(float x, float y)
 {
-    if (m_outputImage->CheckCollision(x, y))
-    {
-        return m_outputImage;
-    }
     return nullptr;
 }
