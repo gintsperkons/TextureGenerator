@@ -1,5 +1,6 @@
 #include "FileHandler.h"
 #include <fstream>
+#include <iostream>
 
 #ifdef _WIN32
 #define WIN32_LEAN_AND_MEAN
@@ -35,14 +36,19 @@ std::string TextureGenEngine::ReadFile(std::string filePath)
 std::string TextureGenEngine::GetAbsolutePath(std::string relativePath)
 {
 #ifdef _WIN32
-        char exePath[MAX_PATH];
-        GetModuleFileNameA(NULL, exePath, MAX_PATH);
+    char exePath[MAX_PATH];
+    GetModuleFileNameA(NULL, exePath, MAX_PATH);
 #elif defined(__linux__)
-        char exePath[PATH_MAX];
-        readlink("/proc/self/exe", exePath, PATH_MAX);
+    char exePath[PATH_MAX];
+    ssize_t length = readlink("/proc/self/exe", exePath, PATH_MAX - 1);
+    if (length == -1)
+    {
+        std::cerr << "Error getting executable path on Linux." << std::endl;
+        return "";
+    }
+    exePath[length] = '\0';
 #endif
-        std::string::size_type pos = std::string(exePath).find_last_of("\\/");
-        return std::string(exePath).substr(0, pos) + "/" + relativePath;
-    
-    
+    std::string path = std::string(exePath);
+    std::size_t pos = path.find_last_of("\\/");
+    return std::string(path).substr(0, pos) + "/" + relativePath;
 }

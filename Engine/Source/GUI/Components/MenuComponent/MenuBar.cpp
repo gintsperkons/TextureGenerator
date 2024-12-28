@@ -53,4 +53,9 @@ void TextureGenEngine::MenuBar::AddMenu(MenuComponent *menu)
 
 TextureGenEngine::MenuBar::~MenuBar()
 {
+    for (auto &menu : m_menus)
+    {
+        delete menu;
+    }
+    m_menus.clear();
 }

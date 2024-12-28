@@ -46,6 +46,11 @@ m_running(true)
 
 TextureGenEngine::Engine::~Engine()
 {
+	m_running = false;
+	delete m_assetManager;
+	delete m_fontManager;
+	delete m_renderer;
+	delete m_windowManager;
 }
 
 void TextureGenEngine::Engine::Run()

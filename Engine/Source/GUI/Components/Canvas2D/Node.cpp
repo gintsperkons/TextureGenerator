@@ -135,13 +135,13 @@ TextureGenEngine::Component *TextureGenEngine::Node::SelectObject(float x, float
 
 TextureGenEngine::Node::~Node()
 {
-    if (m_dataBackground)
-    {
-        delete m_dataBackground;
-    }
     for (auto &element : m_elements)
     {
         delete element;
+    }
+    if (m_dataBackground)
+    {
+        delete m_dataBackground;
     }
     if (m_parent)
     {

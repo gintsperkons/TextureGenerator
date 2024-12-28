@@ -35,7 +35,8 @@ void TextureGenEngine::GUIManager::SelectObject(float x, float y)
     currentObject = nullptr;
 }
 
-TextureGenEngine::GUIManager::GUIManager()
+TextureGenEngine::GUIManager::GUIManager() :
+m_oldHeight(0),m_oldWidth(0), m_width(0), m_height(0)
 {
 }
 

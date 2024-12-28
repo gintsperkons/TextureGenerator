@@ -24,6 +24,10 @@ TextureGenEngine::OutputConnector::OutputConnector() : Component(0, 0, 20, 20)
 
 TextureGenEngine::OutputConnector::~OutputConnector()
 {
+    for (auto &line : m_connectors)
+    {
+        delete line;
+    }
 }
 
 void TextureGenEngine::OutputConnector::OnMouseDrag(float x, float y)

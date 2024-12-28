@@ -40,6 +40,11 @@ void TextureGenEngine::Canvas2D::Draw()
 
 TextureGenEngine::Canvas2D::~Canvas2D()
 {
+    for (auto &node : m_nodes)
+    {
+        delete node;
+    }
+    m_nodes.clear();
 }
 
 void TextureGenEngine::Canvas2D::AddNode(Node *node)

@@ -35,4 +35,5 @@ void TextureGenEngine::Menu::SetMenuBar(float x, float y, float width, float hei
 
 TextureGenEngine::Menu::~Menu()
 {
+    delete m_text;
 }

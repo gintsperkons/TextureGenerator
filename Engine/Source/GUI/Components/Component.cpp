@@ -20,6 +20,8 @@ void TextureGenEngine::Component::Draw()
 
 TextureGenEngine::Component::~Component()
 {
+    if (m_background)
+        delete m_background;
 }
 
 void TextureGenEngine::Component::Resize(float width, float height)

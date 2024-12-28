@@ -33,8 +33,6 @@ int main()
 	scrollView->SetBackground(TextureGenEngine::Color(0.28125f, 0.25390625f, 0.25390625f, 1.0f));
 	guiManager->AddComponent(scrollView);
 
-	TextureGenEngine::Label *label = new TextureGenEngine::Label(0, 0, 100, 100, "");
-
 	TextureGenEngine::Panel *panelPreview = new TextureGenEngine::Panel(0, 0, 300, 300, TextureGenEngine::ScalingType::FIXED, TextureGenEngine::ScalingType::FIXED);
 	panelPreview->SetBackground(TextureGenEngine::Color(0.0f, 0.0f, 1.0f, 1.0f));
 	guiManager->AddComponent(panelPreview);
