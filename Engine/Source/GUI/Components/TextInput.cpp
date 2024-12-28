@@ -18,6 +18,7 @@ TextureGenEngine::TextInput::TextInput(float x, float y, float width, float heig
     m_cursor->SetPosition(x, y);
     m_type = "TextInput";
     m_selectable = true;
+    m_text = "";
 
     m_cursor->ChangeShader("cursor");
 }
@@ -121,6 +122,13 @@ void TextureGenEngine::TextInput::RemoveCharAfter()
     }
 }
 
+void TextureGenEngine::TextInput::Select()
+{
+    if (!m_enabled)
+        return;
+    m_showCursor = true;
+}
+
 void TextureGenEngine::TextInput::MoveCursorLeft()
 {
     if (!m_enabled)
@@ -182,4 +190,18 @@ void TextureGenEngine::TextInput::Disable()
 void TextureGenEngine::TextInput::Enable()
 {
     m_enabled = true;
+}
+
+void TextureGenEngine::TextInput::GetText(std::string &text)
+{
+    text =  m_text;
+}
+
+void TextureGenEngine::TextInput::SetText(std::string text)
+{
+    m_text = text;
+    m_cursorPosition = text.length();
+    m_cursor->SetPosition(m_x + m_textMesh->GetTextWidth(m_text.substr(0, m_cursorPosition), 12), m_y);
+    if (m_onTextChange)
+        m_onTextChange(m_text);
 }

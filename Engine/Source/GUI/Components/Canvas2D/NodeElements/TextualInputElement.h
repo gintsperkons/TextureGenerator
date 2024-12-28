@@ -22,6 +22,8 @@ namespace TextureGenEngine
         virtual Component *SelectObject(float x, float y) override;
         void LockInput() override;
         void UnlockInput() override;
+        TAPI void GetData(std::string &data);
+        void UpdateData(std::string data) override;
          ~TextualInputElement();
     };
 } // namespace TextureGenEngine

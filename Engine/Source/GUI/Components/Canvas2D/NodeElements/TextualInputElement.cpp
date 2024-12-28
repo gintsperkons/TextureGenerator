@@ -23,6 +23,12 @@ NodeElement()
     m_textInput->SetBackground(Color(1.0f, 1.0f, 1.0f, 0.1f));
     m_dataType = NodeDataTypes::TEXT;
     m_inputImage->SetDataType(m_dataType);
+    m_textInput->SetOnTextChange([&](std::string text){ 
+        if (m_onDataChange)
+        {
+            m_onDataChange();
+        }
+    });
 }
 
 void TextureGenEngine::TextualInputElement::Draw()
@@ -81,6 +87,22 @@ void TextureGenEngine::TextualInputElement::LockInput()
 void TextureGenEngine::TextualInputElement::UnlockInput()
 {
     m_textInput->Enable();
+}
+
+void TextureGenEngine::TextualInputElement::GetData(std::string &data)
+{
+    if (m_textInput)
+    {
+        m_textInput->GetText(data);
+    }
+}
+
+void TextureGenEngine::TextualInputElement::UpdateData(std::string data)
+{
+    if (m_textInput)
+    {
+        m_textInput->SetText(data);
+    }
 }
 
 TextureGenEngine::TextualInputElement::~TextualInputElement()

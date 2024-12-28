@@ -32,6 +32,7 @@ namespace TextureGenEngine
         ~Node() override;
         InputConnector *GetInputConnector(float x, float y);
         OutputConnector *GetOutputConnector(float x, float y);
+        
         Canvas2D *GetCanvas();
         TAPI void SetTitle(std::string title) ;   
         static inline float c_titleHeight = 25;

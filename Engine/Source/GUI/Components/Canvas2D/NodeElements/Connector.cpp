@@ -56,6 +56,7 @@ void TextureGenEngine::Connector::MakeConnection(OutputConnector *output, InputC
     }
     output->ConnectLine(this);
     input->ConnectLine(this);
+    
 }
 
 void TextureGenEngine::Connector::Disconnect()
@@ -89,4 +90,12 @@ void TextureGenEngine::Connector::MoveStart(float x, float y)
 void TextureGenEngine::Connector::MoveEnd(float x, float y)
 {
     m_line->MoveEnd(x, y);
+}
+
+void TextureGenEngine::Connector::UpdateData(std::string data)
+{
+    if (m_input)
+    {
+        m_input->UpdateData(data);
+    }
 }

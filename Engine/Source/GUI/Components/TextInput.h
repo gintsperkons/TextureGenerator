@@ -9,11 +9,11 @@ namespace TextureGenEngine
     class Mesh;
     class TextInput : public Component
     {
-
+    protected:
         std::function<void(std::string)> m_onTextChange;
         Text *m_textMesh = nullptr;
         Mesh *m_cursor = nullptr;
-        std::string m_text;
+        std::string m_text = "";
         bool m_enabled = true;
         bool m_showCursor = false;
         int m_cursorPosition = 0;
@@ -29,7 +29,7 @@ namespace TextureGenEngine
         void AddChar(unsigned int codepoint);
         void RemoveCharBefore();
         void RemoveCharAfter();
-        void Select() override { m_showCursor = true; };
+        void Select() override;
         void DeSelect() override { m_showCursor = false; };
         void MoveCursorLeft();
         void MoveCursorRight();
@@ -38,5 +38,7 @@ namespace TextureGenEngine
         void Move(float x, float y) override;
         void Disable();
         void Enable();
+        void GetText(std::string &text);
+        void SetText(std::string text);
     };
 }

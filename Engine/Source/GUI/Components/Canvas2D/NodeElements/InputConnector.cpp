@@ -93,6 +93,7 @@ void TextureGenEngine::InputConnector::MouseRelease()
         {
             static_cast<NodeElement *>(m_parent)->UnlockInput();
         }
+        
     }
     else
     {
@@ -154,4 +155,13 @@ void TextureGenEngine::InputConnector::SetDataType(NodeDataTypes type)
     }
     else
         m_background->ChangeColor(1.0f, 1.0f, 1.0f, 1.0f);
+}
+
+void TextureGenEngine::InputConnector::UpdateData(std::string data)
+{
+    LOG_DEBUG("Data %s\n", data.c_str());
+    if (dynamic_cast<NodeElement *>(m_parent) != nullptr)
+    {
+        static_cast<NodeElement *>(m_parent)->UpdateData(data);
+    }
 }

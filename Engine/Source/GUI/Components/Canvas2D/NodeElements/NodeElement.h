@@ -3,6 +3,7 @@
 #include "GUI/Components/Component.h"
 #include "NodeTypes.h"
 #include <string>
+#include <functional>
 
 namespace TextureGenEngine
 {
@@ -14,8 +15,9 @@ namespace TextureGenEngine
     protected:
         std::string m_elementType;
         InputConnector *m_inputImage;
-        Node* m_node;
+        Node *m_node;
         NodeDataTypes m_dataType;
+        std::function<void()> m_onDataChange = nullptr;
 
     public:
         NodeElement(/* args */);
@@ -23,12 +25,15 @@ namespace TextureGenEngine
         virtual void OnMouseDrag(float x, float y) override;
         virtual void Setup(float x, float y);
         virtual void SetManager(GUIManager *manager) override;
-        virtual void SetNode(Node* node) { m_node = node; }
-        virtual void LockInput(){};
-        virtual void UnlockInput(){};
+        virtual void SetNode(Node *node) { m_node = node; }
+        virtual void LockInput() {};
+        virtual void UnlockInput() {};
         virtual Component *SelectObject(float x, float y) override;
         InputConnector *GetInputConnector(float x, float y);
         OutputConnector *GetOutputConnector(float x, float y);
-        Node * GetNode() { return m_node; }
+        Node *GetNode() { return m_node; }
+        TAPI void SetOnDataChange(std::function<void()> onDataChange);
+        TAPI void TriggerDataChange();
+        virtual void UpdateData(std::string data) {};
     };
 } // namespace TextureGenEngine

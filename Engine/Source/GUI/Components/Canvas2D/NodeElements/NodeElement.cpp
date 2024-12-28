@@ -19,7 +19,6 @@ TextureGenEngine::NodeElement::~NodeElement()
     if (m_inputImage != nullptr)
         delete m_inputImage;
     m_inputImage = nullptr;
-    
 }
 
 void TextureGenEngine::NodeElement::OnMouseDrag(float x, float y)
@@ -71,4 +70,17 @@ TextureGenEngine::InputConnector *TextureGenEngine::NodeElement::GetInputConnect
 TextureGenEngine::OutputConnector *TextureGenEngine::NodeElement::GetOutputConnector(float x, float y)
 {
     return nullptr;
+}
+
+void TextureGenEngine::NodeElement::SetOnDataChange(std::function<void()> onDataChange)
+{
+    m_onDataChange = onDataChange;
+}
+
+void TextureGenEngine::NodeElement::TriggerDataChange()
+{
+    if (m_onDataChange)
+    {
+        m_onDataChange();
+    }
 }

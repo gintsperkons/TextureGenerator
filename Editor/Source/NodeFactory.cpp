@@ -1,12 +1,13 @@
 #include "NodeFactory.h"
 #include "GUI/Components/Canvas2D/NodeElements/OutputConnector.h"
 #include "GUI/Components/Canvas2D/NodeElements/NodeTypes.h"
+#include "Core/Logger/Logger.h"
 
-TextureGenEngine::Node *NodeFactory::TextNode(TextureGenEngine::Canvas2D* canvas, std::string title)
+TextureGenEngine::Node *NodeFactory::TextNode(TextureGenEngine::Canvas2D *canvas, std::string title)
 {
     float x, y;
-    canvas->GetSpawnLocation(x,y);
-    TextureGenEngine::Node *node = new TextureGenEngine::Node(x,y);
+    canvas->GetSpawnLocation(x, y);
+    TextureGenEngine::Node *node = new TextureGenEngine::Node(x, y);
     canvas->AddNode(node);
     node->SetBackground(TextureGenEngine::Color(0.0f, 0.0f, 0.0f, 1.0f));
     node->SetTitle(title);
@@ -18,6 +19,15 @@ TextureGenEngine::Node *NodeFactory::TextNode(TextureGenEngine::Canvas2D* canvas
     TextureGenEngine::OutputConnector *outElement = new TextureGenEngine::OutputConnector();
     outElement->SetDataType(TextureGenEngine::NodeDataTypes::TEXT);
     node->SetOutput(outElement);
+
+    intElement->SetOnDataChange([out = outElement]()
+                                { out->TriggerUpdate(); });
+
+    outElement->SetOnUpdate([el1 = intElement, out = outElement]()
+                            {
+        std::string text = "";
+        el1->GetData(text);
+        out->UpdateData(text); });
 
     return node;
 }
@@ -42,6 +52,20 @@ TextureGenEngine::Node *NodeFactory::TextMergeNode(TextureGenEngine::Canvas2D *c
     TextureGenEngine::OutputConnector *outElement = new TextureGenEngine::OutputConnector();
     outElement->SetDataType(TextureGenEngine::NodeDataTypes::TEXT);
     node->SetOutput(outElement);
+
+    el1->SetOnDataChange([out = outElement]()
+                         { out->TriggerUpdate(); });
+
+    el2->SetOnDataChange([out = outElement]()
+                         { out->TriggerUpdate(); });
+
+    outElement->SetOnUpdate([el1 = el1, el2 = el2, out = outElement]()
+                            {
+                                std::string text1 = "";
+                                std::string text2 = "";
+                                el1->GetData(text1);    
+                                el2->GetData(text2);
+                                out->UpdateData(text1 + text2); });
 
     return node;
 }

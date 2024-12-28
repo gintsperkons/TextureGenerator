@@ -94,7 +94,7 @@ void TextureGenEngine::OutputConnector::MouseRelease()
         }
         else if (m_connector == nullptr)
         {
-           input->UnlockInput();
+            input->UnlockInput();
         }
     }
     else
@@ -125,6 +125,7 @@ void TextureGenEngine::OutputConnector::ConnectLine(Connector *connector)
     {
         m_connectors.push_back(connector);
     }
+    TriggerUpdate();
 }
 
 void TextureGenEngine::OutputConnector::DisconnectLine(Connector *connector)
@@ -159,7 +160,6 @@ bool TextureGenEngine::OutputConnector::ExistConnection(Connector *connector)
     return false;
 }
 
-
 void TextureGenEngine::OutputConnector::SetDataType(NodeDataTypes type)
 {
     m_dataType = type;
@@ -169,4 +169,23 @@ void TextureGenEngine::OutputConnector::SetDataType(NodeDataTypes type)
     }
     else
         m_background->ChangeColor(1.0f, 1.0f, 1.0f, 1.0f);
+}
+
+void TextureGenEngine::OutputConnector::UpdateData(std::string data)
+{
+    for (auto &line : m_connectors)
+    {
+        line->UpdateData(data);
+    }
+}
+
+void TextureGenEngine::OutputConnector::SetOnUpdate(std::function<void()> onUpdate)
+{
+    m_onUpdate = onUpdate;
+}
+
+void TextureGenEngine::OutputConnector::TriggerUpdate()
+{
+    if (m_onUpdate)
+        m_onUpdate();
 }
