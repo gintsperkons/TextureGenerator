@@ -4,14 +4,19 @@
 
 namespace TextureGenEngine
 {
+    class TextureData;
+    class Texture;
     class ImagePreviewElement : public NodeElement
     {
     private:
-        /* data */
+        TextureData* m_textureData = nullptr;
+        Texture* m_texture = nullptr;
+
     public:
         TAPI ImagePreviewElement(/* args */);
         ~ImagePreviewElement();
         void OnMouseDrag(float x, float y) override;
+        void Setup(float x, float y) override;
     };
 
 } // namespace TextureGenEngine

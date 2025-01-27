@@ -25,7 +25,7 @@ void TextureGenEngine::NodeElement::OnMouseDrag(float x, float y)
 {
     m_x += x;
     m_y -= y;
-    m_inputImage->Move(x, y);
+    if (m_inputImage) m_inputImage->Move(x, y);
 }
 
 void TextureGenEngine::NodeElement::Setup(float x, float y)

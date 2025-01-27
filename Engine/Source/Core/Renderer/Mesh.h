@@ -30,7 +30,7 @@ namespace TextureGenEngine
 		void ChangeColor(float r, float g, float b, float a);
 		void ChangeShader(std::string shaderName);
 		void SetDepth(float depth);
-		void ChangeTexture(Texture *texturePtr);
+		void ChangeTexture(Texture *texturePtr);	
 		~Mesh();
 	};
 }

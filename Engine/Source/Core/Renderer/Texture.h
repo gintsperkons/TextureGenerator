@@ -2,15 +2,20 @@
 
 namespace TextureGenEngine
 {
-    class Texture {
+    class TextureData;
+    class Texture
+    {
         int m_Width, m_Height, m_Channels;
         unsigned int m_TextureID;
         bool m_ready = false;
+
     public:
         Texture();
         ~Texture();
 
-        void LoadTexture(const char* path);
+        void LoadTexture(const char *path);
+        void LoadTexture(TextureData *data);
+        void UpdateTexture(TextureData *data);
         void BindTexture();
         void UnbindTexture();
 

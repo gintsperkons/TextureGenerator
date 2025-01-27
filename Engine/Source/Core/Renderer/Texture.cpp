@@ -3,6 +3,7 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
 #include "Core/Logger/Logger.h"
+#include "TextureData.h"
 
 TextureGenEngine::Texture::Texture()
 {
@@ -39,6 +40,26 @@ void TextureGenEngine::Texture::LoadTexture(const char *path)
         m_ready = false;
     }
     stbi_image_free(data);
+    glBindTexture(GL_TEXTURE_2D, 0);
+}
+
+void TextureGenEngine::Texture::LoadTexture(TextureData *data)
+{
+    m_Channels = data->GetChannels();
+    glBindTexture(GL_TEXTURE_2D, m_TextureID);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, data->GetWidth(), data->GetHeight(), 0, GL_RGBA, GL_UNSIGNED_BYTE, data->GetRawData());
+    glGenerateMipmap(GL_TEXTURE_2D);
+    m_ready = true;
+    glBindTexture(GL_TEXTURE_2D, 0);
+}
+
+void TextureGenEngine::Texture::UpdateTexture(TextureData *data)
+{
+    m_Channels = data->GetChannels();
+    glBindTexture(GL_TEXTURE_2D, m_TextureID);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, data->GetWidth(), data->GetHeight(), 0, GL_RGBA, GL_UNSIGNED_BYTE, data->GetRawData());
+    glGenerateMipmap(GL_TEXTURE_2D);
+    m_ready = true;
     glBindTexture(GL_TEXTURE_2D, 0);
 }
 

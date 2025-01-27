@@ -82,7 +82,7 @@ TextureGenEngine::Node *NodeFactory::NoiseGenImage(TextureGenEngine::Canvas2D *c
     TextureGenEngine::ImagePreviewElement *el1 = new TextureGenEngine::ImagePreviewElement();
     el1->SetBackground(TextureGenEngine::Color(0.0f, 0.0f, 0.0f, 1.0f));
     node->AddElement(el1);
-
+    
     // TextureGenEngine::OutputConnector *outElement = new TextureGenEngine::OutputConnector();
     // outElement->SetDataType(TextureGenEngine::NodeDataTypes::IMAGE);
     // node->SetOutput(outElement);
