@@ -168,6 +168,9 @@ TextureGenEngine::Component *TextureGenEngine::Node::SelectObject(float x, float
 
 TextureGenEngine::Node::~Node()
 {
+    if (m_parent) {
+        m_parent->RemoveChild(this);
+    }
     if (m_title)
     {
         delete m_title;
