@@ -16,6 +16,7 @@ namespace TextureGenEngine
     public:
         TAPI Menu(std::string title);
         void Draw() override;
+        void OnHover(float x, float y) override;
         void Resize(float width, float height) override;
         void SetMenuBar(float x, float y, float width, float height);
         ~Menu();

@@ -35,8 +35,7 @@ void TextureGenEngine::GUIManager::SelectObject(float x, float y)
     currentObject = nullptr;
 }
 
-TextureGenEngine::GUIManager::GUIManager() :
-m_oldHeight(0),m_oldWidth(0), m_width(0), m_height(0)
+TextureGenEngine::GUIManager::GUIManager() : m_oldHeight(0), m_oldWidth(0), m_width(0), m_height(0)
 {
 }
 
@@ -62,7 +61,8 @@ void TextureGenEngine::GUIManager::Update()
 
 void TextureGenEngine::GUIManager::Draw()
 {
-    if (m_width <=  0 || m_height <= 0) return;
+    if (m_width <= 0 || m_height <= 0)
+        return;
 
     for (auto &child : m_children)
     {
@@ -117,14 +117,29 @@ void TextureGenEngine::GUIManager::GetOldSize(float &width, float &height)
     height = m_oldHeight;
 }
 
-
-
 void TextureGenEngine::GUIManager::MouseMove(MouseMoveEvent e)
 {
 
     if (currentObject && m_mouseButtonStates[Mouse::ButtonLeft] == Mouse::Held)
     {
         currentObject->OnMouseDrag((float)e.x, (float)e.y);
+        return;
+    }
+    double x, y;
+    m_window->GetInput()->GetMousePosition(x, y);
+    m_cursorChanged = false;
+    for (auto &child : m_children)
+    {
+        if (child->CheckCollision((float)x, (float)y))
+        {
+            child->OnHover((float)x, (float)y);
+        }
+    }
+    LOG_DEBUG("Mouse LOC %f %f\n", x, y);
+    if (!m_cursorChanged)
+    {
+        LOG_DEBUG("Setting arrow cursor\n");
+        m_window->SetCursor(Cursor::Arrow);
     }
 }
 
@@ -166,13 +181,13 @@ void TextureGenEngine::GUIManager::KeyAction(int key, int scancode, int action, 
 {
     if (action == Key::KeyAction::Press || action == Key::KeyAction::Repeat)
     {
-        if (currentObject && currentObject->GetType() == "Node") {
+        if (currentObject && currentObject->GetType() == "Node")
+        {
             if (key == Key::Delete)
             {
-                        delete currentObject;
-                        currentObject = nullptr;
-                        return;
-               
+                delete currentObject;
+                currentObject = nullptr;
+                return;
             }
         }
         if (currentObject && currentObject->GetType() == "TextInput")
@@ -240,4 +255,12 @@ void TextureGenEngine::GUIManager::GetMousePosition(float &x, float &y)
     m_window->GetInput()->GetMousePosition(xpos, ypos);
     x = (float)xpos;
     y = (float)ypos;
+}
+
+void TextureGenEngine::GUIManager::SetCursor(Cursor cursor)
+{
+    m_cursorChanged = true;
+    m_window->SetCursor(cursor);
+    if (m_cursor == (int)cursor) return;
+    m_cursor = (int)cursor;
 }

@@ -1,4 +1,5 @@
 #include "ScrollView.h"
+#include "Core/Logger/Logger.h"
 
 TextureGenEngine::ScrollView::ScrollView(float x, float y, float width, float height, ScalingType xScaling, ScalingType yScaling)
     : Panel(x, y, width, height, xScaling, yScaling)
@@ -13,7 +14,7 @@ void TextureGenEngine::ScrollView::Init(float width, float height)
     Panel::Init(width, height);
     for (auto &element : m_elements)
     {
-        element->Init(width, height);
+        element->Init(m_width, m_height);
     }
 }
 
@@ -26,9 +27,28 @@ void TextureGenEngine::ScrollView::Draw()
     }
 }
 
+void TextureGenEngine::ScrollView::OnHover(float x, float y)
+{
+    LOG_DEBUG("Hovering\n");
+    for (auto &element : m_elements)
+    {
+        element->OnHover(x, y);
+    }
+}
+
+void TextureGenEngine::ScrollView::Resize(float width, float height)
+{
+    Panel::Resize(width, height);
+    for (auto &element : m_elements)
+    {
+        element->SetPosition(m_x, m_y+m_height - GetItemOffset(element));
+    }
+}
+
 void TextureGenEngine::ScrollView::AddElement(Component *element)
 {
     element->SetParent(this);
+    element->SetManager(m_manager);
     m_elements.push_back(element);
 }
 

@@ -61,8 +61,6 @@ bool TextureGenEngine::Component::CheckCollision(float x, float y)
     float testX = x;
     float testY = y;
 
-    LOG_DEBUG("x1: %f, x2: %f, y1: %f, y2: %f\n", x1, x2, y1, y2);
-    LOG_DEBUG("testX: %f, testY: %f\n", testX, testY);
     if (testX > x1 && testX < x2 && testY > y1 && testY < y2)
     {
         return true;
@@ -72,7 +70,6 @@ bool TextureGenEngine::Component::CheckCollision(float x, float y)
 
 void TextureGenEngine::Component::OnMouseDrag(float x, float y)
 {
-    LOG_DEBUG("Dragging\n");
     if (m_draggable)
     {
         m_x += x;
@@ -101,3 +98,4 @@ void TextureGenEngine::Component::Move(float x, float y)
     m_y -= y;
     m_background->Move(x, y);
 }
+

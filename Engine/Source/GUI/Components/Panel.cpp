@@ -27,6 +27,7 @@ void TextureGenEngine::Panel::Resize(float width, float height)
     float yScale = 1;
     float oldWidth, oldHeight;
     m_manager->GetOldSize(oldWidth, oldHeight);
+    LOG_DEBUG("BB %f %f\n", m_width, m_height);
     LOG_DEBUG("Old Width: %f Old Height: %f\n", oldWidth, oldHeight);
     float newWidth = m_width * width / oldWidth;
     float newHeight = m_height * height / oldHeight;
@@ -43,7 +44,7 @@ void TextureGenEngine::Panel::Resize(float width, float height)
     }
     if (m_scalingTypeX == ScalingType::FIXED)
     {
-        m_width = width;
+        m_width = m_width;
     }
     if (m_scalingTypeY == ScalingType::FIXED)
     {

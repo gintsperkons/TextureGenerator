@@ -17,6 +17,7 @@ namespace TextureGenEngine
         void Init(float width, float height) override;
         virtual ~Clickable();
         void Click(float x, float y) override;
+        void OnHover(float x, float y) override;
         TAPI void SetText(std::string text) { m_text = text; }
         TAPI virtual void OnClick(std::function<void()> onClick);
     };

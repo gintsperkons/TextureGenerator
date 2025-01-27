@@ -103,6 +103,11 @@ void TextureGenEngine::Window::ScissorsReset()
     glDisable(GL_SCISSOR_TEST);
 }
 
+void TextureGenEngine::Window::SetCursor(Cursor cursor)
+{
+    glfwSetCursor(m_window, glfwCreateStandardCursor(static_cast<int>(cursor)));
+}
+
 void TextureGenEngine::Window::AddGUI(TextureGenEngine::GUIManager *gui)
 {
     if (m_gui)

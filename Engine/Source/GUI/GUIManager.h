@@ -4,6 +4,7 @@
 #include "Core/Input/InputEvents.h"
 struct ScissorsData
 {
+    
     float x, y, width, height;
     ScissorsData(float x, float y, float width, float height) : x(x), y(y), width(width), height(height) {}
 };
@@ -12,11 +13,14 @@ namespace TextureGenEngine
 {
     class Window;
     class Component;
+    enum class Cursor;
     class GUIManager
     {   float m_oldWidth;
         float m_oldHeight;
         float m_width;
         float m_height;
+        int m_cursor = 0x00036001;
+        bool m_cursorChanged = false;
         std::vector<Component *> m_children;
         Window *m_window;
         int m_mouseButtonStates[Mouse::ButtonLast+1] = {0};
@@ -42,5 +46,6 @@ namespace TextureGenEngine
         void ScissorsPush(float x, float y, float width, float height);
         void ScissorsPop();
         void GetMousePosition(float &x, float &y);
+        void SetCursor(Cursor cursor);
     };
 } // namespace TextureGenEngine
