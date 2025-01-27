@@ -13,7 +13,7 @@ namespace TextureGenEngine
     class Label;
     class Node : public Component
     {
-        OutputConnector *m_outputImage;
+        OutputConnector *m_outputImage = nullptr;
         Label *m_title = nullptr;
         Mesh *m_dataBackground = nullptr;
         std::vector<NodeElement *> m_elements;

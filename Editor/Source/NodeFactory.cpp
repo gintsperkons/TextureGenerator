@@ -69,3 +69,27 @@ TextureGenEngine::Node *NodeFactory::TextMergeNode(TextureGenEngine::Canvas2D *c
 
     return node;
 }
+
+TextureGenEngine::Node *NodeFactory::NoiseGenImage(TextureGenEngine::Canvas2D *canvas, std::string title)
+{
+    float x, y;
+    canvas->GetSpawnLocation(x, y);
+    TextureGenEngine::Node *node = new TextureGenEngine::Node(x, y);
+    canvas->AddNode(node);
+    node->SetBackground(TextureGenEngine::Color(0.0f, 0.0f, 0.0f, 1.0f));
+    node->SetTitle(title);
+
+    TextureGenEngine::ImagePreviewElement *el1 = new TextureGenEngine::ImagePreviewElement();
+    el1->SetBackground(TextureGenEngine::Color(0.0f, 0.0f, 0.0f, 1.0f));
+    node->AddElement(el1);
+
+    // TextureGenEngine::OutputConnector *outElement = new TextureGenEngine::OutputConnector();
+    // outElement->SetDataType(TextureGenEngine::NodeDataTypes::IMAGE);
+    // node->SetOutput(outElement);
+
+    // outElement->SetOnUpdate([out = outElement]()
+    //                         {
+    //                             out->UpdateData("Noise Image"); });
+
+    return node;
+}

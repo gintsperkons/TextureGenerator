@@ -10,7 +10,7 @@
 #include "GUI/Components/Label.h"
 #include "Canvas2D.h"
 
-TextureGenEngine::Node::Node(float x, float y) : Component(x, y, 100, c_titleHeight)
+TextureGenEngine::Node::Node(float x, float y) : Component(x, y, 100, c_titleHeight), m_outputImage(nullptr)
 {
     m_title = new Label(x, y, 100, c_titleHeight, "Node");
     m_title->SetParent(this);
@@ -99,7 +99,8 @@ void TextureGenEngine::Node::OnMouseDrag(float x, float y)
 {
     Component::OnMouseDrag(x, y);
     m_dataBackground->Move(x, y);
-    m_outputImage->Move(x, y);
+    if (m_outputImage)
+        m_outputImage->Move(x, y);
     m_title->Move(x, y);
     for (auto &element : m_elements)
     {
@@ -154,7 +155,7 @@ TextureGenEngine::Component *TextureGenEngine::Node::SelectObject(float x, float
             }
         }
     }
-    if (m_outputImage->CheckCollision(x, y))
+    if (m_outputImage && m_outputImage->CheckCollision(x, y))
     {
         return m_outputImage;
     }
