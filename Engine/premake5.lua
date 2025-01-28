@@ -7,7 +7,7 @@ visibility "Hidden"
 
 files {"Source\\**.h", "Source\\**.cpp", "Source\\glad.c"}
 
-includedirs {"Source", IncludeDir["GLFW"], IncludeDir["GLM"], IncludeDir["GLAD"], IncludeDir["FreeType"], IncludeDir["STB"]}
+includedirs {"Source", IncludeDir["GLFW"], IncludeDir["GLM"], IncludeDir["GLAD"], IncludeDir["FreeType"], IncludeDir["STB"], IncludeDir["FastNoise2"]}
 
 targetdir("%{wks.location}\\Binaries\\" .. OutputDir .. "\\%{prj.name}")
 objdir("%{wks.location}\\Binaries\\Intermediates\\" .. OutputDir .. "\\%{prj.name}")
@@ -21,7 +21,7 @@ postbuildcommands {"{MKDIR} %{wks.location}\\Binaries\\" .. RuntimeDir .. "\\",
                    "{COPYDIR} \"%{wks.location}\\Vendor\\resources\\\" \"%{wks.location}\\Binaries\\" .. RuntimeDir .."\\resources\\\"", 
                    "{COPYDIR} \"%{wks.location}\\Engine\\Shaders\\\" \"%{wks.location}\\Binaries\\" .. RuntimeDir .. "\\Shaders\\\"" 
 }
-links {"freetype", "GLFW", "opengl32.lib", "gdi32.lib", "user32.lib", "shell32.lib"}
+links {"freetype", "GLFW","FastNoise2", "opengl32.lib", "gdi32.lib", "user32.lib", "shell32.lib"}
 
 filter "system:linux"
 postbuildcommands {"{MKDIR} %{wks.location}\\Binaries\\" .. RuntimeDir .. "\\",
@@ -30,7 +30,7 @@ postbuildcommands {"{MKDIR} %{wks.location}\\Binaries\\" .. RuntimeDir .. "\\",
                     "{COPYDIR} \"%{wks.location}\\Engine\\Shaders\" \"%{wks.location}\\Binaries\\" .. RuntimeDir .. "\\\"" -- "{ECHO} \"%{prj.location}\"",
 }
 
-links {"freetype", "GL", "GLFW", "wayland-client", "wayland-egl", "EGL", "GL"}
+links {"freetype", "GL", "GLFW","FastNoise2", "wayland-client", "wayland-egl", "EGL", "GL"}
 
 
 

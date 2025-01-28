@@ -13,3 +13,6 @@
 [submodule "Vendor/Libraries/STB"]
 	path = Vendor/Libraries/STB
 	url = https://github.com/nothings/stb.git
+[submodule "Vendor/Libraries/FastNoise2"]
+	path = Vendor/Libraries/FastNoise2
+	url = https://github.com/gintsperkons/FastNoise2Premake.git

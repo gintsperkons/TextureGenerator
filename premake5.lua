@@ -18,6 +18,7 @@ RuntimeDir ="runtime-%{cfg.system}-%{cfg.architecture}-%{cfg.buildcfg}"
 group "Dependencies"
    include "Vendor/Libraries/GLFW"
    include "Vendor/Libraries/freetype"
+   include "Vendor/Libraries/FastNoise2"
 
 group "TextureGenerator"
 include "Engine"
