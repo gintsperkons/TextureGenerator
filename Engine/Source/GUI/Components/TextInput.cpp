@@ -64,6 +64,10 @@ void TextureGenEngine::TextInput::AddChar(unsigned int codepoint)
 {
     if (!m_enabled)
         return;
+    if (doFilter && allowedCharacters.find(static_cast<char>(codepoint)) == std::string::npos)
+        return;
+    if (m_inputType == TextInputType::FLOAT && (codepoint == '.' || codepoint == ',') && m_text.find_first_of('.') != std::string::npos)
+        return;
     m_text.insert(m_cursorPosition, 1, static_cast<char>(codepoint));
     m_cursorPosition++;
 
@@ -75,8 +79,9 @@ void TextureGenEngine::TextInput::AddChar(unsigned int codepoint)
         return;
     }
     m_cursor->SetPosition(m_x + textBeforeSize, m_y);
-    if (m_onTextChange)
-        m_onTextChange(m_text);
+
+    UpdateData();
+       
 }
 
 void TextureGenEngine::TextInput::RemoveCharBefore()
@@ -97,8 +102,7 @@ void TextureGenEngine::TextInput::RemoveCharBefore()
             m_textDrawOffset = 0;
         m_cursor->SetPosition(m_x + m_textMesh->GetTextWidth(m_text.substr(0, m_cursorPosition), 12), m_y);
 
-        if (m_onTextChange)
-            m_onTextChange(m_text);
+        UpdateData();
     }
 }
 
@@ -117,8 +121,7 @@ void TextureGenEngine::TextInput::RemoveCharAfter()
         }
         m_cursor->SetPosition(m_x + m_textMesh->GetTextWidth(m_text.substr(0, m_cursorPosition), 12), m_y);
 
-        if (m_onTextChange)
-            m_onTextChange(m_text);
+        UpdateData();
     }
 }
 
@@ -194,7 +197,67 @@ void TextureGenEngine::TextInput::Enable()
 
 void TextureGenEngine::TextInput::GetText(std::string &text)
 {
-    text =  m_text;
+    text = m_text;
+}
+
+void TextureGenEngine::TextInput::GetFloat(float &data)
+{
+    data = m_floatValue;
+}
+
+void TextureGenEngine::TextInput::SetFloat(float data)
+{
+    m_floatValue = data;
+    m_text = std::to_string(data);
+    m_cursorPosition = m_text.length();
+    m_cursor->SetPosition(m_x + m_textMesh->GetTextWidth(m_text.substr(0, m_cursorPosition), 12), m_y);
+    if (m_onFloatChange)
+        m_onFloatChange(m_floatValue);
+}
+
+void TextureGenEngine::TextInput::GetInteger(int &data)
+{
+    data = m_integerValue;
+}
+
+void TextureGenEngine::TextInput::SetInteger(int data)
+{
+    m_integerValue = data;
+    m_text = std::to_string(data);
+    m_cursorPosition = m_text.length();
+    m_cursor->SetPosition(m_x + m_textMesh->GetTextWidth(m_text.substr(0, m_cursorPosition), 12), m_y);
+    if (m_onIntegerChange)
+        m_onIntegerChange(m_integerValue);
+}
+
+void TextureGenEngine::TextInput::UpdateData()
+{
+    if (m_inputType == TextInputType::INTEGER && m_onIntegerChange)
+    {
+        try
+        {
+            m_integerValue = std::stoi(m_text);
+            m_onIntegerChange(m_integerValue);
+        }
+        catch (const std::exception &e)
+        {
+        }
+    }
+
+    if (m_inputType == TextInputType::FLOAT && m_onFloatChange)
+    {
+        try
+        {
+            m_floatValue = std::stof(m_text);
+            m_onFloatChange(m_floatValue);
+        }
+        catch (const std::exception &e)
+        {
+        }
+    }
+
+    if (m_inputType == TextInputType::TEXT && m_onTextChange)
+        m_onTextChange(m_text);
 }
 
 void TextureGenEngine::TextInput::SetText(std::string text)
@@ -204,4 +267,9 @@ void TextureGenEngine::TextInput::SetText(std::string text)
     m_cursor->SetPosition(m_x + m_textMesh->GetTextWidth(m_text.substr(0, m_cursorPosition), 12), m_y);
     if (m_onTextChange)
         m_onTextChange(m_text);
+}
+
+void TextureGenEngine::TextInput::SetAllowCharacters(std::string characters)
+{
+    allowedCharacters = characters;
 }

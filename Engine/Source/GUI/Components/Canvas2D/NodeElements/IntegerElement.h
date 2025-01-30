@@ -10,6 +10,8 @@ namespace TextureGenEngine
     /* data */
    public:
     TAPI IntegerElement(/* args */) ;
+    TAPI void SetData(int data);
+    TAPI void GetData(int &data);
     ~IntegerElement() ;
    };
 } // namespace TextureGenEngine

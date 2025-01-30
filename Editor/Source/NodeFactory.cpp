@@ -79,17 +79,43 @@ TextureGenEngine::Node *NodeFactory::NoiseGenImage(TextureGenEngine::Canvas2D *c
     node->SetBackground(TextureGenEngine::Color(0.0f, 0.0f, 0.0f, 1.0f));
     node->SetTitle(title);
 
-    TextureGenEngine::ImagePreviewElement *el1 = new TextureGenEngine::ImagePreviewElement();
-    el1->SetBackground(TextureGenEngine::Color(0.0f, 0.0f, 0.0f, 1.0f));
+    TextureGenEngine::FloatInputElement *el1 = new TextureGenEngine::FloatInputElement();
+    el1->SetBackground(TextureGenEngine::Color(0.0f, 0.0f, 0.0f, 0.0f));
     node->AddElement(el1);
-    
-    // TextureGenEngine::OutputConnector *outElement = new TextureGenEngine::OutputConnector();
-    // outElement->SetDataType(TextureGenEngine::NodeDataTypes::IMAGE);
-    // node->SetOutput(outElement);
 
-    // outElement->SetOnUpdate([out = outElement]()
-    //                         {
-    //                             out->UpdateData("Noise Image"); });
+    TextureGenEngine::IntegerElement *el2 = new TextureGenEngine::IntegerElement();
+    el2->SetBackground(TextureGenEngine::Color(0.0f, 0.0f, 0.0f, 0.0f));
+    node->AddElement(el2);
+
+    TextureGenEngine::ImagePreviewElement *el3 = new TextureGenEngine::ImagePreviewElement();
+    el3->SetBackground(TextureGenEngine::Color(0.0f, 0.0f, 0.0f, 1.0f));
+    node->AddElement(el3);
+    float frequency;
+    int seed;
+    el3->GetFrequency(frequency);
+    el3->GetSeed(seed);
+    el1->SetData(frequency);
+    el2->SetData(seed);
+
+    el1->SetOnDataChange([el3 = el3, el1 = el1]()
+                         {
+                             float frequency;
+                             el1->GetData(frequency);
+                             el3->SetFrequency(frequency);
+                         });
+    
+    el2 ->SetOnDataChange([el3 = el3, el2 = el2]()
+                         {
+                             int seed;
+                             el2->GetData(seed);
+                             el3->SetSeed(seed);
+                         });
+
+
+
+    TextureGenEngine::OutputConnector *outElement = new TextureGenEngine::OutputConnector();
+    outElement->SetDataType(TextureGenEngine::NodeDataTypes::IMAGE);
+    node->SetOutput(outElement);
 
     return node;
 }

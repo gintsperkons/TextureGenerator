@@ -9,11 +9,11 @@ namespace TextureGenEngine
 
     class TextualInputElement : public NodeElement
     {
-    private:
+    protected:
         TextInput *m_textInput;
 
-            public : TAPI
-                     TextualInputElement();
+    public:
+        TAPI TextualInputElement();
         void Draw() override;
         virtual void SetManager(GUIManager *manager) override;
         virtual void Init(float width, float height) override;
@@ -24,6 +24,6 @@ namespace TextureGenEngine
         void UnlockInput() override;
         TAPI void GetData(std::string &data);
         void UpdateData(std::string data) override;
-         ~TextualInputElement();
+        ~TextualInputElement();
     };
 } // namespace TextureGenEngine
