@@ -35,5 +35,7 @@ namespace TextureGenEngine
         TAPI void SetOnDataChange(std::function<void()> onDataChange);
         TAPI void TriggerDataChange();
         virtual void UpdateData(std::string data) {};
+        virtual void UpdateData(int data) {};
+        virtual void UpdateData(float data) {};
     };
 } // namespace TextureGenEngine

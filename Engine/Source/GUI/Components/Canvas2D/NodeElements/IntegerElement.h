@@ -12,6 +12,8 @@ namespace TextureGenEngine
     TAPI IntegerElement(/* args */) ;
     TAPI void SetData(int data);
     TAPI void GetData(int &data);
+    void UpdateData(std::string data) override {};
+    void UpdateData(int data) override;
     ~IntegerElement() ;
    };
 } // namespace TextureGenEngine

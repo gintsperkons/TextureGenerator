@@ -29,5 +29,7 @@ namespace TextureGenEngine
         void UnlockInput();
         TAPI void SetDataType(NodeDataTypes type);
         void UpdateData(std::string data);
+        void UpdateData(int data);
+        void UpdateData(float data);
     }; // namespace TextureGenEngine
 }

@@ -77,7 +77,17 @@ int main()
 	std::vector<std::pair<std::function<void(TextureGenEngine::Canvas2D *, std::string)>, std::string>> nodeFunctionList = {
 		{NodeFactory::TextNode, "Text"},
 		{NodeFactory::TextMergeNode, "Text Merge"},
+		{NodeFactory::IntegerNode, "Integer"},
+		{NodeFactory::FloatNode, "Float"},
 		{NodeFactory::NoiseGenImage, "Perlin Gen"},
+		{NodeFactory::AddIntNode, "Add Int"},
+		{NodeFactory::SubtractIntNode, "Subtract Int"},
+		{NodeFactory::MultiplyIntNode, "Multiply Int"},
+		{NodeFactory::DivideIntNode, "Divide Int"},
+		{NodeFactory::AddFloatNode, "Add Float"},
+		{NodeFactory::SubtractFloatNode, "Subtract Float"},
+		{NodeFactory::MultiplyFloatNode, "Multiply Float"},
+		{NodeFactory::DivideFloatNode, "Divide Float"}
 	};
 	CreateClickables(nodeFunctionList, scrollView, canvasNodeGraph);
 

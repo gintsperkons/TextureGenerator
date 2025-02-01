@@ -86,11 +86,238 @@ TextureGenEngine::Node *NodeFactory::TextMergeNode(TextureGenEngine::Canvas2D *c
 }
 
 TextureGenEngine::Node *NodeFactory::IntegerNode(TextureGenEngine::Canvas2D *canvas, std::string title){
-    float x,y;
-    canvas->GetSpawnLocation(x,y);
+    TextureGenEngine::Node* node = SpawnNode(canvas, title);
+    TextureGenEngine::IntegerElement *intInput = AddNodeElement<TextureGenEngine::IntegerElement>(node);
+    TextureGenEngine::OutputConnector *outElement = SetOutputConnector(node, TextureGenEngine::NodeDataTypes::INTEGER);
+
+    intInput->SetOnDataChange([outElement]()
+                              { outElement->TriggerUpdate(); });
+
+    outElement->SetOnUpdate([intInput, outElement]()
+                            {
+                                int value;
+                                intInput->GetData(value);
+                                outElement->UpdateData(value); });
+    
+    return node;
 }
 
+TextureGenEngine::Node *NodeFactory::FloatNode(TextureGenEngine::Canvas2D *canvas, std::string title){
+    TextureGenEngine::Node* node = SpawnNode(canvas, title);
+    TextureGenEngine::FloatInputElement *floatInput = AddNodeElement<TextureGenEngine::FloatInputElement>(node);
+    TextureGenEngine::OutputConnector *outElement = SetOutputConnector(node, TextureGenEngine::NodeDataTypes::FLOAT);
 
+    floatInput->SetOnDataChange([outElement]()
+                                { outElement->TriggerUpdate(); });
+
+    outElement->SetOnUpdate([floatInput, outElement]()
+                            {
+                                float value;
+                                floatInput->GetData(value);
+                                outElement->UpdateData(value); });
+
+    return node;
+}
+
+TextureGenEngine::Node *NodeFactory::AddIntNode(TextureGenEngine::Canvas2D *canvas, std::string title)
+{
+    TextureGenEngine::Node* node = SpawnNode(canvas, title);
+    TextureGenEngine::IntegerElement *intInput1 = AddNodeElement<TextureGenEngine::IntegerElement>(node);
+    TextureGenEngine::IntegerElement *intInput2 = AddNodeElement<TextureGenEngine::IntegerElement>(node);
+    TextureGenEngine::OutputConnector *outElement = SetOutputConnector(node, TextureGenEngine::NodeDataTypes::INTEGER);
+
+    intInput1->SetOnDataChange([outElement]()
+                               { outElement->TriggerUpdate(); });
+
+    intInput2->SetOnDataChange([outElement]()
+                               { outElement->TriggerUpdate(); });
+
+    outElement->SetOnUpdate([intInput1, intInput2, outElement]()
+                            {
+                                int value1;
+                                int value2;
+                                intInput1->GetData(value1);
+                                intInput2->GetData(value2);
+                                outElement->UpdateData(value1 + value2); });
+
+    return node;
+}
+
+TextureGenEngine::Node *NodeFactory::SubtractIntNode(TextureGenEngine::Canvas2D *canvas, std::string title)
+{
+    TextureGenEngine::Node* node = SpawnNode(canvas, title);
+    TextureGenEngine::IntegerElement *intInput1 = AddNodeElement<TextureGenEngine::IntegerElement>(node);
+    TextureGenEngine::IntegerElement *intInput2 = AddNodeElement<TextureGenEngine::IntegerElement>(node);
+    TextureGenEngine::OutputConnector *outElement = SetOutputConnector(node, TextureGenEngine::NodeDataTypes::INTEGER);
+
+    intInput1->SetOnDataChange([outElement]()
+                               { outElement->TriggerUpdate(); });
+
+    intInput2->SetOnDataChange([outElement]()
+                               { outElement->TriggerUpdate(); });
+
+    outElement->SetOnUpdate([intInput1, intInput2, outElement]()
+                            {
+                                int value1;
+                                int value2;
+                                intInput1->GetData(value1);
+                                intInput2->GetData(value2);
+                                outElement->UpdateData(value1 - value2); });
+
+    return node;
+}
+
+TextureGenEngine::Node *NodeFactory::MultiplyIntNode(TextureGenEngine::Canvas2D *canvas, std::string title)
+{
+    TextureGenEngine::Node* node = SpawnNode(canvas, title);
+    TextureGenEngine::IntegerElement *intInput1 = AddNodeElement<TextureGenEngine::IntegerElement>(node);
+    TextureGenEngine::IntegerElement *intInput2 = AddNodeElement<TextureGenEngine::IntegerElement>(node);
+    TextureGenEngine::OutputConnector *outElement = SetOutputConnector(node, TextureGenEngine::NodeDataTypes::INTEGER);
+
+    intInput1->SetOnDataChange([outElement]()
+                               { outElement->TriggerUpdate(); });
+
+    intInput2->SetOnDataChange([outElement]()
+                               { outElement->TriggerUpdate(); });
+
+    outElement->SetOnUpdate([intInput1, intInput2, outElement]()
+                            {
+                                int value1;
+                                int value2;
+                                intInput1->GetData(value1);
+                                intInput2->GetData(value2);
+                                outElement->UpdateData(value1 * value2); });
+
+    return node;
+}
+
+TextureGenEngine::Node *NodeFactory::DivideIntNode(TextureGenEngine::Canvas2D *canvas, std::string title)
+{
+    TextureGenEngine::Node* node = SpawnNode(canvas, title);
+    TextureGenEngine::IntegerElement *intInput1 = AddNodeElement<TextureGenEngine::IntegerElement>(node);
+    TextureGenEngine::IntegerElement *intInput2 = AddNodeElement<TextureGenEngine::IntegerElement>(node);
+    TextureGenEngine::OutputConnector *outElement = SetOutputConnector(node, TextureGenEngine::NodeDataTypes::INTEGER);
+
+    intInput1->SetOnDataChange([outElement]()
+                               { outElement->TriggerUpdate(); });
+
+    intInput2->SetOnDataChange([outElement]()
+                               { outElement->TriggerUpdate(); });
+
+    outElement->SetOnUpdate([intInput1, intInput2, outElement]()
+                            {
+                                int value1;
+                                int value2;
+                                intInput1->GetData(value1);
+                                intInput2->GetData(value2);
+                                if (value2 == 0)
+                                    outElement->UpdateData(0);
+                                else
+                                    outElement->UpdateData(value1 / value2);
+                                 });
+
+    return node;
+}
+
+TextureGenEngine::Node *NodeFactory::AddFloatNode(TextureGenEngine::Canvas2D *canvas, std::string title)
+{
+    TextureGenEngine::Node* node = SpawnNode(canvas, title);
+    TextureGenEngine::FloatInputElement *floatInput1 = AddNodeElement<TextureGenEngine::FloatInputElement>(node);
+    TextureGenEngine::FloatInputElement *floatInput2 = AddNodeElement<TextureGenEngine::FloatInputElement>(node);
+    TextureGenEngine::OutputConnector *outElement = SetOutputConnector(node, TextureGenEngine::NodeDataTypes::FLOAT);
+
+    floatInput1->SetOnDataChange([outElement]()
+                                 { outElement->TriggerUpdate(); });
+
+    floatInput2->SetOnDataChange([outElement]()
+                                 { outElement->TriggerUpdate(); });
+
+    outElement->SetOnUpdate([floatInput1, floatInput2, outElement]()
+                            {
+                                float value1;
+                                float value2;
+                                floatInput1->GetData(value1);
+                                floatInput2->GetData(value2);
+                                outElement->UpdateData(value1 + value2); });
+
+    return node;
+}
+
+TextureGenEngine::Node *NodeFactory::SubtractFloatNode(TextureGenEngine::Canvas2D *canvas, std::string title)
+{
+    TextureGenEngine::Node* node = SpawnNode(canvas, title);
+    TextureGenEngine::FloatInputElement *floatInput1 = AddNodeElement<TextureGenEngine::FloatInputElement>(node);
+    TextureGenEngine::FloatInputElement *floatInput2 = AddNodeElement<TextureGenEngine::FloatInputElement>(node);
+    TextureGenEngine::OutputConnector *outElement = SetOutputConnector(node, TextureGenEngine::NodeDataTypes::FLOAT);
+
+    floatInput1->SetOnDataChange([outElement]()
+                                 { outElement->TriggerUpdate(); });
+
+    floatInput2->SetOnDataChange([outElement]()
+                                 { outElement->TriggerUpdate(); });
+
+    outElement->SetOnUpdate([floatInput1, floatInput2, outElement]()
+                            {
+                                float value1;
+                                float value2;
+                                floatInput1->GetData(value1);
+                                floatInput2->GetData(value2);
+                                outElement->UpdateData(value1 - value2); });
+
+    return node;
+}
+
+TextureGenEngine::Node *NodeFactory::MultiplyFloatNode(TextureGenEngine::Canvas2D *canvas, std::string title)
+{
+    TextureGenEngine::Node* node = SpawnNode(canvas, title);
+    TextureGenEngine::FloatInputElement *floatInput1 = AddNodeElement<TextureGenEngine::FloatInputElement>(node);
+    TextureGenEngine::FloatInputElement *floatInput2 = AddNodeElement<TextureGenEngine::FloatInputElement>(node);
+    TextureGenEngine::OutputConnector *outElement = SetOutputConnector(node, TextureGenEngine::NodeDataTypes::FLOAT);
+
+    floatInput1->SetOnDataChange([outElement]()
+                                 { outElement->TriggerUpdate(); });
+
+    floatInput2->SetOnDataChange([outElement]()
+                                 { outElement->TriggerUpdate(); });
+
+    outElement->SetOnUpdate([floatInput1, floatInput2, outElement]()
+                            {
+                                float value1;
+                                float value2;
+                                floatInput1->GetData(value1);
+                                floatInput2->GetData(value2);
+                                outElement->UpdateData(value1 * value2); });
+
+    return node;
+}
+
+TextureGenEngine::Node *NodeFactory::DivideFloatNode(TextureGenEngine::Canvas2D *canvas, std::string title)
+{
+    TextureGenEngine::Node* node = SpawnNode(canvas, title);
+    TextureGenEngine::FloatInputElement *floatInput1 = AddNodeElement<TextureGenEngine::FloatInputElement>(node);
+    TextureGenEngine::FloatInputElement *floatInput2 = AddNodeElement<TextureGenEngine::FloatInputElement>(node);
+    TextureGenEngine::OutputConnector *outElement = SetOutputConnector(node, TextureGenEngine::NodeDataTypes::FLOAT);
+
+    floatInput1->SetOnDataChange([outElement]()
+                                 { outElement->TriggerUpdate(); });
+
+    floatInput2->SetOnDataChange([outElement]()
+                                 { outElement->TriggerUpdate(); });
+
+    outElement->SetOnUpdate([floatInput1, floatInput2, outElement]()
+                            {
+                                float value1;
+                                float value2;
+                                floatInput1->GetData(value1);
+                                floatInput2->GetData(value2);
+                                if (value2 == 0)
+                                    outElement->UpdateData(0);
+                                else
+                                    outElement->UpdateData(value1 / value2);
+                            });
+
+    return node;
+}
 
 TextureGenEngine::Node *NodeFactory::NoiseGenImage(TextureGenEngine::Canvas2D *canvas, std::string title)
 {

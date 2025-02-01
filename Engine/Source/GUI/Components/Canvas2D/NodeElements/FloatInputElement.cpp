@@ -36,6 +36,11 @@ void TextureGenEngine::FloatInputElement::GetData(float &data)
     m_textInput->GetFloat(data);
 }
 
+void TextureGenEngine::FloatInputElement::UpdateData(float data)
+{
+    m_textInput->SetFloat(data);
+}
+
 TextureGenEngine::FloatInputElement::~FloatInputElement()
 {
 }

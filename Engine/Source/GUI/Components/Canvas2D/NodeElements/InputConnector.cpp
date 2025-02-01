@@ -10,7 +10,7 @@
 #include "Connector.h"
 
 TextureGenEngine::InputConnector::InputConnector() : Component(0, 0, 20, 20)
-{ 
+{
     m_background->ChangeColor(1.0f, 0.0f, 0.0f, 1.0f);
     m_type = "InputConnector";
     Texture *texture = TextureGenEngine::LoadTexture("Connector.png");
@@ -48,7 +48,7 @@ void TextureGenEngine::InputConnector::OnMouseDrag(float x, float y)
     if (m_tempConnection == nullptr)
     {
         LOG_DEBUG("Creating line\n");
-         LOG_DEBUG("x %f y %f\n", m_x, m_y);
+        LOG_DEBUG("x %f y %f\n", m_x, m_y);
         m_tempConnection = new Connector(m_dataType);
         m_tempConnection->UpdateEndPosition(m_x, m_y + m_height / 2);
     }
@@ -93,7 +93,6 @@ void TextureGenEngine::InputConnector::MouseRelease()
         {
             static_cast<NodeElement *>(m_parent)->UnlockInput();
         }
-        
     }
     else
     {
@@ -159,9 +158,18 @@ void TextureGenEngine::InputConnector::SetDataType(NodeDataTypes type)
 
 void TextureGenEngine::InputConnector::UpdateData(std::string data)
 {
-    LOG_DEBUG("Data %s\n", data.c_str());
     if (dynamic_cast<NodeElement *>(m_parent) != nullptr)
-    {
         static_cast<NodeElement *>(m_parent)->UpdateData(data);
-    }
+}
+
+void TextureGenEngine::InputConnector::UpdateData(int data)
+{
+    if (dynamic_cast<NodeElement *>(m_parent) != nullptr)
+        static_cast<NodeElement *>(m_parent)->UpdateData(data);
+}
+
+void TextureGenEngine::InputConnector::UpdateData(float data)
+{
+    if (dynamic_cast<NodeElement *>(m_parent) != nullptr)
+        static_cast<NodeElement *>(m_parent)->UpdateData(data);
 }

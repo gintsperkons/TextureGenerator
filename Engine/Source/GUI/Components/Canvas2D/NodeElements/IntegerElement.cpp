@@ -33,6 +33,10 @@ void TextureGenEngine::IntegerElement::GetData(int &data)
 {
     m_textInput->GetInteger(data);
 }
+void TextureGenEngine::IntegerElement::UpdateData(int data)
+{
+    m_textInput->SetInteger(data);
+}
 TextureGenEngine::IntegerElement::~IntegerElement()
 {
 }

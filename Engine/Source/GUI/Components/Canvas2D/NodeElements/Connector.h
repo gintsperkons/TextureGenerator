@@ -39,5 +39,7 @@ namespace TextureGenEngine
         void MoveStart(float x, float y);
         void MoveEnd(float x, float y);
         void UpdateData(std::string data);
+        void UpdateData(int data);  
+        void UpdateData(float data);
     };
 } // namespace TextureGenEngine

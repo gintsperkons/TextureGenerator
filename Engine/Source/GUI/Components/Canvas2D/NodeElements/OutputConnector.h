@@ -26,6 +26,8 @@ namespace TextureGenEngine
         bool ExistConnection(Connector *connector);
         void TAPI SetDataType(NodeDataTypes type);
         void TAPI UpdateData(std::string data);
+        void TAPI UpdateData(int data);
+        void TAPI UpdateData(float data);
         void TAPI SetOnUpdate(std::function<void()> onUpdate);
         void TAPI TriggerUpdate();
     };

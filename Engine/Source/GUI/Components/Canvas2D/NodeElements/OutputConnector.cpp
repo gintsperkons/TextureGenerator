@@ -171,7 +171,25 @@ void TextureGenEngine::OutputConnector::SetDataType(NodeDataTypes type)
         m_background->ChangeColor(1.0f, 1.0f, 1.0f, 1.0f);
 }
 
+
+
 void TextureGenEngine::OutputConnector::UpdateData(std::string data)
+{
+    for (auto &line : m_connectors)
+    {
+        line->UpdateData(data);
+    }
+}
+
+void TextureGenEngine::OutputConnector::UpdateData(int data)
+{
+    for (auto &line : m_connectors)
+    {
+        line->UpdateData(data);
+    }
+}
+
+void TextureGenEngine::OutputConnector::UpdateData(float data)
 {
     for (auto &line : m_connectors)
     {

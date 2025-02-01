@@ -12,6 +12,8 @@ namespace TextureGenEngine
         TAPI FloatInputElement(/* args */);
         TAPI void SetData(float data);
         TAPI void GetData(float &data);
+        void UpdateData(std::string data) override {};
+        void UpdateData(float data) override;
         ~FloatInputElement();
     };
     
