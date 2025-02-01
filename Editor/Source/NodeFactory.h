@@ -7,5 +7,6 @@ namespace NodeFactory
 {
     TextureGenEngine::Node *TextNode(TextureGenEngine::Canvas2D *canvas, std::string title);
     TextureGenEngine::Node *TextMergeNode(TextureGenEngine::Canvas2D *canvas, std::string title);
+    TextureGenEngine::Node *IntegerNode(TextureGenEngine::Canvas2D *canvas, std::string title);
     TextureGenEngine::Node *NoiseGenImage(TextureGenEngine::Canvas2D *canvas, std::string title);
 } // namespace NodeFactory

@@ -9,6 +9,7 @@ namespace TextureGenEngine
         TEXT,
         INTEGER,
         FLOAT,
-        IMAGE
+        IMAGE,
+        PatternGenerator,
     };
 } // namespace TextureGenEngine

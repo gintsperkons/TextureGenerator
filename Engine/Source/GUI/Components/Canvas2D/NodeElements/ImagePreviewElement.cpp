@@ -6,7 +6,6 @@
 
 #include "FastNoise/FastNoise.h"
 #include "FastSIMD/FastSIMD.h"
-#define FASTNOISE_SIMD_NONE
 
 #include <random>
 #include <iostream>
@@ -17,36 +16,14 @@ TextureGenEngine::ImagePreviewElement::ImagePreviewElement()
     m_y = 0;
     m_width = 100;
     m_height = 100;
-
-    m_frequency = 0.1f;
+    m_imageSize[0] = 100;
+    m_imageSize[1] = 100;
 
     m_texture = new TextureGenEngine::Texture();
-    m_textureData = new TextureData(100, 100);
+    m_textureData = new TextureData(m_imageSize[0], m_imageSize[1]);
+    m_imageData.resize(m_imageSize[0] * m_imageSize[1]);
     m_texture->LoadTexture(m_textureData);
     m_background->ChangeTexture(m_texture);
-    std::vector<float> data(100 * 100);
-    std::random_device rd;
-    std::mt19937 gen(rd());
-    std::uniform_int_distribution<> dis(0, 264655);
-    m_seed = dis(gen);
-    auto fn = FastNoise::New<FastNoise::Perlin>(FastSIMD::Level_SSE2);
-    if (!fn)
-    {
-        std::cout << "Failed to create FastNoise node" << std::endl;
-        return;
-    }
-    fn->GenTileable2D(data.data(), 100, 100, m_frequency, m_seed);
-
-    for (int i = 0; i < 100; i++)
-    {
-        for (int j = 0; j < 100; j++)
-        {
-            std::cout << data[i * 100 + j] << " \n";
-            int color = (data[i * 100 + j] + 1) * 127.5;
-            m_textureData->SetPixel(i, j, Pixel(color, color, color, 0XFF));
-        }
-    }
-    m_texture->UpdateTexture(m_textureData);
 }
 
 TextureGenEngine::ImagePreviewElement::~ImagePreviewElement()
@@ -71,63 +48,24 @@ void TextureGenEngine::ImagePreviewElement::Setup(float x, float y)
     LOG_DEBUG("position %f %f\n", m_x, m_y);
 }
 
-void TextureGenEngine::ImagePreviewElement::GetFrequency(float &frequency)
+TAPI void TextureGenEngine::ImagePreviewElement::SetImageSize(int width, int height)
 {
-    frequency = m_frequency;
-}
-
-void TextureGenEngine::ImagePreviewElement::SetFrequency(float frequency)
-{
-    m_frequency = frequency;
-
-    auto fn = FastNoise::New<FastNoise::Perlin>(FastSIMD::Level_SSE2);
-    if (!fn)
-    {
-        std::cout << "Failed to create FastNoise node" << std::endl;
-        return;
-    }
-    std::vector<float> data(100 * 100);
-
-    fn->GenTileable2D(data.data(), 100, 100, m_frequency, m_seed);
-
-    for (int i = 0; i < 100; i++)
-    {
-        for (int j = 0; j < 100; j++)
-        {
-            std::cout << data[i * 100 + j] << " \n";
-            int color = (data[i * 100 + j] + 1) * 127.5;
-            m_textureData->SetPixel(i, j, Pixel(color, color, color, 0XFF));
-        }
-    }
+    m_imageSize[0] = width;
+    m_imageSize[1] = height;
+    m_textureData->SetSize(m_imageSize[0], m_imageSize[1]);
+    m_imageData.resize(m_imageSize[0] * m_imageSize[1]);
     m_texture->UpdateTexture(m_textureData);
 }
 
-void TextureGenEngine::ImagePreviewElement::GetSeed(int &seed)
-{
-    seed = m_seed;
-}
 
-void TextureGenEngine::ImagePreviewElement::SetSeed(int seed)
-{
-    m_seed = seed;
-
-    auto fn = FastNoise::New<FastNoise::Perlin>(FastSIMD::Level_SSE2);
-    if (!fn)
+void TextureGenEngine::ImagePreviewElement::UpdateImage()
+{   
+    for (int i = 0; i < m_imageSize[0]; i++)
     {
-        std::cout << "Failed to create FastNoise node" << std::endl;
-        return;
-    }
-    std::vector<float> data(100 * 100);
-
-    fn->GenTileable2D(data.data(), 100, 100, m_frequency, m_seed);
-
-    for (int i = 0; i < 100; i++)
-    {
-        for (int j = 0; j < 100; j++)
+        for (int j = 0; j < m_imageSize[1]; j++)
         {
-            std::cout << data[i * 100 + j] << " \n";
-            int color = (data[i * 100 + j] + 1) * 127.5;
-            m_textureData->SetPixel(i, j, Pixel(color, color, color, 0XFF));
+            int color = (m_imageData[i * m_imageSize[0] + j] + 1) * 127.5;
+            m_textureData->UpdatePixel(i, j, color, color, color, 255);
         }
     }
     m_texture->UpdateTexture(m_textureData);

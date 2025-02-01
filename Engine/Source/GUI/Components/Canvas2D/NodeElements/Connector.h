@@ -13,7 +13,8 @@ namespace TextureGenEngine
         {NodeDataTypes::TEXT, Color(1.0f, 1.0f, 0.0f, 1.0f)},          // White for Text input
         {NodeDataTypes::INTEGER, Color(0.290f, 0.565f, 0.886f, 1.0f)}, // Sky Blue for Integer input
         {NodeDataTypes::FLOAT, Color(0.157f, 0.654f, 0.267f, 1.0f)},   // Green for Floating-point input
-        {NodeDataTypes::IMAGE, Color(1.0f, 0.549f, 0.0f, 1.0f)}      // Orange for Image input
+        {NodeDataTypes::IMAGE, Color(1.0f, 0.549f, 0.0f, 1.0f)},      // Orange for Image input
+        {NodeDataTypes::PatternGenerator, Color(0.0f, 0.1f, 1.0f, 1.0f)}      // Blue for Pattern Generator
     };
     class Bezier;
     class InputConnector;

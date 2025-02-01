@@ -38,6 +38,8 @@ namespace TextureGenEngine
         ~TextureData();
         void SetPixel(int x, int y, TextureGenEngine::Pixel pixel);
         TextureGenEngine::Pixel GetPixel(int x, int y);
+        void SetSize(int width, int height);
+        void UpdatePixel(int x, int y, unsigned char r, unsigned char g, unsigned char b, unsigned char a);
         int GetWidth() const { return m_width; }
         int GetHeight() const { return m_height; }
         int GetChannels() const { return m_channels; }

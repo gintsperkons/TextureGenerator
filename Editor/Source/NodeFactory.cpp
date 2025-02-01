@@ -1,9 +1,14 @@
 #include "NodeFactory.h"
 #include "GUI/Components/Canvas2D/NodeElements/OutputConnector.h"
 #include "GUI/Components/Canvas2D/NodeElements/NodeTypes.h"
+#include "Generators/Generators.h"
+#include "Generators/RandomNumbers.h"
 #include "Core/Logger/Logger.h"
 
-TextureGenEngine::Node *NodeFactory::TextNode(TextureGenEngine::Canvas2D *canvas, std::string title)
+#include <future>
+#include <type_traits>
+
+static TextureGenEngine::Node* SpawnNode(TextureGenEngine::Canvas2D *canvas, std::string title)
 {
     float x, y;
     canvas->GetSpawnLocation(x, y);
@@ -11,111 +16,118 @@ TextureGenEngine::Node *NodeFactory::TextNode(TextureGenEngine::Canvas2D *canvas
     canvas->AddNode(node);
     node->SetBackground(TextureGenEngine::Color(0.0f, 0.0f, 0.0f, 1.0f));
     node->SetTitle(title);
+    return node;
+};
 
-    TextureGenEngine::TextualInputElement *intElement = new TextureGenEngine::TextualInputElement();
-    intElement->SetBackground(TextureGenEngine::Color(0.0f, 0.0f, 0.0f, 0.0f));
-    node->AddElement(intElement);
-
+static TextureGenEngine::OutputConnector* SetOutputConnector(TextureGenEngine::Node *node, TextureGenEngine::NodeDataTypes type)
+{
     TextureGenEngine::OutputConnector *outElement = new TextureGenEngine::OutputConnector();
-    outElement->SetDataType(TextureGenEngine::NodeDataTypes::TEXT);
+    outElement->SetDataType(type);
     node->SetOutput(outElement);
+    return outElement;
+}
 
-    intElement->SetOnDataChange([out = outElement]()
-                                { out->TriggerUpdate(); });
+template <typename T, typename std::enable_if<std::is_base_of<TextureGenEngine::NodeElement, T>::value, int>::type = 0>
+static T *AddNodeElement(TextureGenEngine::Node *node, TextureGenEngine::Color color = TextureGenEngine::Color(0.0f, 0.0f, 0.0f, 0.0f))
+{
+    T *el = new T();
+    el->SetBackground(color);
+    node->AddElement(el);
+    return el;
+}
 
-    outElement->SetOnUpdate([el1 = intElement, out = outElement]()
+TextureGenEngine::Node *NodeFactory::TextNode(TextureGenEngine::Canvas2D *canvas, std::string title)
+{
+    TextureGenEngine::Node* node = SpawnNode(canvas, title);
+
+
+    TextureGenEngine::TextualInputElement *textInput = AddNodeElement<TextureGenEngine::TextualInputElement>(node);
+
+    TextureGenEngine::OutputConnector *outElement = SetOutputConnector(node, TextureGenEngine::NodeDataTypes::TEXT);
+
+    textInput->SetOnDataChange([outElement]()
+                               { outElement->TriggerUpdate(); });
+
+    outElement->SetOnUpdate([textInput,outElement]()
                             {
         std::string text = "";
-        el1->GetData(text);
-        out->UpdateData(text); });
+        textInput->GetData(text);
+        outElement->UpdateData(text); });
 
     return node;
 }
 
 TextureGenEngine::Node *NodeFactory::TextMergeNode(TextureGenEngine::Canvas2D *canvas, std::string title)
 {
-    float x, y;
-    canvas->GetSpawnLocation(x, y);
-    TextureGenEngine::Node *node = new TextureGenEngine::Node(x, y);
-    canvas->AddNode(node);
-    node->SetBackground(TextureGenEngine::Color(0.0f, 0.0f, 0.0f, 1.0f));
-    node->SetTitle(title);
+    TextureGenEngine::Node *node = SpawnNode(canvas, title);
 
-    TextureGenEngine::TextualInputElement *el1 = new TextureGenEngine::TextualInputElement();
-    el1->SetBackground(TextureGenEngine::Color(0.0f, 0.0f, 0.0f, 0.0f));
-    TextureGenEngine::TextualInputElement *el2 = new TextureGenEngine::TextualInputElement();
-    el2->SetBackground(TextureGenEngine::Color(0.0f, 0.0f, 0.0f, 0.0f));
+    TextureGenEngine::TextualInputElement* textFirst = AddNodeElement<TextureGenEngine::TextualInputElement>(node);
+    TextureGenEngine::TextualInputElement* textSecond = AddNodeElement<TextureGenEngine::TextualInputElement>(node);
 
-    node->AddElement(el1);
-    node->AddElement(el2);
+    TextureGenEngine::OutputConnector *outElement = SetOutputConnector(node, TextureGenEngine::NodeDataTypes::TEXT);
 
-    TextureGenEngine::OutputConnector *outElement = new TextureGenEngine::OutputConnector();
-    outElement->SetDataType(TextureGenEngine::NodeDataTypes::TEXT);
-    node->SetOutput(outElement);
 
-    el1->SetOnDataChange([out = outElement]()
-                         { out->TriggerUpdate(); });
 
-    el2->SetOnDataChange([out = outElement]()
-                         { out->TriggerUpdate(); });
+    textFirst->SetOnDataChange([outElement]()
+                               { outElement->TriggerUpdate(); });
 
-    outElement->SetOnUpdate([el1 = el1, el2 = el2, out = outElement]()
+    textSecond->SetOnDataChange([outElement]()
+                                { outElement->TriggerUpdate(); });
+
+    outElement->SetOnUpdate([textFirst, textSecond, outElement]()
                             {
                                 std::string text1 = "";
                                 std::string text2 = "";
-                                el1->GetData(text1);    
-                                el2->GetData(text2);
-                                out->UpdateData(text1 + text2); });
+                                textFirst->GetData(text1);
+                                textSecond->GetData(text2);
+                                outElement->UpdateData(text1 + text2); });
 
     return node;
 }
 
+TextureGenEngine::Node *NodeFactory::IntegerNode(TextureGenEngine::Canvas2D *canvas, std::string title){
+    float x,y;
+    canvas->GetSpawnLocation(x,y);
+}
+
+
+
 TextureGenEngine::Node *NodeFactory::NoiseGenImage(TextureGenEngine::Canvas2D *canvas, std::string title)
 {
-    float x, y;
-    canvas->GetSpawnLocation(x, y);
-    TextureGenEngine::Node *node = new TextureGenEngine::Node(x, y);
-    canvas->AddNode(node);
-    node->SetBackground(TextureGenEngine::Color(0.0f, 0.0f, 0.0f, 1.0f));
-    node->SetTitle(title);
+    TextureGenEngine::Node* node = SpawnNode(canvas, title);
+    TextureGenEngine::FloatInputElement *frequencyInput = AddNodeElement<TextureGenEngine::FloatInputElement>(node);
+    TextureGenEngine::IntegerElement *seedInput = AddNodeElement<TextureGenEngine::IntegerElement>(node);
+    TextureGenEngine::ImagePreviewElement *imagePreview = AddNodeElement<TextureGenEngine::ImagePreviewElement>(node);
+    TextureGenEngine::OutputConnector *outElement = SetOutputConnector(node, TextureGenEngine::NodeDataTypes::PatternGenerator);
 
-    TextureGenEngine::FloatInputElement *el1 = new TextureGenEngine::FloatInputElement();
-    el1->SetBackground(TextureGenEngine::Color(0.0f, 0.0f, 0.0f, 0.0f));
-    node->AddElement(el1);
 
-    TextureGenEngine::IntegerElement *el2 = new TextureGenEngine::IntegerElement();
-    el2->SetBackground(TextureGenEngine::Color(0.0f, 0.0f, 0.0f, 0.0f));
-    node->AddElement(el2);
 
-    TextureGenEngine::ImagePreviewElement *el3 = new TextureGenEngine::ImagePreviewElement();
-    el3->SetBackground(TextureGenEngine::Color(0.0f, 0.0f, 0.0f, 1.0f));
-    node->AddElement(el3);
-    float frequency;
-    int seed;
-    el3->GetFrequency(frequency);
-    el3->GetSeed(seed);
-    el1->SetData(frequency);
-    el2->SetData(seed);
+    frequencyInput->SetData(0.1f);
+    seedInput->SetData(TextureGenEngine::Random::RandInt(0, 1000000));
 
-    el1->SetOnDataChange([el3 = el3, el1 = el1]()
-                         {
-                             float frequency;
-                             el1->GetData(frequency);
-                             el3->SetFrequency(frequency);
-                         });
+    imagePreview->SetImageSize(100, 100);
+
+
+    frequencyInput->SetOnDataChange([outElement]()
+                         { outElement->TriggerUpdate(); });
+
+    seedInput->SetOnDataChange([outElement]()
+                         { outElement->TriggerUpdate(); });
+
     
-    el2 ->SetOnDataChange([el3 = el3, el2 = el2]()
-                         {
-                             int seed;
-                             el2->GetData(seed);
-                             el3->SetSeed(seed);
-                         });
 
 
+    outElement->SetOnUpdate([frequencyInput, seedInput, imagePreview, outElement]()
+                            {
+                                int seed;
+                                float frequency;
+                                frequencyInput->GetData(frequency);
+                                seedInput->GetData(seed);
+                                TextureGenEngine::PatternGenerator::Perlin::GenTileable2D(imagePreview->GetImageDataPtr(), imagePreview->GetImageWidth(), imagePreview->GetImageHeight(), frequency, seed);
+                                imagePreview->UpdateImage();
+                            });
 
-    TextureGenEngine::OutputConnector *outElement = new TextureGenEngine::OutputConnector();
-    outElement->SetDataType(TextureGenEngine::NodeDataTypes::IMAGE);
-    node->SetOutput(outElement);
 
+    outElement->TriggerUpdate();
     return node;
 }
