@@ -47,5 +47,6 @@ namespace TextureGenEngine
         void ScissorsPop();
         void GetMousePosition(float &x, float &y);
         void SetCursor(Cursor cursor);
+        void Scroll(float x, float y);
     };
 } // namespace TextureGenEngine

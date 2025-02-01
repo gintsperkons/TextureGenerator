@@ -28,6 +28,12 @@ void cursorPosCallback(GLFWwindow *window, double xpos, double ypos)
     win->GetInput()->CursorPosCallback(xpos, ypos);
 }
 
+void scrollCallback(GLFWwindow *window, double xoffset, double yoffset)
+{
+    TextureGenEngine::Window *win = (TextureGenEngine::Window *)glfwGetWindowUserPointer(window);
+    win->GetInput()->ScrollCallback(xoffset, yoffset);
+}
+
 TextureGenEngine::Input::Input(Window * win):
 m_window(win)
 {
@@ -35,6 +41,7 @@ m_window(win)
     glfwSetCharCallback(m_window->GetWindow(), charCallback);
     glfwSetMouseButtonCallback(m_window->GetWindow(), mouseButtonCallback);
     glfwSetCursorPosCallback(m_window->GetWindow(), cursorPosCallback);
+    glfwSetScrollCallback(m_window->GetWindow(), scrollCallback);
 }
 
 TextureGenEngine::Input::~Input()
@@ -80,6 +87,14 @@ void TextureGenEngine::Input::CursorPosCallback(double xpos, double ypos)
     }
 }
 
+void TextureGenEngine::Input::ScrollCallback(double xoffset, double yoffset)
+{
+    for (auto &sub : m_scrollSubs)
+    {
+        sub.callback({xoffset, yoffset});
+    }
+}
+
 void TextureGenEngine::Input::SubscribeToMouseClickEvents(std::function<void(MouseButtonEvent)> subscriber)
 {
     MouseClickSub sub;
@@ -106,6 +121,13 @@ void TextureGenEngine::Input::SubscribeToKeyEvents(std::function<void(KeyEvent)>
     KeyEventSub sub;
     sub.callback = subscriber;
     m_keyEventSubs.push_back(sub);
+}
+
+void TextureGenEngine::Input::SubscribeToScrollEvents(std::function<void(ScrollEvent)> subscriber)
+{
+    ScrollSub sub;
+    sub.callback = subscriber;
+    m_scrollSubs.push_back(sub);
 }
 
 void TextureGenEngine::Input::OnKeyPress(std::function<void(KeyEvent)> subscriber,Window* win)

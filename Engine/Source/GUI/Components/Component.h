@@ -25,6 +25,7 @@ namespace TextureGenEngine
         std::string m_type = "base";
         bool m_selectable = false;
         bool m_draggable = false;
+        bool m_scrollable = false;
 
     public:
         Component(float x, float y, float width, float height);
@@ -54,6 +55,8 @@ namespace TextureGenEngine
         virtual void MouseRelease(){};
         virtual void RemoveChild(Component *child){};
         virtual void OnHover(float x, float y){};
-        
+        virtual void OnScroll(float x, float y){};
+
+        bool IsScrollable() { return m_scrollable; }
     };
 } // namespace TextureGenEngine

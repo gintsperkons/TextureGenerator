@@ -261,6 +261,20 @@ void TextureGenEngine::GUIManager::SetCursor(Cursor cursor)
 {
     m_cursorChanged = true;
     m_window->SetCursor(cursor);
-    if (m_cursor == (int)cursor) return;
+    if (m_cursor == (int)cursor)
+        return;
     m_cursor = (int)cursor;
+}
+
+void TextureGenEngine::GUIManager::Scroll(float x, float y)
+{
+    double xpos, ypos;
+    m_window->GetInput()->GetMousePosition(xpos, ypos);
+    for (auto &child : m_children)
+    {
+        if(child->IsScrollable() && child->CheckCollision(float(xpos), float(ypos)))
+        {
+            child->OnScroll(x, y);
+        }
+    }
 }

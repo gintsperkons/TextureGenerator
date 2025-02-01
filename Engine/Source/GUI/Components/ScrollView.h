@@ -8,6 +8,12 @@ namespace TextureGenEngine
     class Clickable;
     class ScrollView : public Panel
     {
+        float m_scrollOffset = 0;
+        float m_scrollSpeed = 5.f;
+        float m_minScroll = 0;
+        float m_direction = -1;
+        float m_maxScroll = 0;
+
         std::vector<Component *> m_elements;
 
     public:
@@ -17,8 +23,10 @@ namespace TextureGenEngine
         void OnHover(float x, float y) override;
         void Resize(float width, float height) override;
         TAPI void AddElement(Component *element);
+        void RecalculateMaxScroll();
         Component *SelectObject(float x, float y) override;
         float GetItemOffset(Component *el);
+        void OnScroll(float x, float y) override;
         ~ScrollView();
     };
 }

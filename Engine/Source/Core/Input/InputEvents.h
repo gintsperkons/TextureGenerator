@@ -45,7 +45,19 @@ struct KeyEvent
     int mods;
 };
 
-#pragma once
+struct ScrollEvent
+{
+    ScrollEvent(double x, double y)
+        : x(x), y(y)
+    {
+    }
+
+    double x;
+    double y;
+};
+ // namespace TextureGenEngine
+
+
 
 namespace TextureGenEngine
 {

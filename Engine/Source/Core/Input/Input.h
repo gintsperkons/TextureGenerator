@@ -27,6 +27,11 @@ namespace TextureGenEngine
         std::function<void(KeyEvent)> callback;
     };
 
+    struct ScrollSub
+    {
+        std::function<void(ScrollEvent)> callback;
+    };
+
 
     class Window;
     class Input
@@ -38,6 +43,7 @@ namespace TextureGenEngine
         std::vector<MouseMoveSub> m_mouseMoveSubs;
         std::vector<CharEventSub> m_charEventSubs;
         std::vector<KeyEventSub> m_keyEventSubs;
+        std::vector<ScrollSub> m_scrollSubs;
         double m_xLast;
         double m_yLast;
         double m_xChange;
@@ -49,10 +55,12 @@ namespace TextureGenEngine
         void CharCallback(unsigned int codepoint);
         void MouseButtonCallback(int button, int action, int mods);
         void CursorPosCallback(double xpos, double ypos);
+        void ScrollCallback(double xoffset, double yoffset);
         void SubscribeToMouseClickEvents(std::function<void(MouseButtonEvent)> subscriber);
         void SubscribeToMouseMoveEvents(std::function<void(MouseMoveEvent)> subscriber);
         void SubscribeToCharEvents(std::function<void(CharEvent)> subscriber);
         void SubscribeToKeyEvents(std::function<void(KeyEvent)> subscriber);
+        void SubscribeToScrollEvents(std::function<void(ScrollEvent)> subscriber);
         static TAPI void OnKeyPress(std::function<void(KeyEvent)> subscriber, Window* win);
         void GetMousePosition(double &x, double &y);
     };
