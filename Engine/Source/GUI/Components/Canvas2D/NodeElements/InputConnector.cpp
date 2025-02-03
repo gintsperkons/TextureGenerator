@@ -144,6 +144,15 @@ void TextureGenEngine::InputConnector::UnlockInput()
     static_cast<NodeElement *>(m_parent)->UnlockInput();
 }
 
+std::string TextureGenEngine::InputConnector::GetConnectionUUID()
+{
+    if (m_connector != nullptr)
+    {
+        return m_connector->GetConnectionUUIDs();
+    }
+    return "0";
+}
+
 void TextureGenEngine::InputConnector::SetDataType(NodeDataTypes type)
 {
 

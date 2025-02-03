@@ -219,7 +219,7 @@ namespace TextureGenEngine
             Menu = 348
             
         };
-        enum Modifiers
+        enum KeyModifier
         {
             Shift = 0x0001,
             Control = 0x0002,

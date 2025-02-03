@@ -48,7 +48,7 @@ TextureGenEngine::Canvas2D::~Canvas2D()
 }
 
 void TextureGenEngine::Canvas2D::AddNode(Node *node)
-{   
+{
     node->SetParent(this);
     node->SetManager(m_manager);
     m_nodes.push_back(node);
@@ -121,7 +121,7 @@ void TextureGenEngine::Canvas2D::RemoveChild(Component *child)
 void TextureGenEngine::Canvas2D::GetSpawnLocation(float &x, float &y)
 {
     m_manager->GetMousePosition(x, y);
-    if (x< m_x || x > m_x + m_width || y < m_y || y > m_y + m_height)
+    if (x < m_x || x > m_x + m_width || y < m_y || y > m_y + m_height)
     {
         x = m_width / 2;
         y = m_height / 2;
@@ -129,4 +129,24 @@ void TextureGenEngine::Canvas2D::GetSpawnLocation(float &x, float &y)
     }
     x -= m_x;
     y -= m_y;
+}
+
+int TextureGenEngine::Canvas2D::GetNodeCount() const
+{
+    return m_nodes.size();
+}
+
+void TextureGenEngine::Canvas2D::GetAllNodes(std::vector<Node *> &nodes)
+{
+    for (int i = 0; i < m_nodes.size(); i++)
+        nodes[i] = m_nodes[i];
+}
+
+void TextureGenEngine::Canvas2D::ClearNodes()
+{
+    for (int i = 0; i < m_nodes.size(); i++)
+    {
+        delete m_nodes[i];
+    }
+    m_nodes.clear();
 }

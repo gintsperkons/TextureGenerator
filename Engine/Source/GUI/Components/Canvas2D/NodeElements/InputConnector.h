@@ -27,6 +27,7 @@ namespace TextureGenEngine
         void Move(float x, float y) override;
         void LockInput();
         void UnlockInput();
+        std::string GetConnectionUUID();
         TAPI void SetDataType(NodeDataTypes type);
         void UpdateData(std::string data);
         void UpdateData(int data);

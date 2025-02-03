@@ -23,5 +23,8 @@ namespace TextureGenEngine
         OutputConnector* GetOutputConnector(float x, float y);
         void RemoveChild(Component *child) override;
         TAPI void GetSpawnLocation(float &x, float &y);
+        TAPI int GetNodeCount() const;
+        TAPI void GetAllNodes(std::vector<Node *> &nodes);
+        TAPI void ClearNodes();
     };
 } // namespace TextureGenEngine

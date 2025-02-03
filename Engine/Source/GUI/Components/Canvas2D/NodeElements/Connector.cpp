@@ -91,6 +91,13 @@ void TextureGenEngine::Connector::MoveEnd(float x, float y)
     m_line->MoveEnd(x, y);
 }
 
+std::string TextureGenEngine::Connector::GetConnectionUUIDs()
+{
+    if (m_output)
+        return m_output->GetConnectionUUIDs();
+    return "0";
+}
+
 void TextureGenEngine::Connector::UpdateData(std::string data)
 {
     if (m_input)

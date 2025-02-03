@@ -52,3 +52,37 @@ std::string TextureGenEngine::GetAbsolutePath(std::string relativePath)
     std::size_t pos = path.find_last_of("\\/");
     return std::string(path).substr(0, pos) + "/" + relativePath;
 }
+
+std::string TextureGenEngine::WriteFile(std::string filePath, std::string data)
+{
+    std::ofstream fileStream(filePath, std::ios::out);
+    if (!fileStream.is_open())
+    {
+        printf("Failed to write %s! File doesn't exist.", filePath.c_str());
+        return "";
+    }
+
+    fileStream << data;
+    fileStream.close();
+    return filePath;
+}
+
+TAPI std::vector<std::string> TextureGenEngine::SplitString(std::string str, char delim)
+{
+    std::vector<std::string> strings;
+    std::string currentString = "";
+    for (char c : str)
+    {
+        if (c == delim)
+        {
+            strings.push_back(currentString);
+            currentString = "";
+        }
+        else
+        {
+            currentString += c;
+        }
+    }
+    strings.push_back(currentString);
+    return strings;
+}

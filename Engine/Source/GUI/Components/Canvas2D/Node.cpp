@@ -9,9 +9,12 @@
 #include "NodeElements/OutputConnector.h"
 #include "GUI/Components/Label.h"
 #include "Canvas2D.h"
+#include "Generators/RandomNumbers.h"
 
-TextureGenEngine::Node::Node(float x, float y) : Component(x, y, 100, c_titleHeight), m_outputImage(nullptr)
+TextureGenEngine::Node::Node(float x, float y, unsigned int nodeID) : Component(x, y, 100, c_titleHeight), m_outputImage(nullptr)
 {
+    m_uuid = Random::UUID();
+    m_id = nodeID;
     m_title = new Label(x, y, 100, c_titleHeight, "Node");
     m_title->SetParent(this);
     m_title->SetManager(m_manager);
@@ -204,6 +207,23 @@ TextureGenEngine::OutputConnector *TextureGenEngine::Node::GetOutputConnector(fl
         return m_outputImage;
     return nullptr;
 }
+
+TextureGenEngine::NodeInfo TextureGenEngine::Node::GetNodeInfo()
+{
+    NodeInfo info;
+    info.position[0] = m_x;
+    info.position[1] = m_y;
+    info.uuid = m_uuid;
+    info.nodeId = m_id;
+    info.inputConnections.resize(m_elements.size());
+     for (int i = 0; i < m_elements.size(); i++)
+    {
+        info.inputConnections[i] = m_elements[i]->GetConnectedOutputs();
+    }
+    return info;
+}
+
+
 
 TextureGenEngine::Canvas2D *TextureGenEngine::Node::GetCanvas()
 {

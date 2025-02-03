@@ -24,6 +24,7 @@ namespace TextureGenEngine
         void ConnectLine(Connector *connector);
         void DisconnectLine(Connector *connector);
         bool ExistConnection(Connector *connector);
+        std::string GetConnectionUUIDs();
         void TAPI SetDataType(NodeDataTypes type);
         void TAPI UpdateData(std::string data);
         void TAPI UpdateData(int data);

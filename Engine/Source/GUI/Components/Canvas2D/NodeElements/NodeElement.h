@@ -32,6 +32,7 @@ namespace TextureGenEngine
         InputConnector *GetInputConnector(float x, float y);
         OutputConnector *GetOutputConnector(float x, float y);
         Node *GetNode() { return m_node; }
+        std::string GetConnectedOutputs();
         TAPI void SetOnDataChange(std::function<void()> onDataChange);
         TAPI void TriggerDataChange();
         virtual void UpdateData(std::string data) {};

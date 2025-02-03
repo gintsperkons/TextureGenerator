@@ -160,6 +160,16 @@ bool TextureGenEngine::OutputConnector::ExistConnection(Connector *connector)
     return false;
 }
 
+std::string TextureGenEngine::OutputConnector::GetConnectionUUIDs()
+{
+    if (dynamic_cast<Node *>(m_parent) != nullptr)
+    {
+        return static_cast<Node *>(m_parent)->GetUUID();
+    }
+    return "0";
+
+}
+
 void TextureGenEngine::OutputConnector::SetDataType(NodeDataTypes type)
 {
     m_dataType = type;

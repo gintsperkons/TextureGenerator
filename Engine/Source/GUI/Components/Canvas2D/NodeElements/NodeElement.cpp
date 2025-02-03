@@ -4,6 +4,7 @@
 #include "InputConnector.h"
 #include <Core/Logger/Logger.h>
 
+
 TextureGenEngine::NodeElement::NodeElement() : Component(0, 0, 100, 100)
 {
     m_draggable = false;
@@ -70,6 +71,11 @@ TextureGenEngine::InputConnector *TextureGenEngine::NodeElement::GetInputConnect
 TextureGenEngine::OutputConnector *TextureGenEngine::NodeElement::GetOutputConnector(float x, float y)
 {
     return nullptr;
+}
+
+std::string TextureGenEngine::NodeElement::GetConnectedOutputs()
+{
+    return m_inputImage->GetConnectionUUID();
 }
 
 void TextureGenEngine::NodeElement::SetOnDataChange(std::function<void()> onDataChange)

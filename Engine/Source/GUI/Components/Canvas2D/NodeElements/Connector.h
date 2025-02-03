@@ -38,6 +38,7 @@ namespace TextureGenEngine
         void UpdateStartPosition(float x, float y);
         void MoveStart(float x, float y);
         void MoveEnd(float x, float y);
+        std::string GetConnectionUUIDs();
         void UpdateData(std::string data);
         void UpdateData(int data);  
         void UpdateData(float data);
