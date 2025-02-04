@@ -18,7 +18,7 @@
 
 typedef std::map<
 	NodeFactory::NodeType,
-	std::pair<std::function<void(TextureGenEngine::Canvas2D *, std::string, int, int)>, std::string>,
+	std::pair<std::function<TextureGenEngine::Node *(TextureGenEngine::Canvas2D *, std::string, int, int)>, std::string>,
 	NodeFactory::NodeTypeCompare>
 	NodeFunctionMap;
 
@@ -39,7 +39,7 @@ NodeFunctionMap nodeFunctionMap = {
 	{NodeFactory::NodeType::DIVIDE_FLOAT, {&NodeFactory::DivideFloatNode, "Divide Float"}}};
 
 int sideBarWidth = 300;
-std::string nodeSaveFile = "nodeSaveData.txt";
+std::string nodeSaveFile = "nodeSaveData.tgsn";
 
 void CreateClickables(NodeFunctionMap nodeFunctionList, TextureGenEngine::ScrollView *parentView, TextureGenEngine::Canvas2D *canvasNodeGraph)
 {
@@ -72,14 +72,17 @@ std::string CreateSaveData(std::vector<TextureGenEngine::Node *> nodes)
 	{
 		TextureGenEngine::NodeInfo info;
 		info = node->GetNodeInfo();
-		std::string nSaveData = info.uuid + " " + std::to_string(info.nodeId) + " " + std::to_string(info.position[0]) + " " + std::to_string(info.position[1]) + "\n";
+		std::string nSaveData = info.uuid + " " + std::to_string(info.nodeId) + " " + std::to_string(info.position[0]) + " " + std::to_string(info.position[1]) +  info.elementData + "\n";
 		nodeSave += nSaveData;
 		std::string connections = "";
 		for (auto &input : info.inputConnections)
 		{
 			connections += input + " ";
 		}
-		LOG_DEBUG("Connections %s\n", connections.c_str());
+		if (connections != "")
+		{
+			connectionSave += info.uuid + " " + connections + "\n";
+		}
 	}
 	return "nodes\n" + nodeSave + "connections" + ((connectionSave != "") ? "\n" + connectionSave : "");
 }
@@ -91,7 +94,11 @@ void LoadSaveString(std::string saveData, TextureGenEngine::Canvas2D *canvasNode
 	std::string loadingStage = "0";
 	canvasNodeGraph->ClearNodes();
 	for (auto &line : lines)
-	{
+	{	
+		if (line == "" || line == " ")
+		{
+			continue;
+		} 
 		std::vector<std::string> parts = TextureGenEngine::SplitString(line, ' ');
 		if (parts[0] == "nodes")
 		{
@@ -111,11 +118,31 @@ void LoadSaveString(std::string saveData, TextureGenEngine::Canvas2D *canvasNode
 			unsigned int nodeId = std::stoi(parts[1]);
 			int x = std::stoi(parts[2]) - sideBarWidth;
 			int y = std::stoi(parts[3]);
-			nodeFunctionMap[static_cast<NodeFactory::NodeType>(nodeId)].first(canvasNodeGraph, "", x, y);
+			nodeMap.insert({uuid, nodeFunctionMap[static_cast<NodeFactory::NodeType>(nodeId)].first(canvasNodeGraph, 
+			nodeFunctionMap[static_cast<NodeFactory::NodeType>(nodeId)].second, x, y)});
+			for (int i = 4; i < parts.size(); i++)
+			{
+				if ( parts[i] != "-=-")
+				{
+					nodeMap[uuid]->AddElementData(parts[i], i - 4);
+				}
+			}
+		}
+		if (loadingStage == "connections")
+		{
+			std::string uuid = parts[0];
+			for (int i = 1; i < parts.size(); i++)
+			{	
+				if (parts[i] == "" || parts[i] == "0") 
+				{
+					continue;
+				}
+				std::string connectedNodeUuid = parts[i];
+				nodeMap[uuid]->ConnectInput(nodeMap[connectedNodeUuid], i - 1);
+			}
 		}
 	}
 }
-
 void handleKeyPress(KeyEvent e, TextureGenEngine::Canvas2D *canvasNodeGraph)
 {
 	if (TextureGenEngine::Key::KeyCode::F1 == e.key &&
@@ -142,7 +169,6 @@ void handleKeyPress(KeyEvent e, TextureGenEngine::Canvas2D *canvasNodeGraph)
 	{
 		LOG_DEBUG("Key pressed ctrl + l\n");
 		std::string saveData = TextureGenEngine::ReadFile(TextureGenEngine::GetAbsolutePath(nodeSaveFile));
-		LOG_DEBUG("Save data\n%s\n", saveData.c_str());
 		try
 		{
 			LoadSaveString(saveData, canvasNodeGraph);

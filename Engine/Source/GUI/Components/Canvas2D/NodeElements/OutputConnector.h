@@ -10,10 +10,11 @@ namespace TextureGenEngine
     class OutputConnector : public Component
     {
         std::function<void()> m_onUpdate = nullptr;
-        Connector * m_connector = nullptr;
+        Connector *m_connector = nullptr;
         std::vector<Connector *> m_connectors;
         std::string m_type;
         NodeDataTypes m_dataType;
+
     public:
         TAPI OutputConnector();
         ~OutputConnector();
@@ -25,6 +26,7 @@ namespace TextureGenEngine
         void DisconnectLine(Connector *connector);
         bool ExistConnection(Connector *connector);
         std::string GetConnectionUUIDs();
+        NodeDataTypes GetDataType() { return m_dataType; }
         void TAPI SetDataType(NodeDataTypes type);
         void TAPI UpdateData(std::string data);
         void TAPI UpdateData(int data);

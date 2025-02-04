@@ -107,6 +107,32 @@ void TextureGenEngine::TextualInputElement::UpdateData(std::string data)
     }
 }
 
+std::string TextureGenEngine::TextualInputElement::ExportElementData()
+{
+    std::string data = "";
+    if (m_textInput)
+    {
+        m_textInput->GetText(data);
+    }
+    if (data == "" || data == "-=-" || data == " ")
+    {
+        data = "-=-";
+    }
+    return data;
+}
+
+void TextureGenEngine::TextualInputElement::ImportElementData(std::string data)
+{
+    if (data == "-=-")
+    {
+        return;
+    }
+    if (m_textInput)
+    {
+        m_textInput->SetText(data);
+    }
+}
+
 TextureGenEngine::TextualInputElement::~TextualInputElement()
 {
     if (m_textInput != nullptr)

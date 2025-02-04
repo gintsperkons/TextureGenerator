@@ -37,6 +37,16 @@ void TextureGenEngine::IntegerElement::UpdateData(int data)
 {
     m_textInput->SetInteger(data);
 }
+std::string TextureGenEngine::IntegerElement::ExportElementData()
+{
+    int data;
+    m_textInput->GetInteger(data);
+    return std::to_string(data);
+}
+void TextureGenEngine::IntegerElement::ImportElementData(std::string data)
+{
+    m_textInput->SetInteger(std::stoi(data));
+}
 TextureGenEngine::IntegerElement::~IntegerElement()
 {
 }

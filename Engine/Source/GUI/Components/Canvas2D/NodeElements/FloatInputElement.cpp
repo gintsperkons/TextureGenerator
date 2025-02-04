@@ -41,6 +41,18 @@ void TextureGenEngine::FloatInputElement::UpdateData(float data)
     m_textInput->SetFloat(data);
 }
 
+std::string TextureGenEngine::FloatInputElement::ExportElementData()
+{
+    float data;
+    m_textInput->GetFloat(data);
+    return std::to_string(data);
+}
+
+void TextureGenEngine::FloatInputElement::ImportElementData(std::string data)
+{
+    m_textInput->SetFloat(std::stof(data));
+}
+
 TextureGenEngine::FloatInputElement::~FloatInputElement()
 {
 }

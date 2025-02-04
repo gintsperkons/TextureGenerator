@@ -24,6 +24,8 @@ namespace TextureGenEngine
         void UnlockInput() override;
         TAPI void GetData(std::string &data);
         void UpdateData(std::string data) override;
+        virtual std::string ExportElementData() override;
+        virtual void ImportElementData(std::string data) override;
         ~TextualInputElement();
     };
 } // namespace TextureGenEngine

@@ -2,6 +2,7 @@
 #include "GUI/Components/Canvas2D/Node.h"
 #include "OutputConnector.h"
 #include "InputConnector.h"
+#include "Connector.h"
 #include <Core/Logger/Logger.h>
 
 
@@ -76,6 +77,15 @@ TextureGenEngine::OutputConnector *TextureGenEngine::NodeElement::GetOutputConne
 std::string TextureGenEngine::NodeElement::GetConnectedOutputs()
 {
     return m_inputImage->GetConnectionUUID();
+}
+
+void TextureGenEngine::NodeElement::ConnectInput(Node *outputNode)
+{
+    if (outputNode == nullptr && outputNode->GetOutputConnector() == nullptr)
+        return;
+
+    Connector *connector = new Connector(outputNode->GetOutputConnector()->GetDataType());
+    connector->MakeConnection(outputNode->GetOutputConnector(), m_inputImage);
 }
 
 void TextureGenEngine::NodeElement::SetOnDataChange(std::function<void()> onDataChange)

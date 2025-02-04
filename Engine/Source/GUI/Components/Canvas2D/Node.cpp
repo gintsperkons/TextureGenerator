@@ -171,7 +171,8 @@ TextureGenEngine::Component *TextureGenEngine::Node::SelectObject(float x, float
 
 TextureGenEngine::Node::~Node()
 {
-    if (m_parent) {
+    if (m_parent)
+    {
         m_parent->RemoveChild(this);
     }
     if (m_title)
@@ -208,6 +209,22 @@ TextureGenEngine::OutputConnector *TextureGenEngine::Node::GetOutputConnector(fl
     return nullptr;
 }
 
+void TextureGenEngine::Node::ConnectInput(Node *outputNode, int inputIndex)
+{
+    if (inputIndex < m_elements.size())
+    {
+        m_elements[inputIndex]->ConnectInput(outputNode);
+    }
+}
+
+ void TextureGenEngine::Node::AddElementData(std::string data, int index)
+{
+    if (index < m_elements.size())
+    {
+        m_elements[index]->ImportElementData(data);
+    }
+}
+
 TextureGenEngine::NodeInfo TextureGenEngine::Node::GetNodeInfo()
 {
     NodeInfo info;
@@ -216,14 +233,14 @@ TextureGenEngine::NodeInfo TextureGenEngine::Node::GetNodeInfo()
     info.uuid = m_uuid;
     info.nodeId = m_id;
     info.inputConnections.resize(m_elements.size());
-     for (int i = 0; i < m_elements.size(); i++)
+    info.elementData = "";
+    for (int i = 0; i < m_elements.size(); i++)
     {
         info.inputConnections[i] = m_elements[i]->GetConnectedOutputs();
+        info.elementData += " " + m_elements[i]->ExportElementData();
     }
     return info;
 }
-
-
 
 TextureGenEngine::Canvas2D *TextureGenEngine::Node::GetCanvas()
 {

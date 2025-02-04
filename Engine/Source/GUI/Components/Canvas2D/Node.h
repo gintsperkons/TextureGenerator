@@ -2,8 +2,7 @@
 #include "Defines.h"
 #include "GUI/Components/Component.h"
 #include <vector>
-
-
+#include <string>
 
 namespace TextureGenEngine
 {
@@ -14,6 +13,7 @@ namespace TextureGenEngine
         unsigned int nodeId;
         int position[2] = {0, 0};
         std::vector<std::string> inputConnections;
+        std::string elementData = "";
     };
 
     class InputConnector;
@@ -45,12 +45,16 @@ namespace TextureGenEngine
         ~Node() override;
         InputConnector *GetInputConnector(float x, float y);
         OutputConnector *GetOutputConnector(float x, float y);
+        OutputConnector *GetOutputConnector() { return m_outputImage; }
+
+        TAPI void ConnectInput(Node *outputNode, int inputIndex);
+        TAPI void AddElementData(std::string data, int index);
 
         TAPI NodeInfo GetNodeInfo();
         std::string GetUUID() { return m_uuid; }
 
         Canvas2D *GetCanvas();
-        TAPI void SetTitle(std::string title) ;   
+        TAPI void SetTitle(std::string title);
         static inline float c_titleHeight = 25;
     };
 }

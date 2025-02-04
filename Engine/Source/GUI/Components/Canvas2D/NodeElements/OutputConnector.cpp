@@ -170,6 +170,8 @@ std::string TextureGenEngine::OutputConnector::GetConnectionUUIDs()
 
 }
 
+
+
 void TextureGenEngine::OutputConnector::SetDataType(NodeDataTypes type)
 {
     m_dataType = type;
