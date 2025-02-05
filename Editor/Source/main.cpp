@@ -178,6 +178,20 @@ void handleKeyPress(KeyEvent e, TextureGenEngine::Canvas2D *canvasNodeGraph)
 			LOG_ERROR("Error loading save data\n");
 		}
 	}
+	if (TextureGenEngine::Key::KeyCode::E == e.key &&
+		TextureGenEngine::Key::KeyAction::Press == e.action &&
+		TextureGenEngine::Key::KeyModifier::Control == e.mods)
+	{
+		LOG_DEBUG("Key pressed ctrl + e export\n");
+
+	}
+	if (TextureGenEngine::Key::KeyCode::C == e.key &&
+		TextureGenEngine::Key::KeyAction::Press == e.action &&
+		TextureGenEngine::Key::KeyModifier::Control == e.mods)
+	{
+		LOG_DEBUG("Key pressed ctrl + c clear\n");
+		canvasNodeGraph->ClearNodes();
+	}
 }
 
 int main()
