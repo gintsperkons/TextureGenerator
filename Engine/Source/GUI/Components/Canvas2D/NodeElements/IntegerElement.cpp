@@ -5,6 +5,7 @@
 TextureGenEngine::IntegerElement::IntegerElement()
     : TextualInputElement()
 {
+    m_nodeType = ElementType::INTEGER;
     m_draggable = false;
     m_type = "IntegerElement";
     m_x = 0;

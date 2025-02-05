@@ -20,7 +20,8 @@ namespace NodeFactory
         SUBTRACT_FLOAT,
         MULTIPLY_FLOAT,
         DIVIDE_FLOAT,
-        NOISE_GEN_IMAGE
+        NOISE_GEN_IMAGE,
+        OUTPUT,
     };
     struct NodeTypeCompare
     {
@@ -34,6 +35,9 @@ namespace NodeFactory
     };
 
 
+
+    // output nodes
+    TextureGenEngine::Node *OutputNode(TextureGenEngine::Canvas2D *canvas, std::string title = "Export Image", int x = 0, int y = 0);
 
     // base nodes
     TextureGenEngine::Node *TextNode(TextureGenEngine::Canvas2D *canvas, std::string title = "Text", int x = 0, int y = 0);

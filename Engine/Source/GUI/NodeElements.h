@@ -1,1 +1,6 @@
 #include "GUI/Components/Canvas2D/NodeElements/IntegerElement.h"
+#include "GUI/Components/Canvas2D/NodeElements/FloatInputElement.h"
+#include "GUI/Components/Canvas2D/NodeElements/TextualInputElement.h"
+#include "GUI/Components/Canvas2D/NodeElements/ImageInputElement.h"
+#include "GUI/Components/Canvas2D/NodeElements/ImagePreviewElement.h"
+#include "GUI/Components/Canvas2D/NodeElements/NodeElements.h"

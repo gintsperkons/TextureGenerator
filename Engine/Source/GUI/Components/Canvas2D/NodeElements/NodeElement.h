@@ -7,12 +7,23 @@
 
 namespace TextureGenEngine
 {
+    enum class ElementType
+    {
+        IMAGE_PREVIEW,
+        TEXT,
+        TEXT_MERGE,
+        INTEGER,
+        FLOAT,
+        IMAGE_INPUT,
+    };
+
     class Node;
     class OutputConnector;
     class InputConnector;
     class NodeElement : public Component
     {
     protected:
+        ElementType m_nodeType;
         std::string m_elementType;
         InputConnector *m_inputImage;
         Node *m_node;
@@ -21,7 +32,7 @@ namespace TextureGenEngine
 
     public:
         NodeElement(/* args */);
-        ~NodeElement();
+        virtual ~NodeElement();
         virtual void OnMouseDrag(float x, float y) override;
         virtual void Setup(float x, float y);
         virtual void SetManager(GUIManager *manager) override;
@@ -40,7 +51,9 @@ namespace TextureGenEngine
         virtual void UpdateData(std::string data) {};
         virtual void UpdateData(int data) {};
         virtual void UpdateData(float data) {};
+        virtual void UpdateData(std::vector<PatternGeneratorData> data) {};
         virtual std::string ExportElementData() { return "-=-"; };
         virtual void ImportElementData(std::string data) {};
+        ElementType GetElementType() { return m_nodeType; };
     };
 } // namespace TextureGenEngine

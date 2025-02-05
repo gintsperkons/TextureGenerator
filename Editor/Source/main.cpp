@@ -15,6 +15,7 @@
 #include <unordered_map>
 #include <Generators/RandomNumbers.h>
 #include <Core/FileHandler/FileHandler.h>
+#include <GUI/Components/Canvas2D/NodeElements/NodeTypes.h>
 
 typedef std::map<
 	NodeFactory::NodeType,
@@ -23,7 +24,7 @@ typedef std::map<
 	NodeFunctionMap;
 
 NodeFunctionMap nodeFunctionMap = {
-	{NodeFactory::NodeType::NONE, {&NodeFactory::TextNode, "None"}},
+	{NodeFactory::NodeType::OUTPUT, {&NodeFactory::OutputNode, "Export Image"}},
 	{NodeFactory::NodeType::TEXT, {&NodeFactory::TextNode, "Text"}},
 	{NodeFactory::NodeType::TEXT_MERGE, {&NodeFactory::TextMergeNode, "Text Merge"}},
 	{NodeFactory::NodeType::INTEGER, {&NodeFactory::IntegerNode, "Integer"}},
@@ -72,7 +73,7 @@ std::string CreateSaveData(std::vector<TextureGenEngine::Node *> nodes)
 	{
 		TextureGenEngine::NodeInfo info;
 		info = node->GetNodeInfo();
-		std::string nSaveData = info.uuid + " " + std::to_string(info.nodeId) + " " + std::to_string(info.position[0]) + " " + std::to_string(info.position[1]) +  info.elementData + "\n";
+		std::string nSaveData = info.uuid + " " + std::to_string(info.nodeId) + " " + std::to_string(info.position[0]) + " " + std::to_string(info.position[1]) + info.elementData + "\n";
 		nodeSave += nSaveData;
 		std::string connections = "";
 		for (auto &input : info.inputConnections)
@@ -94,11 +95,11 @@ void LoadSaveString(std::string saveData, TextureGenEngine::Canvas2D *canvasNode
 	std::string loadingStage = "0";
 	canvasNodeGraph->ClearNodes();
 	for (auto &line : lines)
-	{	
+	{
 		if (line == "" || line == " ")
 		{
 			continue;
-		} 
+		}
 		std::vector<std::string> parts = TextureGenEngine::SplitString(line, ' ');
 		if (parts[0] == "nodes")
 		{
@@ -118,11 +119,11 @@ void LoadSaveString(std::string saveData, TextureGenEngine::Canvas2D *canvasNode
 			unsigned int nodeId = std::stoi(parts[1]);
 			int x = std::stoi(parts[2]) - sideBarWidth;
 			int y = std::stoi(parts[3]);
-			nodeMap.insert({uuid, nodeFunctionMap[static_cast<NodeFactory::NodeType>(nodeId)].first(canvasNodeGraph, 
-			nodeFunctionMap[static_cast<NodeFactory::NodeType>(nodeId)].second, x, y)});
+			nodeMap.insert({uuid, nodeFunctionMap[static_cast<NodeFactory::NodeType>(nodeId)].first(canvasNodeGraph,
+																									nodeFunctionMap[static_cast<NodeFactory::NodeType>(nodeId)].second, x, y)});
 			for (int i = 4; i < parts.size(); i++)
 			{
-				if ( parts[i] != "-=-")
+				if (parts[i] != "-=-")
 				{
 					nodeMap[uuid]->AddElementData(parts[i], i - 4);
 				}
@@ -132,8 +133,8 @@ void LoadSaveString(std::string saveData, TextureGenEngine::Canvas2D *canvasNode
 		{
 			std::string uuid = parts[0];
 			for (int i = 1; i < parts.size(); i++)
-			{	
-				if (parts[i] == "" || parts[i] == "0") 
+			{
+				if (parts[i] == "" || parts[i] == "0")
 				{
 					continue;
 				}
@@ -143,6 +144,46 @@ void LoadSaveString(std::string saveData, TextureGenEngine::Canvas2D *canvasNode
 		}
 	}
 }
+
+void ExportImage(TextureGenEngine::Canvas2D *canvasNodeGraph)
+{
+	std::vector<TextureGenEngine::Node *> nodes(canvasNodeGraph->GetNodeCount());
+	canvasNodeGraph->GetAllNodes(nodes);
+	TextureGenEngine::ImagePreviewElement *imagePreview = nullptr;
+	TextureGenEngine::TextualInputElement *textInput = nullptr;
+	for (auto &node : nodes)
+	{
+		if (node->GetTypeID() == static_cast<int>(NodeFactory::NodeType::OUTPUT))
+		{
+			for (auto &element : node->GetElements())
+			{
+				if (element->GetElementType() == TextureGenEngine::ElementType::IMAGE_PREVIEW)
+				{
+					imagePreview = static_cast<TextureGenEngine::ImagePreviewElement *>(element);
+				}
+				if (element->GetElementType() == TextureGenEngine::ElementType::TEXT)
+				{
+					textInput = static_cast<TextureGenEngine::TextualInputElement *>(element);
+				}
+			}
+		}
+		if (imagePreview != nullptr && textInput != nullptr)
+		{
+			std::string fileName = "";
+			textInput->GetData(fileName);
+			if (fileName != "")
+			{
+				int width, height;
+				width = imagePreview->GetImageWidth();
+				height = imagePreview->GetImageHeight();
+				unsigned char *data = new unsigned char[width * height * 4];
+				data = imagePreview->GetCharData();
+				TextureGenEngine::WriteImage(fileName, "png", data, width, height, 4);
+			}
+		}
+	}
+}
+
 void handleKeyPress(KeyEvent e, TextureGenEngine::Canvas2D *canvasNodeGraph)
 {
 	if (TextureGenEngine::Key::KeyCode::F1 == e.key &&
@@ -183,7 +224,7 @@ void handleKeyPress(KeyEvent e, TextureGenEngine::Canvas2D *canvasNodeGraph)
 		TextureGenEngine::Key::KeyModifier::Control == e.mods)
 	{
 		LOG_DEBUG("Key pressed ctrl + e export\n");
-
+		ExportImage(canvasNodeGraph);
 	}
 	if (TextureGenEngine::Key::KeyCode::C == e.key &&
 		TextureGenEngine::Key::KeyAction::Press == e.action &&

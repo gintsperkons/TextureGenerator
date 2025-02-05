@@ -74,6 +74,7 @@ void TextureGenEngine::Node::AddElement(NodeElement *element)
         {
             maxWidth = element->GetWidth();
         }
+
         totalHeight += element->GetHeight();
         totalHeight += 5;
     }
@@ -204,7 +205,7 @@ TextureGenEngine::InputConnector *TextureGenEngine::Node::GetInputConnector(floa
 
 TextureGenEngine::OutputConnector *TextureGenEngine::Node::GetOutputConnector(float x, float y)
 {
-    if (m_outputImage->CheckCollision(x, y))
+    if (m_outputImage && m_outputImage->CheckCollision(x, y))
         return m_outputImage;
     return nullptr;
 }

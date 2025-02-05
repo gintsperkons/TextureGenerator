@@ -23,7 +23,7 @@ namespace TextureGenEngine
         TAPI int GetImageHeight() { return m_imageSize[1]; };
         TAPI float* GetImageDataPtr() { return m_imageData.data(); };
         TAPI void UpdateImage();
-
+        TAPI unsigned char* GetCharData();
     };
 
 } // namespace TextureGenEngine

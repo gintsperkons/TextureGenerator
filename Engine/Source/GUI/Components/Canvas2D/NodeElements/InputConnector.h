@@ -32,5 +32,6 @@ namespace TextureGenEngine
         void UpdateData(std::string data);
         void UpdateData(int data);
         void UpdateData(float data);
+        void UpdateData(std::vector<PatternGeneratorData> data);
     }; // namespace TextureGenEngine
 }

@@ -182,3 +182,9 @@ void TextureGenEngine::InputConnector::UpdateData(float data)
     if (dynamic_cast<NodeElement *>(m_parent) != nullptr)
         static_cast<NodeElement *>(m_parent)->UpdateData(data);
 }
+
+void TextureGenEngine::InputConnector::UpdateData(std::vector<PatternGeneratorData> data)
+{
+    if (dynamic_cast<NodeElement *>(m_parent) != nullptr)
+        static_cast<NodeElement *>(m_parent)->UpdateData(data);
+}

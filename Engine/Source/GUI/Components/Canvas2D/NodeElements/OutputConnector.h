@@ -31,6 +31,7 @@ namespace TextureGenEngine
         void TAPI UpdateData(std::string data);
         void TAPI UpdateData(int data);
         void TAPI UpdateData(float data);
+        void TAPI UpdateData(std::vector<PatternGeneratorData> data);
         void TAPI SetOnUpdate(std::function<void()> onUpdate);
         void TAPI TriggerUpdate();
     };

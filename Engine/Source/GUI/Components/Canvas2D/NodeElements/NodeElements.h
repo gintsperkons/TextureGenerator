@@ -2,3 +2,4 @@
 #include "ImagePreviewElement.h"
 #include "FloatInputElement.h"
 #include "IntegerElement.h"
+#include "ImageInputElement.h"

@@ -1,5 +1,6 @@
 #pragma once
 #include "Defines.h"
+#include <functional>
 
 namespace TextureGenEngine
 {
@@ -10,6 +11,23 @@ namespace TextureGenEngine
         INTEGER,
         FLOAT,
         IMAGE,
-        PatternGenerator,
+        PATTERNGENERATOR,
+    };
+
+    struct PatternGeneratorData
+    {
+        float frequency;
+        int seed;
+        int type;
+        std::function < void(float*, int, int, float, int)> generator;
+    };
+
+    enum class PatternGenerationTypes
+    {
+        NOISE,
+        MATH,
+        MERGE,
+        MANIPULATION,
+
     };
 } // namespace TextureGenEngine

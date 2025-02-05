@@ -52,6 +52,8 @@ namespace TextureGenEngine
 
         TAPI NodeInfo GetNodeInfo();
         std::string GetUUID() { return m_uuid; }
+        int GetTypeID() { return m_id; }
+        std::vector<NodeElement *> GetElements() { return m_elements; }
 
         Canvas2D *GetCanvas();
         TAPI void SetTitle(std::string title);

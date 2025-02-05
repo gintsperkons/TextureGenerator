@@ -4,9 +4,27 @@
 #include "Generators/Generators.h"
 #include "Generators/RandomNumbers.h"
 #include "Core/Logger/Logger.h"
+#include "GUI/Components/Canvas2D/NodeElements/NodeTypes.h"
 
 #include <future>
 #include <type_traits>
+
+static void GenerateImage(float *imagePtr, std::vector<TextureGenEngine::PatternGeneratorData> operationList, int width, int height)
+{
+    LOG_DEBUG("Generating image\n");
+    LOG_DEBUG("Width %d Height %d\n", width, height);
+    if (operationList.size() == 0 || imagePtr == nullptr || width == 0 || height == 0)
+    {
+        return;
+    }
+
+    TextureGenEngine::PatternGeneratorData data;
+    for (int i = 0; i < operationList.size(); i++)
+    {
+        data = operationList[i];
+        data.generator(imagePtr, width, height, data.frequency, data.seed);
+    }
+}
 
 static TextureGenEngine::Node *SpawnNode(TextureGenEngine::Canvas2D *canvas, std::string title, NodeFactory::NodeType nodeId = NodeFactory::NodeType::NONE, int x = 0, int y = 0)
 {
@@ -20,7 +38,7 @@ static TextureGenEngine::Node *SpawnNode(TextureGenEngine::Canvas2D *canvas, std
     }
     if (x == 0 && y == 0)
         canvas->GetSpawnLocation(spawnX, spawnY);
-    TextureGenEngine::Node *node = new TextureGenEngine::Node(spawnX,spawnY, int(nodeId));
+    TextureGenEngine::Node *node = new TextureGenEngine::Node(spawnX, spawnY, int(nodeId));
     canvas->AddNode(node);
     node->SetBackground(TextureGenEngine::Color(0.0f, 0.0f, 0.0f, 1.0f));
     node->SetTitle(title);
@@ -42,6 +60,38 @@ static T *AddNodeElement(TextureGenEngine::Node *node, TextureGenEngine::Color c
     el->SetBackground(color);
     node->AddElement(el);
     return el;
+}
+
+TextureGenEngine::Node *NodeFactory::OutputNode(TextureGenEngine::Canvas2D *canvas, std::string title, int x, int y)
+{
+    TextureGenEngine::Node *node = SpawnNode(canvas, title, NodeType::OUTPUT, x, y);
+
+    TextureGenEngine::TextualInputElement *textInput = AddNodeElement<TextureGenEngine::TextualInputElement>(node);
+    TextureGenEngine::IntegerElement *widthInput = AddNodeElement<TextureGenEngine::IntegerElement>(node);
+    TextureGenEngine::IntegerElement *heightInput = AddNodeElement<TextureGenEngine::IntegerElement>(node);
+
+    TextureGenEngine::ImageInputElement *imageInput = AddNodeElement<TextureGenEngine::ImageInputElement>(node);
+
+    TextureGenEngine::ImagePreviewElement *imagePreview = AddNodeElement<TextureGenEngine::ImagePreviewElement>(node);
+
+    std::function updateImage = [imagePreview, imageInput, widthInput, heightInput]()
+    {
+        std::vector<TextureGenEngine::PatternGeneratorData> operationList;
+        imageInput->GetGenerationSequence(operationList);
+        int width, height;
+        widthInput->GetData(width);
+        heightInput->GetData(height);
+        imagePreview->SetImageSize(width, height);
+        float *imagePointer = imagePreview->GetImageDataPtr();
+        GenerateImage(imagePointer, operationList, width, height);
+        imagePreview->UpdateImage();
+    };
+
+    widthInput->SetOnDataChange(updateImage);
+    heightInput->SetOnDataChange(updateImage);
+    imageInput->SetOnDataChange(updateImage);
+
+    return node;
 }
 
 TextureGenEngine::Node *NodeFactory::TextNode(TextureGenEngine::Canvas2D *canvas, std::string title, int x, int y)
@@ -324,33 +374,45 @@ TextureGenEngine::Node *NodeFactory::DivideFloatNode(TextureGenEngine::Canvas2D 
     return node;
 }
 
-TextureGenEngine::Node *NodeFactory::NoiseGenImage(TextureGenEngine::Canvas2D *canvas, std::string title, int x, int y)   
+TextureGenEngine::Node *NodeFactory::NoiseGenImage(TextureGenEngine::Canvas2D *canvas, std::string title, int x, int y)
 {
     TextureGenEngine::Node *node = SpawnNode(canvas, title, NodeType::NOISE_GEN_IMAGE, x, y);
     TextureGenEngine::FloatInputElement *frequencyInput = AddNodeElement<TextureGenEngine::FloatInputElement>(node);
     TextureGenEngine::IntegerElement *seedInput = AddNodeElement<TextureGenEngine::IntegerElement>(node);
     TextureGenEngine::ImagePreviewElement *imagePreview = AddNodeElement<TextureGenEngine::ImagePreviewElement>(node);
-    TextureGenEngine::OutputConnector *outElement = SetOutputConnector(node, TextureGenEngine::NodeDataTypes::PatternGenerator);
+    TextureGenEngine::OutputConnector *outElement = SetOutputConnector(node, TextureGenEngine::NodeDataTypes::PATTERNGENERATOR);
 
     frequencyInput->SetData(0.1f);
     seedInput->SetData(TextureGenEngine::Random::RandInt(0, 1000000));
 
     imagePreview->SetImageSize(100, 100);
 
-    frequencyInput->SetOnDataChange([outElement]()
-                                    { outElement->TriggerUpdate(); });
+    std::function updatePreview = [frequencyInput, seedInput, imagePreview, outElement]()
+    {
+        int seed;
+        float frequency;
+        frequencyInput->GetData(frequency);
+        seedInput->GetData(seed);
+        TextureGenEngine::PatternGenerator::Perlin::GenTileable2D(imagePreview->GetImageDataPtr(), imagePreview->GetImageWidth(), imagePreview->GetImageHeight(), frequency, seed);
+        imagePreview->UpdateImage();
+    };
 
-    seedInput->SetOnDataChange([outElement]()
-                               { outElement->TriggerUpdate(); });
+    frequencyInput->SetOnDataChange([outElement, updatePreview]()
+                                    { updatePreview();
+                                        outElement->TriggerUpdate(); });
+
+    seedInput->SetOnDataChange([outElement, updatePreview]()
+                               { updatePreview();
+                                   outElement->TriggerUpdate(); });
 
     outElement->SetOnUpdate([frequencyInput, seedInput, imagePreview, outElement]()
                             {
-                                int seed;
-                                float frequency;
-                                frequencyInput->GetData(frequency);
-                                seedInput->GetData(seed);
-                                TextureGenEngine::PatternGenerator::Perlin::GenTileable2D(imagePreview->GetImageDataPtr(), imagePreview->GetImageWidth(), imagePreview->GetImageHeight(), frequency, seed);
-                                imagePreview->UpdateImage(); });
+                                TextureGenEngine::PatternGeneratorData data;
+                                frequencyInput->GetData(data.frequency);
+                                seedInput->GetData(data.seed);
+                                data.type = 0;
+                                data.generator = TextureGenEngine::PatternGenerator::Perlin::GenTileable2D;
+                                outElement->UpdateData(std::vector<TextureGenEngine::PatternGeneratorData>{data}); });
 
     outElement->TriggerUpdate();
     return node;

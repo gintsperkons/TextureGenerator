@@ -115,3 +115,9 @@ void TextureGenEngine::Connector::UpdateData(float data)
     if (m_input)
         m_input->UpdateData(data);
 }
+
+void TextureGenEngine::Connector::UpdateData(std::vector<PatternGeneratorData> data)
+{
+    if (m_input)
+        m_input->UpdateData(data);
+}

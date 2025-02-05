@@ -11,7 +11,9 @@
 #include <iostream>
 
 TextureGenEngine::ImagePreviewElement::ImagePreviewElement()
+: NodeElement()
 {
+    m_nodeType = ElementType::IMAGE_PREVIEW;
     m_x = 0;
     m_y = 0;
     m_width = 100;
@@ -50,6 +52,7 @@ void TextureGenEngine::ImagePreviewElement::Setup(float x, float y)
 
 TAPI void TextureGenEngine::ImagePreviewElement::SetImageSize(int width, int height)
 {
+    LOG_DEBUG("Setting image size %d %d\n", width, height);
     m_imageSize[0] = width;
     m_imageSize[1] = height;
     m_textureData->SetSize(m_imageSize[0], m_imageSize[1]);
@@ -60,13 +63,24 @@ TAPI void TextureGenEngine::ImagePreviewElement::SetImageSize(int width, int hei
 
 void TextureGenEngine::ImagePreviewElement::UpdateImage()
 {   
+    LOG_DEBUG("Updating image\n");
+    LOG_DEBUG("Width %d Height %d\n", m_imageSize[0], m_imageSize[1]);
+    LOG_DEBUG("Data size %d\n", m_imageData.size());
     for (int i = 0; i < m_imageSize[0]; i++)
     {
         for (int j = 0; j < m_imageSize[1]; j++)
         {
-            int color = (m_imageData[i * m_imageSize[0] + j] + 1) * 127.5;
-            m_textureData->UpdatePixel(i, j, color, color, color, 255);
+            if (i * m_imageSize[0] + j < m_imageData.size())
+            {
+                int color = static_cast<int>((m_imageData[i * m_imageSize[0] + j] + 1) * 127.5);
+                m_textureData->UpdatePixel(i, j, color, color, color, 255);
+            }
         }
     }
     m_texture->UpdateTexture(m_textureData);
+}
+
+unsigned char* TextureGenEngine::ImagePreviewElement::GetCharData()
+{
+    return m_textureData->GetRawData();
 }

@@ -209,6 +209,14 @@ void TextureGenEngine::OutputConnector::UpdateData(float data)
     }
 }
 
+void TextureGenEngine::OutputConnector::UpdateData(std::vector<PatternGeneratorData> data)
+{
+    for (auto &line : m_connectors)
+    {
+        line->UpdateData(data);
+    }
+}
+
 void TextureGenEngine::OutputConnector::SetOnUpdate(std::function<void()> onUpdate)
 {
     m_onUpdate = onUpdate;

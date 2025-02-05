@@ -4,7 +4,7 @@
 
 TextureGenEngine::FloatInputElement::FloatInputElement()
 {
-
+    m_nodeType = ElementType::FLOAT;
     m_x = 0;
     m_y = 100;
     m_width = 140;
