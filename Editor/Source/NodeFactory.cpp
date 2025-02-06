@@ -5,9 +5,12 @@
 #include "Generators/RandomNumbers.h"
 #include "Core/Logger/Logger.h"
 #include "GUI/Components/Canvas2D/NodeElements/NodeTypes.h"
-
+#include "ImageJobQueue.h"
 #include <future>
 #include <type_traits>
+#include <mutex>
+
+static ImageJobQueue imageWorkerQueue = ImageJobQueue();
 
 static void GenerateImage(float *imagePtr, std::vector<TextureGenEngine::PatternGeneratorData> operationList, int width, int height)
 {
@@ -68,27 +71,31 @@ TextureGenEngine::Node *NodeFactory::OutputNode(TextureGenEngine::Canvas2D *canv
 
     TextureGenEngine::TextualInputElement *textInput = AddNodeElement<TextureGenEngine::TextualInputElement>(node);
     TextureGenEngine::IntegerElement *widthInput = AddNodeElement<TextureGenEngine::IntegerElement>(node);
-    TextureGenEngine::IntegerElement *heightInput = AddNodeElement<TextureGenEngine::IntegerElement>(node);
 
     TextureGenEngine::ImageInputElement *imageInput = AddNodeElement<TextureGenEngine::ImageInputElement>(node);
 
     TextureGenEngine::ImagePreviewElement *imagePreview = AddNodeElement<TextureGenEngine::ImagePreviewElement>(node);
 
-    std::function updateImage = [imagePreview, imageInput, widthInput, heightInput]()
+    std::function updateImage = [imagePreview, imageInput, widthInput]()
     {
         std::vector<TextureGenEngine::PatternGeneratorData> operationList;
         imageInput->GetGenerationSequence(operationList);
-        int width, height;
+        int width;
         widthInput->GetData(width);
-        heightInput->GetData(height);
-        imagePreview->SetImageSize(width, height);
+        imagePreview->SetImageSize(width, width);
         float *imagePointer = imagePreview->GetImageDataPtr();
-        GenerateImage(imagePointer, operationList, width, height);
-        imagePreview->UpdateImage();
+
+        imageWorkerQueue.AddJob([imagePointer, operationList, width, imagePreview]()
+                                {
+                                        std::mutex imageMutex;
+                                        {
+                                            std::lock_guard<std::mutex> lock(imageMutex);
+                                            GenerateImage(imagePointer, operationList, width, width);
+                                        }
+                                    imagePreview->UpdateImage(); });
     };
 
     widthInput->SetOnDataChange(updateImage);
-    heightInput->SetOnDataChange(updateImage);
     imageInput->SetOnDataChange(updateImage);
 
     return node;
@@ -393,8 +400,11 @@ TextureGenEngine::Node *NodeFactory::NoiseGenImage(TextureGenEngine::Canvas2D *c
         float frequency;
         frequencyInput->GetData(frequency);
         seedInput->GetData(seed);
-        TextureGenEngine::PatternGenerator::Perlin::GenTileable2D(imagePreview->GetImageDataPtr(), imagePreview->GetImageWidth(), imagePreview->GetImageHeight(), frequency, seed);
-        imagePreview->UpdateImage();
+
+        imageWorkerQueue.AddJob([imagePreview, frequency, seed]()
+                                {
+                                    TextureGenEngine::PatternGenerator::Perlin::GenTileable2D(imagePreview->GetImageDataPtr(), imagePreview->GetImageWidth(), imagePreview->GetImageHeight(), frequency, seed);
+                                    imagePreview->UpdateImage(); });
     };
 
     frequencyInput->SetOnDataChange([outElement, updatePreview]()

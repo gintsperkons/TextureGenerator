@@ -50,6 +50,16 @@ void TextureGenEngine::ImagePreviewElement::Setup(float x, float y)
     LOG_DEBUG("position %f %f\n", m_x, m_y);
 }
 
+void TextureGenEngine::ImagePreviewElement::Draw()
+{
+    NodeElement::Draw();
+    if (m_needsUpdate)
+    {
+        UpdateImageBuffer();
+        m_needsUpdate = false;
+    }
+}
+
 TAPI void TextureGenEngine::ImagePreviewElement::SetImageSize(int width, int height)
 {
     LOG_DEBUG("Setting image size %d %d\n", width, height);
@@ -60,9 +70,8 @@ TAPI void TextureGenEngine::ImagePreviewElement::SetImageSize(int width, int hei
     m_texture->UpdateTexture(m_textureData);
 }
 
-
-void TextureGenEngine::ImagePreviewElement::UpdateImage()
-{   
+void TextureGenEngine::ImagePreviewElement::UpdateImageBuffer()
+{
     LOG_DEBUG("Updating image\n");
     LOG_DEBUG("Width %d Height %d\n", m_imageSize[0], m_imageSize[1]);
     LOG_DEBUG("Data size %d\n", m_imageData.size());
@@ -78,6 +87,11 @@ void TextureGenEngine::ImagePreviewElement::UpdateImage()
         }
     }
     m_texture->UpdateTexture(m_textureData);
+}
+
+void TextureGenEngine::ImagePreviewElement::UpdateImage()
+{   
+    m_needsUpdate = true;
 }
 
 unsigned char* TextureGenEngine::ImagePreviewElement::GetCharData()

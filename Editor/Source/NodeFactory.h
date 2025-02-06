@@ -35,9 +35,9 @@ namespace NodeFactory
     };
 
 
-
-    // output nodes
-    TextureGenEngine::Node *OutputNode(TextureGenEngine::Canvas2D *canvas, std::string title = "Export Image", int x = 0, int y = 0);
+        // output nodes
+        TextureGenEngine::Node *
+        OutputNode(TextureGenEngine::Canvas2D *canvas, std::string title = "Export Image", int x = 0, int y = 0);
 
     // base nodes
     TextureGenEngine::Node *TextNode(TextureGenEngine::Canvas2D *canvas, std::string title = "Text", int x = 0, int y = 0);

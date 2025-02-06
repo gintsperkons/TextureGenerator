@@ -274,6 +274,11 @@ int main()
 	{
 		engine->Run();
 	}
+
 	TextureGenEngine::Engine::Shutdown();
+
 	return 0;
 }
+
+
+
