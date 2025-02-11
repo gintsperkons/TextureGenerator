@@ -6,7 +6,7 @@
 #include <Core/Logger/Logger.h>
 
 
-TextureGenEngine::NodeElement::NodeElement() : Component(0, 0, 100, 100)
+TextureGenEngine::NodeElement::NodeElement() : Component(0, 0, 200, 200)
 {
     m_draggable = false;
     m_type = "NodeElement";

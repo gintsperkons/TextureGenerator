@@ -16,10 +16,10 @@ TextureGenEngine::ImagePreviewElement::ImagePreviewElement()
     m_nodeType = ElementType::IMAGE_PREVIEW;
     m_x = 0;
     m_y = 0;
-    m_width = 100;
-    m_height = 100;
-    m_imageSize[0] = 100;
-    m_imageSize[1] = 100;
+    m_width = 200;
+    m_height = 200;
+    m_imageSize[0] = 256;
+    m_imageSize[1] = 256;
 
     m_texture = new TextureGenEngine::Texture();
     m_textureData = new TextureData(m_imageSize[0], m_imageSize[1]);

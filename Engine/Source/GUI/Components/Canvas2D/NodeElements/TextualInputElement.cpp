@@ -19,7 +19,8 @@ NodeElement()
     
     m_draggable = false;
     m_type = "TextualInputElement";
-    m_textInput = new TextInput(0,200, 100, 20);
+
+    m_textInput = new TextInput(0, 200, 200, 20);
     m_textInput->SetParent(this);
     m_textInput->SetBackground(Color(1.0f, 1.0f, 1.0f, 0.1f));
     m_dataType = NodeDataTypes::TEXT;
