@@ -3,7 +3,7 @@
 #include "Core/Renderer/TextureData.h"
 #include "Core/Renderer/Texture.h"
 #include "Core/Logger/Logger.h"
-
+#include "Core/AssetManager/AssetManager.h"
 #include "FastNoise/FastNoise.h"
 #include "FastSIMD/FastSIMD.h"
 
@@ -24,6 +24,7 @@ TextureGenEngine::ImagePreviewElement::ImagePreviewElement()
     m_texture = new TextureGenEngine::Texture();
     m_textureData = new TextureData(m_imageSize[0], m_imageSize[1]);
     m_imageData.resize(m_imageSize[0] * m_imageSize[1]);
+    m_background->ChangeColor(1.0f, 1.0f, 1.0f, 1.0f);
     m_texture->LoadTexture(m_textureData);
     m_background->ChangeTexture(m_texture);
 }
@@ -73,6 +74,7 @@ TAPI void TextureGenEngine::ImagePreviewElement::SetImageSize(int width, int hei
 void TextureGenEngine::ImagePreviewElement::UpdateImageBuffer()
 {
     LOG_DEBUG("Updating image\n");
+    m_background->ChangeTexture(m_texture);
     LOG_DEBUG("Width %d Height %d\n", m_imageSize[0], m_imageSize[1]);
     LOG_DEBUG("Data size %d\n", m_imageData.size());
     for (int i = 0; i < m_imageSize[0]; i++)
@@ -89,9 +91,21 @@ void TextureGenEngine::ImagePreviewElement::UpdateImageBuffer()
     m_texture->UpdateTexture(m_textureData);
 }
 
+ void TextureGenEngine::ImagePreviewElement::LoadingScreen()
+{
+  ImageData imgData = TextureGenEngine::LoadImage("loading.png");
+  m_texture->UpdateTexture(imgData.data, imgData.width, imgData.height, imgData.channels);
+  //m_background->RemoveTexture();
+}
+
 void TextureGenEngine::ImagePreviewElement::UpdateImage()
 {   
     m_needsUpdate = true;
+}
+
+TextureGenEngine::TextureData *TextureGenEngine::ImagePreviewElement::GetImageData()
+{
+  return m_textureData;
 }
 
 unsigned char* TextureGenEngine::ImagePreviewElement::GetCharData()

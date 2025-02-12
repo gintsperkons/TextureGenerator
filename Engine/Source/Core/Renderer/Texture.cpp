@@ -1,7 +1,6 @@
 #include "Texture.h"
 #include <glad/glad.h>
-#define STB_IMAGE_IMPLEMENTATION
-#include <stb_image.h>
+#include <Core/AssetManager/AssetManager.h>
 #include "Core/Logger/Logger.h"
 #include "TextureData.h"
 
@@ -27,10 +26,12 @@ TextureGenEngine::Texture::~Texture()
 void TextureGenEngine::Texture::LoadTexture(const char *path)
 {
     glBindTexture(GL_TEXTURE_2D, m_TextureID);
-    unsigned char *data = stbi_load(path, &m_Width, &m_Height, &m_Channels, 0);
-    if (data)
+    ImageData imgData = TextureGenEngine::LoadImage(path);
+    LOG_DEBUG("Loaded texture %s\n", path);
+    LOG_DEBUG("Width: %d, Height: %d, Channels: %d\n", imgData.width, imgData.height, imgData.channels);
+    if (imgData.data)
     {
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_Width, m_Height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, imgData.width, imgData.height, 0, GL_RGBA, GL_UNSIGNED_BYTE, imgData.data);
         glGenerateMipmap(GL_TEXTURE_2D);
         m_ready = true;
     }
@@ -39,7 +40,6 @@ void TextureGenEngine::Texture::LoadTexture(const char *path)
         LOG_ERROR("Failed to load texture");
         m_ready = false;
     }
-    stbi_image_free(data);
     glBindTexture(GL_TEXTURE_2D, 0);
 }
 
@@ -61,6 +61,13 @@ void TextureGenEngine::Texture::UpdateTexture(TextureData *data)
     glGenerateMipmap(GL_TEXTURE_2D);
     m_ready = true;
     glBindTexture(GL_TEXTURE_2D, 0);
+}
+
+void TextureGenEngine::Texture::UpdateTexture(unsigned char *data, int width, int height, int channels)
+{
+  glBindTexture(GL_TEXTURE_2D, m_TextureID);
+  glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+  glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 void TextureGenEngine::Texture::BindTexture()

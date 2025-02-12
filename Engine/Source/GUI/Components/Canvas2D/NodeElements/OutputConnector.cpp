@@ -209,7 +209,7 @@ void TextureGenEngine::OutputConnector::UpdateData(float data)
     }
 }
 
-void TextureGenEngine::OutputConnector::UpdateData(std::vector<PatternGeneratorData> data)
+void TextureGenEngine::OutputConnector::UpdateData(TextureData* data)
 {
     for (auto &line : m_connectors)
     {

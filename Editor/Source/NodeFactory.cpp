@@ -10,6 +10,7 @@
 #include <type_traits>
 #include <mutex>
 
+static const int c_imageSize = 2048;
 static ImageJobQueue imageWorkerQueue = ImageJobQueue();
 
 static void GenerateImage(float *imagePtr, std::vector<TextureGenEngine::PatternGeneratorData> operationList, int width, int height)
@@ -85,14 +86,14 @@ TextureGenEngine::Node *NodeFactory::OutputNode(TextureGenEngine::Canvas2D *canv
         imagePreview->SetImageSize(width, width);
         float *imagePointer = imagePreview->GetImageDataPtr();
 
-        imageWorkerQueue.AddJob([imagePointer, operationList, width, imagePreview]()
-                                {
-                                        std::mutex imageMutex;
-                                        {
-                                            std::lock_guard<std::mutex> lock(imageMutex);
-                                            GenerateImage(imagePointer, operationList, width, width);
-                                        }
-                                    imagePreview->UpdateImage(); });
+        // imageWorkerQueue.AddJob([imagePointer, operationList, width, imagePreview]()
+        //                         {
+        //                                 std::mutex imageMutex;
+        //                                 {
+        //                                     std::lock_guard<std::mutex> lock(imageMutex);
+        //                                     GenerateImage(imagePointer, operationList, width, width);
+        //                                 }
+        //                             imagePreview->UpdateImage(); });
     };
 
     widthInput->SetOnDataChange(updateImage);
@@ -392,38 +393,37 @@ TextureGenEngine::Node *NodeFactory::NoiseGenImage(TextureGenEngine::Canvas2D *c
     frequencyInput->SetData(0.1f);
     seedInput->SetData(TextureGenEngine::Random::RandInt(0, 1000000));
 
-    imagePreview->SetImageSize(100, 100);
+    imagePreview->SetImageSize(c_imageSize, c_imageSize);
 
-    std::function updatePreview = [frequencyInput, seedInput, imagePreview, outElement]()
+
+    std::function generateImage = [frequencyInput, seedInput, imagePreview,node]()
     {
-        int seed;
-        float frequency;
-        frequencyInput->GetData(frequency);
-        seedInput->GetData(seed);
-
-        imageWorkerQueue.AddJob([imagePreview, frequency, seed]()
-                                {
+      int seed;
+      float frequency;
+      frequencyInput->GetData(frequency);
+      imagePreview->LoadingScreen();
+      seedInput->GetData(seed);
+      imageWorkerQueue.AddJob(node->GetUUID(), [imagePreview, frequency, seed](std::shared_ptr<std::atomic<bool>> cancelFlag)
+                              { if (cancelFlag.get()->load()) return;
                                     TextureGenEngine::PatternGenerator::Perlin::GenTileable2D(imagePreview->GetImageDataPtr(), imagePreview->GetImageWidth(), imagePreview->GetImageHeight(), frequency, seed);
-                                    imagePreview->UpdateImage(); });
+                                    if (cancelFlag.get()->load()) return;
+                                        LOG_DEBUG("Finished generating image%d\n", cancelFlag.get()->load());
+                                                  imagePreview->UpdateImage(); });
     };
 
-    frequencyInput->SetOnDataChange([outElement, updatePreview]()
-                                    { updatePreview();
+   
+
+    frequencyInput->SetOnDataChange([outElement, generateImage]()
+                                    { generateImage();
                                         outElement->TriggerUpdate(); });
 
-    seedInput->SetOnDataChange([outElement, updatePreview]()
-                               { updatePreview();
+    seedInput->SetOnDataChange([outElement, generateImage]()
+                               { generateImage();
                                    outElement->TriggerUpdate(); });
 
-    outElement->SetOnUpdate([frequencyInput, seedInput, imagePreview, outElement]()
-                            {
-                                TextureGenEngine::PatternGeneratorData data;
-                                frequencyInput->GetData(data.frequency);
-                                seedInput->GetData(data.seed);
-                                data.type = 0;
-                                data.generator = TextureGenEngine::PatternGenerator::Perlin::GenTileable2D;
-                                outElement->UpdateData(std::vector<TextureGenEngine::PatternGeneratorData>{data}); });
+    outElement->SetOnUpdate([imagePreview, outElement]()
+                            { outElement->UpdateData(imagePreview->GetImageData()); });
 
-    outElement->TriggerUpdate();
+    generateImage();
     return node;
 }

@@ -20,7 +20,8 @@ namespace TextureGenEngine
         {NodeDataTypes::PATTERNGENERATOR, Color(0.0f, 0.1f, 1.0f, 1.0f)}      // Blue for Pattern Generator
     };
     class Bezier;
-    class InputConnector;
+    class TextureData;
+     class InputConnector;
     class OutputConnector;
     class Connector
     {
@@ -45,6 +46,6 @@ namespace TextureGenEngine
         void UpdateData(std::string data);
         void UpdateData(int data);  
         void UpdateData(float data);
-        void UpdateData(std::vector<PatternGeneratorData> data);
+        void UpdateData(TextureData* data);
     };
 } // namespace TextureGenEngine

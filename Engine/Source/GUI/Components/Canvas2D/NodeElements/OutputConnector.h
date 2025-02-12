@@ -7,6 +7,7 @@
 namespace TextureGenEngine
 {
     class Connector;
+    class TextureData;
     class OutputConnector : public Component
     {
         std::function<void()> m_onUpdate = nullptr;
@@ -31,7 +32,7 @@ namespace TextureGenEngine
         void TAPI UpdateData(std::string data);
         void TAPI UpdateData(int data);
         void TAPI UpdateData(float data);
-        void TAPI UpdateData(std::vector<PatternGeneratorData> data);
+        void TAPI UpdateData(TextureData* data);
         void TAPI SetOnUpdate(std::function<void()> onUpdate);
         void TAPI TriggerUpdate();
     };

@@ -11,7 +11,7 @@
 
 TextureGenEngine::InputConnector::InputConnector() : Component(0, 0, 20, 20)
 {
-    
+
     m_background->ChangeColor(1.0f, 0.0f, 0.0f, 1.0f);
     m_type = "InputConnector";
     Texture *texture = TextureGenEngine::LoadTexture("Connector.png");
@@ -184,7 +184,7 @@ void TextureGenEngine::InputConnector::UpdateData(float data)
         static_cast<NodeElement *>(m_parent)->UpdateData(data);
 }
 
-void TextureGenEngine::InputConnector::UpdateData(std::vector<PatternGeneratorData> data)
+void TextureGenEngine::InputConnector::UpdateData(TextureData* data)
 {
     if (dynamic_cast<NodeElement *>(m_parent) != nullptr)
         static_cast<NodeElement *>(m_parent)->UpdateData(data);

@@ -16,6 +16,7 @@ namespace TextureGenEngine
         void LoadTexture(const char *path);
         void LoadTexture(TextureData *data);
         void UpdateTexture(TextureData *data);
+        void UpdateTexture(unsigned char* data, int width, int height, int channels);
         void BindTexture();
         void UnbindTexture();
 

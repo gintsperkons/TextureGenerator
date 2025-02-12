@@ -275,6 +275,11 @@ void TextureGenEngine::Mesh::ChangeTexture(Texture *texturePtr)
     m_texture = texturePtr;
 }
 
+void TextureGenEngine::Mesh::RemoveTexture()
+{
+    m_texture = nullptr;
+}
+
 TextureGenEngine::Mesh::~Mesh()
 {
     if(VAO != 0)

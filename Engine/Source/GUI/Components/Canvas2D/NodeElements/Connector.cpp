@@ -3,6 +3,7 @@
 #include "Core/World/ObjectFactory.h"
 #include "Core/Logger/Logger.h"
 #include "InputConnector.h"
+#include "Core/Renderer/TextureData.h"
 #include "OutputConnector.h"
 
 bool TextureGenEngine::Connector::CheckExistingConnection(InputConnector *input, OutputConnector *output)
@@ -116,7 +117,7 @@ void TextureGenEngine::Connector::UpdateData(float data)
         m_input->UpdateData(data);
 }
 
-void TextureGenEngine::Connector::UpdateData(std::vector<PatternGeneratorData> data)
+void TextureGenEngine::Connector::UpdateData(TextureData* data)
 {
     if (m_input)
         m_input->UpdateData(data);
