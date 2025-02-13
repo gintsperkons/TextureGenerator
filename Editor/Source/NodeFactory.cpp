@@ -381,9 +381,9 @@ TextureGenEngine::Node *NodeFactory::DivideFloatNode(TextureGenEngine::Canvas2D 
   return node;
 }
 
-TextureGenEngine::Node *NodeFactory::NoiseGenImage(TextureGenEngine::Canvas2D *canvas, std::string title, int x, int y)
+TextureGenEngine::Node *NodeFactory::PerlinGenImage(TextureGenEngine::Canvas2D *canvas, std::string title, int x, int y)
 {
-  TextureGenEngine::Node *node = SpawnNode(canvas, title, NodeType::NOISE_GEN_IMAGE, x, y);
+  TextureGenEngine::Node *node = SpawnNode(canvas, title, NodeType::PERLIN_GEN_IMAGE, x, y);
   TextureGenEngine::FloatInputElement *frequencyInput = AddNodeElement<TextureGenEngine::FloatInputElement>(node);
   TextureGenEngine::IntegerElement *seedInput = AddNodeElement<TextureGenEngine::IntegerElement>(node);
   TextureGenEngine::ImagePreviewElement *imagePreview = AddNodeElement<TextureGenEngine::ImagePreviewElement>(node);
@@ -407,6 +407,51 @@ TextureGenEngine::Node *NodeFactory::NoiseGenImage(TextureGenEngine::Canvas2D *c
                             { if (cancelFlag.get()->load())
                                return;
                                     TextureGenEngine::PatternGenerator::Perlin::GenTileable2D(imagePreview->GetImageDataPtr(), imagePreview->GetImageWidth(), imagePreview->GetImageHeight(), frequency, seed);
+                                    if (cancelFlag.get()->load()) 
+                                      return;
+                                                  imagePreview->UpdateImage(); });
+  };
+
+  frequencyInput->SetOnDataChange([generateImage]()
+                                  { generateImage(); });
+
+  seedInput->SetOnDataChange([generateImage]()
+                             { generateImage(); });
+
+  imagePreview->SetOnImageChange([outElement]()
+                                 { outElement->TriggerUpdate(); });
+
+  outElement->SetOnUpdate([imagePreview, outElement]()
+                          { outElement->UpdateData(imagePreview->GetImageData()); });
+
+  generateImage();
+  return node;
+}
+
+TextureGenEngine::Node *NodeFactory::CellularGenImage(TextureGenEngine::Canvas2D *canvas, std::string title, int x, int y)
+{
+  TextureGenEngine::Node *node = SpawnNode(canvas, title, NodeType::CELLULAR_GEN_IMAGE, x, y);
+  TextureGenEngine::FloatInputElement *frequencyInput = AddNodeElement<TextureGenEngine::FloatInputElement>(node);
+  TextureGenEngine::IntegerElement *seedInput = AddNodeElement<TextureGenEngine::IntegerElement>(node);
+  TextureGenEngine::ImagePreviewElement *imagePreview = AddNodeElement<TextureGenEngine::ImagePreviewElement>(node);
+  TextureGenEngine::OutputConnector *outElement = SetOutputConnector(node, TextureGenEngine::NodeDataTypes::PATTERNGENERATOR);
+
+  frequencyInput->SetData(0.1f);
+  seedInput->SetData(TextureGenEngine::Random::RandInt(0, 1000000));
+
+  imagePreview->SetImageSize(c_imageSize, c_imageSize);
+
+  std::function generateImage = [frequencyInput, seedInput, imagePreview, node, outElement]()
+  {
+    int seed;
+    float frequency;
+    frequencyInput->GetData(frequency);
+    imagePreview->LoadingScreen();
+    seedInput->GetData(seed);
+    imageWorkerQueue.AddJob(node->GetUUID(), [outElement, imagePreview, frequency, seed](std::shared_ptr<std::atomic<bool>> cancelFlag)
+                            { if (cancelFlag.get()->load())
+                               return;
+                                    TextureGenEngine::PatternGenerator::Cellular::GenTileable2D(imagePreview->GetImageDataPtr(), imagePreview->GetImageWidth(), imagePreview->GetImageHeight(), frequency, seed);
                                     if (cancelFlag.get()->load()) 
                                       return;
                                                   imagePreview->UpdateImage(); });

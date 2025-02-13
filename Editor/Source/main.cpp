@@ -29,7 +29,7 @@ NodeFunctionMap nodeFunctionMap = {
 	{NodeFactory::NodeType::TEXT_MERGE, {&NodeFactory::TextMergeNode, "Text Merge"}},
 	{NodeFactory::NodeType::INTEGER, {&NodeFactory::IntegerNode, "Integer"}},
 	{NodeFactory::NodeType::FLOAT, {&NodeFactory::FloatNode, "Float"}},
-	{NodeFactory::NodeType::NOISE_GEN_IMAGE, {&NodeFactory::NoiseGenImage, "Perlin Gen"}},
+	{NodeFactory::NodeType::PERLIN_GEN_IMAGE, {&NodeFactory::PerlinGenImage, "Perlin Gen"}},
 	{NodeFactory::NodeType::ADD_INT, {&NodeFactory::AddIntNode, "Add Int"}},
 	{NodeFactory::NodeType::SUBTRACT_INT, {&NodeFactory::SubtractIntNode, "Subtract Int"}},
 	{NodeFactory::NodeType::MULTIPLY_INT, {&NodeFactory::MultiplyIntNode, "Multiply Int"}},
@@ -37,7 +37,8 @@ NodeFunctionMap nodeFunctionMap = {
 	{NodeFactory::NodeType::ADD_FLOAT, {&NodeFactory::AddFloatNode, "Add Float"}},
 	{NodeFactory::NodeType::SUBTRACT_FLOAT, {&NodeFactory::SubtractFloatNode, "Subtract Float"}},
 	{NodeFactory::NodeType::MULTIPLY_FLOAT, {&NodeFactory::MultiplyFloatNode, "Multiply Float"}},
-	{NodeFactory::NodeType::DIVIDE_FLOAT, {&NodeFactory::DivideFloatNode, "Divide Float"}}};
+	{NodeFactory::NodeType::DIVIDE_FLOAT, {&NodeFactory::DivideFloatNode, "Divide Float"}},
+  {NodeFactory::NodeType::CELLULAR_GEN_IMAGE, {&NodeFactory::CellularGenImage, "Cellular Gen"}}};
 
 int sideBarWidth = 300;
 std::string nodeSaveFile = "nodeSaveData.tgsn";
