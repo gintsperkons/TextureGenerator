@@ -54,3 +54,8 @@ unsigned char *TextureGenEngine::TextureData::GetRawData()
     }
     return data;
 }
+
+bool TextureGenEngine::TextureData::Valid()
+{
+    return m_width > 0 && m_height > 0 && m_pixels.size() >= m_width * m_height;
+}

@@ -38,11 +38,16 @@ void TextureGenEngine::ImageInputElement::OnMouseDrag(float x, float y)
     NodeElement::OnMouseDrag(x, y);
 }
 
-void TextureGenEngine::ImageInputElement::UpdateData(std::vector<PatternGeneratorData> data)
+void TextureGenEngine::ImageInputElement::UpdateData(TextureData *data)
 {
-    m_imageGenerationSequence = data;
-    if (m_onDataChange)
-    {
-        m_onDataChange();
-    }
+  m_textureData = data;
+  if (m_onDataChange)
+  {
+      m_onDataChange();
+  }
+}
+
+TextureGenEngine::TextureData* TextureGenEngine::ImageInputElement::GetData()
+{
+  return m_textureData;
 }

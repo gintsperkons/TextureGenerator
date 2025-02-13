@@ -89,6 +89,11 @@ void TextureGenEngine::ImagePreviewElement::UpdateImageBuffer()
         }
     }
     m_texture->UpdateTexture(m_textureData);
+
+    if (m_onImageChange)
+    {
+      m_onImageChange();
+    }
 }
 
  void TextureGenEngine::ImagePreviewElement::LoadingScreen()
@@ -99,13 +104,28 @@ void TextureGenEngine::ImagePreviewElement::UpdateImageBuffer()
 }
 
 void TextureGenEngine::ImagePreviewElement::UpdateImage()
-{   
-    m_needsUpdate = true;
+{
+  m_needsUpdate = true;
 }
 
 TextureGenEngine::TextureData *TextureGenEngine::ImagePreviewElement::GetImageData()
 {
   return m_textureData;
+}
+
+ void TextureGenEngine::ImagePreviewElement::SetTextureData(TextureData *data)
+{
+  m_textureData = data;
+  m_texture->UpdateTexture(m_textureData);
+  if (m_onImageChange)
+  {
+    m_onImageChange();
+  }
+}
+
+void TextureGenEngine::ImagePreviewElement::SetOnImageChange(std::function<void()> onImageChange)
+{
+    m_onImageChange = onImageChange;
 }
 
 unsigned char* TextureGenEngine::ImagePreviewElement::GetCharData()

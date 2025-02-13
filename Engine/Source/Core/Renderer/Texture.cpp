@@ -55,6 +55,8 @@ void TextureGenEngine::Texture::LoadTexture(TextureData *data)
 
 void TextureGenEngine::Texture::UpdateTexture(TextureData *data)
 {
+    if (data->Valid() == false) return;
+    LOG_DEBUG("Updating texture with width %d and height %d size %d\n", data->GetWidth(), data->GetHeight(), data->GetPixels().size());
     m_Channels = data->GetChannels();
     glBindTexture(GL_TEXTURE_2D, m_TextureID);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, data->GetWidth(), data->GetHeight(), 0, GL_RGBA, GL_UNSIGNED_BYTE, data->GetRawData());

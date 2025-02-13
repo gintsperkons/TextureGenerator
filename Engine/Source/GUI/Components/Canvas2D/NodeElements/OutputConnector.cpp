@@ -224,6 +224,9 @@ void TextureGenEngine::OutputConnector::SetOnUpdate(std::function<void()> onUpda
 
 void TextureGenEngine::OutputConnector::TriggerUpdate()
 {
+    LOG_DEBUG("Triggering update\n");
     if (m_onUpdate)
         m_onUpdate();
+    else 
+      LOG_DEBUG("No on update\n");
 }

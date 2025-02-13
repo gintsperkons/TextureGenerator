@@ -1,6 +1,7 @@
 #pragma once
 #include "Defines.h"
 #include "NodeElement.h"
+#include <functional>
 
 namespace TextureGenEngine
 {
@@ -14,6 +15,7 @@ namespace TextureGenEngine
     std::vector<float> m_imageData;
     Texture *m_texture = nullptr;
     int m_imageSize[2];
+    std::function<void()> m_onImageChange = nullptr;
 
   public:
     TAPI ImagePreviewElement(/* args */);
@@ -29,8 +31,10 @@ namespace TextureGenEngine
     TAPI void LoadingScreen();
     TAPI void UpdateImage();
     TAPI TextureData *GetImageData();
-    TAPI unsigned char *
-    GetCharData();
+    TAPI void SetTextureData(TextureData *data);
+    TAPI void SetOnImageChange(std::function<void()> onImageChange);
+        TAPI unsigned char *
+        GetCharData();
   };
 
 } // namespace TextureGenEngine
