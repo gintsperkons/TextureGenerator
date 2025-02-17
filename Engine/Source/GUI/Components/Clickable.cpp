@@ -30,7 +30,7 @@ void TextureGenEngine::Clickable::Init(float width, float height)
     {
         m_width = m_parent->GetWidth();
         m_x = m_parent->GetX();
-        m_y = m_parent->GetY() + m_parent->GetHeight() - static_cast<ScrollView *>(m_parent)->GetItemOffset(this);
+        m_y = m_parent->GetY();
     }
 }
 

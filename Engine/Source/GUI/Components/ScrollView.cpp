@@ -60,6 +60,13 @@ void TextureGenEngine::ScrollView::AddElement(Component *element)
 
 void TextureGenEngine::ScrollView::RecalculateMaxScroll()
 {
+    for (auto &element : m_elements)
+    {
+        element->SetPosition(m_x, m_y + m_height - GetItemOffset(element) - m_scrollOffset);
+    }
+
+
+
     float maxScroll = 0;
     maxScroll = 0;
     for (auto &el : m_elements)
@@ -70,7 +77,7 @@ void TextureGenEngine::ScrollView::RecalculateMaxScroll()
     maxScroll *= m_direction;
     if (maxScroll < 0)
     {
-        m_minScroll = maxScroll;
+        m_minScroll = maxScroll + m_direction*20;
         m_maxScroll = 0;
         return;
     }
@@ -107,6 +114,8 @@ float TextureGenEngine::ScrollView::GetItemOffset(Component *el)
     }
     return offset;
 }
+
+
 
 void TextureGenEngine::ScrollView::OnScroll(float x, float y)
 {

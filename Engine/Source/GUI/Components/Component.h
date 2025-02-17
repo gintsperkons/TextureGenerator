@@ -20,8 +20,8 @@ namespace TextureGenEngine
         Component *m_parent = nullptr;
         float m_x;
         float m_y;
-        float m_width;
-        float m_height;
+        float m_width = 0;
+        float m_height = 0;
         std::string m_type = "base";
         bool m_selectable = false;
         bool m_draggable = false;

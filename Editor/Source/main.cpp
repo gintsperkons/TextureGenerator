@@ -17,41 +17,85 @@
 #include <Core/FileHandler/FileHandler.h>
 #include <GUI/Components/Canvas2D/NodeElements/NodeTypes.h>
 
+enum class NodeCategory
+{
+  GEN,
+  INPUT,
+  PROCESS,
+  OUTPUT,
+};
+
+struct NodeCatComare
+{
+
+  bool operator()(const NodeCategory &lhs, const NodeCategory &rhs) const
+
+  {
+
+    return static_cast<int>(lhs) < static_cast<int>(rhs);
+  }
+};
+
 typedef std::map<
 	NodeFactory::NodeType,
-	std::pair<std::function<TextureGenEngine::Node *(TextureGenEngine::Canvas2D *, std::string, int, int)>, std::string>,
+	std::pair<std::function<TextureGenEngine::Node *(TextureGenEngine::Canvas2D *, std::string, int, int)>, std::pair<std::string, NodeCategory>>,
 	NodeFactory::NodeTypeCompare>
 	NodeFunctionMap;
 
+typedef std::map<
+    NodeCategory,
+    std::pair<TextureGenEngine::Dropdown *, std::string>,
+    NodeCatComare>
+    NodeCategoryMap;
+
+
+
+NodeCategoryMap nodeCategoryMap = {
+  {NodeCategory::GEN, {nullptr, "Gen"}},
+  {NodeCategory::INPUT, {nullptr, "Input"}},
+  {NodeCategory::PROCESS, {nullptr, "Process"}},
+  {NodeCategory::OUTPUT, {nullptr, "Output"}},
+};
+
 NodeFunctionMap nodeFunctionMap = {
-	{NodeFactory::NodeType::OUTPUT, {&NodeFactory::OutputNode, "Export Image"}},
-	{NodeFactory::NodeType::TEXT, {&NodeFactory::TextNode, "Text"}},
-	{NodeFactory::NodeType::TEXT_MERGE, {&NodeFactory::TextMergeNode, "Text Merge"}},
-	{NodeFactory::NodeType::INTEGER, {&NodeFactory::IntegerNode, "Integer"}},
-	{NodeFactory::NodeType::FLOAT, {&NodeFactory::FloatNode, "Float"}},
-	{NodeFactory::NodeType::PERLIN_GEN_IMAGE, {&NodeFactory::PerlinGenImage, "Perlin Gen"}},
-	{NodeFactory::NodeType::ADD_INT, {&NodeFactory::AddIntNode, "Add Int"}},
-	{NodeFactory::NodeType::SUBTRACT_INT, {&NodeFactory::SubtractIntNode, "Subtract Int"}},
-	{NodeFactory::NodeType::MULTIPLY_INT, {&NodeFactory::MultiplyIntNode, "Multiply Int"}},
-	{NodeFactory::NodeType::DIVIDE_INT, {&NodeFactory::DivideIntNode, "Divide Int"}},
-	{NodeFactory::NodeType::ADD_FLOAT, {&NodeFactory::AddFloatNode, "Add Float"}},
-	{NodeFactory::NodeType::SUBTRACT_FLOAT, {&NodeFactory::SubtractFloatNode, "Subtract Float"}},
-	{NodeFactory::NodeType::MULTIPLY_FLOAT, {&NodeFactory::MultiplyFloatNode, "Multiply Float"}},
-	{NodeFactory::NodeType::DIVIDE_FLOAT, {&NodeFactory::DivideFloatNode, "Divide Float"}},
-  {NodeFactory::NodeType::CELLULAR_GEN_IMAGE, {&NodeFactory::CellularGenImage, "Cellular Gen"}}};
+	{NodeFactory::NodeType::OUTPUT, {&NodeFactory::OutputNode, {"Export Image",NodeCategory::OUTPUT}}},
+	{NodeFactory::NodeType::TEXT, {&NodeFactory::TextNode, {"Text",NodeCategory::INPUT}}},
+	{NodeFactory::NodeType::TEXT_MERGE, {&NodeFactory::TextMergeNode, {"Text Merge",NodeCategory::PROCESS}}},
+	{NodeFactory::NodeType::INTEGER, {&NodeFactory::IntegerNode, {"Integer",NodeCategory::INPUT}}},
+	{NodeFactory::NodeType::FLOAT, {&NodeFactory::FloatNode, {"Float",NodeCategory::INPUT}}},
+	{NodeFactory::NodeType::PERLIN_GEN_IMAGE, {&NodeFactory::PerlinGenImage, {"Perlin Gen",NodeCategory::GEN}}},
+	{NodeFactory::NodeType::ADD_INT, {&NodeFactory::AddIntNode, {"Add Int",NodeCategory::PROCESS}}},
+	{NodeFactory::NodeType::SUBTRACT_INT, {&NodeFactory::SubtractIntNode, {"Subtract Int",NodeCategory::PROCESS}}},
+	{NodeFactory::NodeType::MULTIPLY_INT, {&NodeFactory::MultiplyIntNode, {"Multiply Int",NodeCategory::PROCESS}}},
+	{NodeFactory::NodeType::DIVIDE_INT, {&NodeFactory::DivideIntNode, {"Divide Int",NodeCategory::PROCESS}}},
+	{NodeFactory::NodeType::ADD_FLOAT, {&NodeFactory::AddFloatNode, {"Add Float",NodeCategory::PROCESS}}},
+	{NodeFactory::NodeType::SUBTRACT_FLOAT, {&NodeFactory::SubtractFloatNode, {"Subtract Float",NodeCategory::PROCESS}}},
+	{NodeFactory::NodeType::MULTIPLY_FLOAT, {&NodeFactory::MultiplyFloatNode, {"Multiply Float",NodeCategory::PROCESS}}},
+	{NodeFactory::NodeType::DIVIDE_FLOAT, {&NodeFactory::DivideFloatNode, {"Divide Float",NodeCategory::PROCESS}}},
+  {NodeFactory::NodeType::CELLULAR_GEN_IMAGE, {&NodeFactory::CellularGenImage, {"Cellular Gen",NodeCategory::GEN}}}};
 
 int sideBarWidth = 300;
 std::string nodeSaveFile = "nodeSaveData.tgsn";
 
 void CreateClickables(NodeFunctionMap nodeFunctionList, TextureGenEngine::ScrollView *parentView, TextureGenEngine::Canvas2D *canvasNodeGraph)
 {
+  
 	for (const auto &[nodeType, nodePair] : nodeFunctionList)
 	{
-		TextureGenEngine::Clickable *clickable = new TextureGenEngine::Clickable();
-		clickable->OnClick([cng = canvasNodeGraph, nodeFunc = nodePair.first, title = nodePair.second]()
+    if (nodeCategoryMap.find(nodePair.second.second) != nodeCategoryMap.end() && nodeCategoryMap[nodePair.second.second].first == nullptr)
+    {
+      nodeCategoryMap[nodePair.second.second].first = new TextureGenEngine::Dropdown();
+      nodeCategoryMap[nodePair.second.second].first->SetText(nodeCategoryMap[nodePair.second.second].second);
+      parentView->AddElement(nodeCategoryMap[nodePair.second.second].first);
+
+    }
+    TextureGenEngine::Dropdown *dropdown = nodeCategoryMap[nodePair.second.second].first;
+    TextureGenEngine::Clickable *clickable = new TextureGenEngine::Clickable();
+    clickable->SetText(nodePair.second.first);
+		clickable->OnClick([cng = canvasNodeGraph, nodeFunc = nodePair.first, title = nodePair.second.first]()
 						   { nodeFunc(cng, title, 0, 0); });
-		clickable->SetText(nodePair.second);
-		parentView->AddElement(clickable);
+		dropdown->AddElement(clickable);
+
 	}
 }
 
@@ -121,7 +165,7 @@ void LoadSaveString(std::string saveData, TextureGenEngine::Canvas2D *canvasNode
 			int x = std::stoi(parts[2]) - sideBarWidth;
 			int y = std::stoi(parts[3]);
 			nodeMap.insert({uuid, nodeFunctionMap[static_cast<NodeFactory::NodeType>(nodeId)].first(canvasNodeGraph,
-																									nodeFunctionMap[static_cast<NodeFactory::NodeType>(nodeId)].second, x, y)});
+																									nodeFunctionMap[static_cast<NodeFactory::NodeType>(nodeId)].second.first, x, y)});
 			for (int i = 4; i < parts.size(); i++)
 			{
 				if (parts[i] != "-=-")
