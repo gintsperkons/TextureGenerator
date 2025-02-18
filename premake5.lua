@@ -19,6 +19,7 @@ group "Dependencies"
    include "Vendor/Libraries/GLFW"
    include "Vendor/Libraries/freetype"
    include "Vendor/Libraries/FastNoise2"
+   include "Vendor/Libraries/TinyFileDialog"
 
 group "TextureGenerator"
 include "Engine"

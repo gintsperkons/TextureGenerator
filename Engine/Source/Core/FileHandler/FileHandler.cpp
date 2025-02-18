@@ -1,4 +1,5 @@
 #include "FileHandler.h"
+#include "Core/Logger/Logger.h"
 #include <fstream>
 #include <iostream>
 #define STB_IMAGE_WRITE_IMPLEMENTATION
@@ -92,7 +93,7 @@ TAPI std::vector<std::string> TextureGenEngine::SplitString(std::string str, cha
 void TextureGenEngine::WriteImage(std::string filePath, std::string exstension, unsigned char *data, int width, int height, int channels)
 {
     std::string fullPath = filePath + "." + exstension;
-    fullPath = GetAbsolutePath(fullPath);
+    LOG_DEBUG("testsssss %s\n",fullPath.c_str());
     if (exstension == "png")
         stbi_write_png(fullPath.c_str(), width, height, 4, data, width * 4);
 }

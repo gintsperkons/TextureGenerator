@@ -16,3 +16,6 @@
 [submodule "Vendor/Libraries/FastNoise2"]
 	path = Vendor/Libraries/FastNoise2
 	url = https://github.com/gintsperkons/FastNoise2Premake.git
+[submodule "Vendor/Libraries/TinyFileDialog"]
+	path = Vendor/Libraries/TinyFileDialog
+	url = https://github.com/gintsperkons/tinyfiledialogs.git
