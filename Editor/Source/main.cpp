@@ -96,15 +96,9 @@ void CreateClickables(NodeFunctionMap nodeFunctionList, TextureGenEngine::Scroll
   }
 }
 
-void SetupMenu(TextureGenEngine::MenuBar *menuBar)
+void ClearNodes(TextureGenEngine::Canvas2D *canvasNodeGraph)
 {
-  TextureGenEngine::Menu *menu = new TextureGenEngine::Menu("File");
-  menu->SetBackground(TextureGenEngine::Color(0.13671875f, 0.13671875f, 0.13671875f, 1.0f));
-  menuBar->AddMenu(menu);
-
-  TextureGenEngine::Menu *menu2 = new TextureGenEngine::Menu("Options");
-  menu2->SetBackground(TextureGenEngine::Color(0.13671875f, 0.13671875f, 0.13671875f, 1.0f));
-  menuBar->AddMenu(menu2);
+  canvasNodeGraph->ClearNodes();
 }
 
 std::string CreateSaveData(std::vector<TextureGenEngine::Node *> nodes)
@@ -187,7 +181,7 @@ void LoadSaveString(std::string saveData, TextureGenEngine::Canvas2D *canvasNode
   }
 }
 
-void ExportImage(TextureGenEngine::Canvas2D *canvasNodeGraph,std::string folder)
+void ExportImage(TextureGenEngine::Canvas2D *canvasNodeGraph, std::string folder)
 {
   LOG_DEBUG("test finut %s\n", folder);
   std::vector<TextureGenEngine::Node *> nodes(canvasNodeGraph->GetNodeCount());
@@ -221,11 +215,64 @@ void ExportImage(TextureGenEngine::Canvas2D *canvasNodeGraph,std::string folder)
         height = imagePreview->GetImageHeight();
         unsigned char *data = new unsigned char[width * height * 4];
         data = imagePreview->GetCharData();
-        TextureGenEngine::WriteImage(folder+"/"+fileName, "png", data, width, height, 4);
+        TextureGenEngine::WriteImage(folder + "/" + fileName, "png", data, width, height, 4);
       }
     }
   }
 }
+void LoadNodes(TextureGenEngine::Canvas2D *canvasNodeGraph)
+{
+  char const *filterPatterns[1] = {"*.tgsn"};
+  std::string filePath = TextureGenEngine::LoadFileDialog("Load File", "", 1, filterPatterns, "TexGen File Type", 0);
+  std::string saveData = TextureGenEngine::ReadFile(filePath);
+  try
+  {
+    LoadSaveString(saveData, canvasNodeGraph);
+  }
+  catch (const std::exception &e)
+  {
+    LOG_ERROR("Error loading save data\n");
+  }
+}
+
+void SaveNodes(TextureGenEngine::Canvas2D *canvasNodeGraph)
+{
+  char const *filterPatterns[1] = {"*.tgsn"};
+  std::string filePath = TextureGenEngine::SaveFileDialog("Select Save File", "nodeSaveData.tgsn", 1, filterPatterns, "TexGen File Type");
+  LOG_DEBUG("Key pressed ctrl + s %s\n", filePath);
+  std::vector<TextureGenEngine::Node *> nodes(canvasNodeGraph->GetNodeCount());
+  canvasNodeGraph->GetAllNodes(nodes);
+  std::string saveData = CreateSaveData(nodes);
+  TextureGenEngine::WriteFile(filePath, saveData);
+}
+
+void ExportNodes(TextureGenEngine::Canvas2D *canvasNodeGraph)
+{
+  std::string folder = TextureGenEngine::SelectFolderDialog("Select Image Export Location", "");
+  ExportImage(canvasNodeGraph, folder);
+}
+
+void SetupMenu(TextureGenEngine::MenuBar *menuBar, TextureGenEngine::Canvas2D *canvasNodeGraph)
+{
+  TextureGenEngine::Menu *menu = new TextureGenEngine::Menu("File");
+  menu->SetBackground(TextureGenEngine::Color(0.13671875f, 0.13671875f, 0.13671875f, 1.0f));
+  TextureGenEngine::MenuItem *item = new TextureGenEngine::MenuItem("Load", [canvasNodeGraph]()
+                                                                    { LoadNodes(canvasNodeGraph); });
+  TextureGenEngine::MenuItem *item2 = new TextureGenEngine::MenuItem("Save",  [canvasNodeGraph]() { SaveNodes(canvasNodeGraph); });
+  TextureGenEngine::MenuItem *item3 = new TextureGenEngine::MenuItem("Export", [canvasNodeGraph]() { ExportNodes(canvasNodeGraph); });
+  menu->AddItem(item);
+  menu->AddItem(item2);
+  menu->AddItem(item3);
+  menuBar->AddMenu(menu);
+
+  TextureGenEngine::Menu *menu2 = new TextureGenEngine::Menu("Options");
+  menu2->SetBackground(TextureGenEngine::Color(0.13671875f, 0.13671875f, 0.13671875f, 1.0f));
+  TextureGenEngine::MenuItem *item4 = new TextureGenEngine::MenuItem("Clear", [canvasNodeGraph]()
+                                                                     { ClearNodes(canvasNodeGraph); });
+  menu2->AddItem(item4);
+  menuBar->AddMenu(menu2);
+}
+
 
 void handleKeyPress(KeyEvent e, TextureGenEngine::Canvas2D *canvasNodeGraph)
 {
@@ -240,7 +287,7 @@ void handleKeyPress(KeyEvent e, TextureGenEngine::Canvas2D *canvasNodeGraph)
   if (TextureGenEngine::Key::KeyCode::S == e.key &&
       TextureGenEngine::Key::KeyAction::Press == e.action &&
       TextureGenEngine::Key::KeyModifier::Control == e.mods)
-  {    
+  {
     char const *filterPatterns[1] = {"*.tgsn"};
     std::string filePath = TextureGenEngine::SaveFileDialog("Select Save File", "nodeSaveData.tgsn", 1, filterPatterns, "TexGen File Type");
     LOG_DEBUG("Key pressed ctrl + s %s\n", filePath);
@@ -255,8 +302,8 @@ void handleKeyPress(KeyEvent e, TextureGenEngine::Canvas2D *canvasNodeGraph)
   {
     LOG_DEBUG("Key pressed ctrl + l\n");
     char const *filterPatterns[1] = {"*.tgsn"};
-    std::string filePath = TextureGenEngine::LoadFileDialog("Load File", "", 1, filterPatterns,"TexGen File Type",0);
-     std::string saveData = TextureGenEngine::ReadFile(filePath);
+    std::string filePath = TextureGenEngine::LoadFileDialog("Load File", "", 1, filterPatterns, "TexGen File Type", 0);
+    std::string saveData = TextureGenEngine::ReadFile(filePath);
     try
     {
       LoadSaveString(saveData, canvasNodeGraph);
@@ -271,18 +318,18 @@ void handleKeyPress(KeyEvent e, TextureGenEngine::Canvas2D *canvasNodeGraph)
       TextureGenEngine::Key::KeyModifier::Control == e.mods)
   {
     LOG_DEBUG("Key pressed ctrl + e export\n");
-    std::string folder = TextureGenEngine::SelectFolderDialog("Select Image Export Location","");
-    ExportImage(canvasNodeGraph,folder);
+    std::string folder = TextureGenEngine::SelectFolderDialog("Select Image Export Location", "");
+    ExportImage(canvasNodeGraph, folder);
   }
   if (TextureGenEngine::Key::KeyCode::C == e.key &&
       TextureGenEngine::Key::KeyAction::Press == e.action &&
       TextureGenEngine::Key::KeyModifier::Control == e.mods)
   {
     LOG_DEBUG("Key pressed ctrl + c clear\n");
-    canvasNodeGraph->ClearNodes();
   }
-
 }
+
+
 
 int main()
 {
@@ -292,11 +339,6 @@ int main()
 
   TextureGenEngine::GUIManager *guiManager = new TextureGenEngine::GUIManager();
 
-  // Create a menu bar
-  TextureGenEngine::MenuBar *menuBar = new TextureGenEngine::MenuBar();
-  menuBar->SetBackground(TextureGenEngine::Color(0.13671875f, 0.13671875f, 0.13671875f, 1.0f));
-  guiManager->AddComponent(menuBar);
-  SetupMenu(menuBar);
   // Create a canvas for the node graph
   TextureGenEngine::Canvas2D *canvasNodeGraph = new TextureGenEngine::Canvas2D(sideBarWidth, 0, 500, 100, TextureGenEngine::ScalingType::FILL, TextureGenEngine::ScalingType::FILL);
   canvasNodeGraph->SetBackground(TextureGenEngine::Color(0.2890625f, 0.2890625f, 0.2890625f, 1.0f));
@@ -316,6 +358,12 @@ int main()
   TextureGenEngine::Panel *panelPreview = new TextureGenEngine::Panel(0, 0, sideBarWidth, 300, TextureGenEngine::ScalingType::FIXED, TextureGenEngine::ScalingType::FIXED);
   panelPreview->SetBackground(TextureGenEngine::Color(0.0f, 0.0f, 1.0f, 1.0f));
   guiManager->AddComponent(panelPreview);
+
+  // Create a menu bar
+  TextureGenEngine::MenuBar *menuBar = new TextureGenEngine::MenuBar();
+  menuBar->SetBackground(TextureGenEngine::Color(0.13671875f, 0.13671875f, 0.13671875f, 1.0f));
+  guiManager->AddComponent(menuBar);
+  SetupMenu(menuBar, canvasNodeGraph);
 
   engine->GetMainWindow()->AddGUI(guiManager);
   // Main loop

@@ -1,4 +1,5 @@
 #include "MenuBar.h"
+#include "Core/Logger/Logger.h"
 #include "Core/Renderer/Mesh.h"
 #include "Menu.h"
 
@@ -13,6 +14,10 @@ void TextureGenEngine::MenuBar::Init(float width, float height)
     m_y = height - m_height;
     m_background->SetPosition(m_x, m_y);
     m_width = width;
+    for (auto &menu : m_menus)
+    {
+        menu->Init(width, height);
+    }
 
 }
 
@@ -43,6 +48,15 @@ void TextureGenEngine::MenuBar::OnHover(float x, float y)
     for (auto &menu : m_menus)
     {
         menu->OnHover(x, y);
+    }
+}
+
+void TextureGenEngine::MenuBar::Click(float x, float y)
+{
+  LOG_DEBUG("ClickingMenuBar\n");
+    for (auto &menu : m_menus)
+    {
+        menu->Click(x, y);
     }
 }
 

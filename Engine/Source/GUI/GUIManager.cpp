@@ -151,10 +151,9 @@ void TextureGenEngine::GUIManager::MouseClick(MouseButtonEvent e)
         SelectObject((float)e.x, (float)e.y);
         for (auto &child : m_children)
         {
-            if (child->CheckCollision((float)e.x, (float)e.y))
-            {
+            
                 child->Click((float)e.x, (float)e.y);
-            }
+            
             // child->OnMouseClick(button, action);
         }
     }
