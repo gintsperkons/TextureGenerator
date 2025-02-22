@@ -537,3 +537,47 @@ TextureGenEngine::Node *NodeFactory::MergeImageByFloat(TextureGenEngine::Canvas2
 
   return node;
 }
+
+TextureGenEngine::Node *NodeFactory::BinaryThreshold(TextureGenEngine::Canvas2D *canvas, std::string title, int x, int y)
+{
+  TextureGenEngine::Node *node = SpawnNode(canvas, title, NodeType::BINARY_THRESHOLD, x, y);
+
+  TextureGenEngine::ImageInputElement *imageInput = AddNodeElement<TextureGenEngine::ImageInputElement>(node);
+  TextureGenEngine::IntegerElement *thresholdInput = AddNodeElement<TextureGenEngine::IntegerElement>(node);
+  TextureGenEngine::ImagePreviewElement *imagePreview = AddNodeElement<TextureGenEngine::ImagePreviewElement>(node);
+
+  TextureGenEngine::OutputConnector *outElement = SetOutputConnector(node, TextureGenEngine::NodeDataTypes::IMAGE);
+
+  imagePreview->SetImageSize(c_imageSize, c_imageSize);
+  
+  std::function binaryThreshold = [imageInput, thresholdInput, imagePreview, node]()
+  {
+    imagePreview->LoadingScreen();
+    imageWorkerQueue.AddJob(node->GetUUID(), [imagePreview, imageInput, thresholdInput](std::shared_ptr<std::atomic<bool>> cancelFlag)
+                            {
+                              if (cancelFlag.get()->load())
+                                return;
+                              int threshold;
+                              thresholdInput->GetData(threshold);
+                              TextureGenEngine::TextureData *textureData = imagePreview->GetImageData();
+
+                              textureData->BinaryThreshold(imageInput->GetData(), threshold);
+                              if (cancelFlag.get()->load())
+                                return;
+                              imagePreview->SetTextureData(textureData); 
+                            });
+  };
+
+  imageInput->SetOnDataChange([binaryThreshold]()
+                              { binaryThreshold(); });
+  thresholdInput->SetOnDataChange([binaryThreshold]()
+                                  { binaryThreshold(); });
+
+  imagePreview->SetOnImageChange([outElement]()
+                                 { outElement->TriggerUpdate(); });
+
+  outElement->SetOnUpdate([imagePreview, outElement]()
+                          { outElement->UpdateData(imagePreview->GetImageData()); });
+
+  return node;
+}

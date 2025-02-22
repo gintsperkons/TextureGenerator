@@ -74,7 +74,9 @@ NodeFunctionMap nodeFunctionMap = {
     {NodeFactory::NodeType::MULTIPLY_FLOAT, {&NodeFactory::MultiplyFloatNode, {"Multiply Float", NodeCategory::PROCESS}}},
     {NodeFactory::NodeType::DIVIDE_FLOAT, {&NodeFactory::DivideFloatNode, {"Divide Float", NodeCategory::PROCESS}}},
     {NodeFactory::NodeType::CELLULAR_GEN_IMAGE, {&NodeFactory::CellularGenImage, {"Cellular Gen", NodeCategory::GEN}}},
-    {NodeFactory::NodeType::MERGE_IMAGE_BY_FLOAT, {&NodeFactory::MergeImageByFloat, {"Merge Image By Float", NodeCategory::IMAGE_PROCESS}}}};
+    {NodeFactory::NodeType::MERGE_IMAGE_BY_FLOAT, {&NodeFactory::MergeImageByFloat, {"Merge Image By Float", NodeCategory::IMAGE_PROCESS}}},
+    {NodeFactory::NodeType::BINARY_THRESHOLD, {&NodeFactory::BinaryThreshold, {"Binary Threshold", NodeCategory::IMAGE_PROCESS}}}    
+    };
 
 int sideBarWidth = 300;
 std::string nodeSaveFile = "nodeSaveData.tgsn";

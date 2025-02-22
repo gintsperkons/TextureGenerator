@@ -91,6 +91,32 @@ void TextureGenEngine::TextureData::MergeByFloat(TextureData *data1, TextureData
   LOG_DEBUG("Merging by 333333\n");
 }
 
+void TextureGenEngine::TextureData::BinaryThreshold(TextureData *data1, int threshold)
+{
+  if (!data1)
+    return;
+  if (!data1->Valid())
+  {
+    return;
+  }
+  m_pixels.resize(data1->GetWidth() * data1->GetHeight());
+  for (int x = 0; x < data1->GetWidth(); x++)
+  {
+    for (int y = 0; y < data1->GetHeight(); y++)
+    {
+      TextureGenEngine::Pixel pixel1 = data1->GetPixel(x, y);
+      if (pixel1.GetR() > threshold)
+      {
+        SetPixel(x, y, 255, 255, 255, 255);
+      }
+      else
+      {
+        SetPixel(x, y, 0, 0, 0, 255);
+      }
+    }
+  }
+}
+
 bool TextureGenEngine::TextureData::Valid()
 {
   return m_width > 0 && m_height > 0 && m_pixels.size() >= m_width * m_height;

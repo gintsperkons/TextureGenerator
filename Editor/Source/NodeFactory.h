@@ -23,7 +23,8 @@ namespace NodeFactory
     PERLIN_GEN_IMAGE,
     CELLULAR_GEN_IMAGE,
     OUTPUT,
-    MERGE_IMAGE_BY_FLOAT
+    MERGE_IMAGE_BY_FLOAT,
+    BINARY_THRESHOLD
   };
   struct NodeTypeCompare
   {
@@ -63,4 +64,5 @@ namespace NodeFactory
 
   // Image Manipulation nodes
   TextureGenEngine::Node *MergeImageByFloat(TextureGenEngine::Canvas2D* canvas, std::string title = "Merge With Float",int x = 0, int y = 0);
+  TextureGenEngine::Node *BinaryThreshold(TextureGenEngine::Canvas2D* canvas, std::string title = "Binary Threshold",int x = 0, int y = 0);
 } // namespace NodeFactory

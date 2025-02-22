@@ -49,6 +49,7 @@ namespace TextureGenEngine
     std::vector<Pixel> GetPixels() const { return m_pixels; }
     unsigned char *GetRawData();
     TAPI void MergeByFloat(TextureData *data1, TextureData *data2, float factor);
+    TAPI void BinaryThreshold(TextureData *data1, int threshold);
     bool Valid();
   };
 } // namespace TextureGenEngine
