@@ -12,7 +12,6 @@ namespace TextureGenEngine
   private:
     bool m_needsUpdate = false;
     TextureData *m_textureData = nullptr;
-    std::vector<float> m_imageData;
     Texture *m_texture = nullptr;
     int m_imageSize[2];
     std::function<void()> m_onImageChange = nullptr;
@@ -26,8 +25,6 @@ namespace TextureGenEngine
     TAPI void SetImageSize(int width, int height);
     TAPI int GetImageWidth() { return m_imageSize[0]; };
     TAPI int GetImageHeight() { return m_imageSize[1]; };
-    TAPI float *GetImageDataPtr() { return m_imageData.data(); };
-    void UpdateImageBuffer();
     TAPI void LoadingScreen();
     TAPI void UpdateImage();
     TAPI TextureData *GetImageData();

@@ -36,9 +36,10 @@ namespace TextureGenEngine
     std::vector<TextureGenEngine::Pixel> m_pixels;
 
   public:
-    TextureData(int width, int height);
+   TAPI  TextureData(int width, int height);
     ~TextureData();
     void SetPixel(int x, int y, TextureGenEngine::Pixel pixel);
+    TAPI void SetPixel(int x, int y, unsigned char r, unsigned char g, unsigned char b, unsigned char a);
     TextureGenEngine::Pixel GetPixel(int x, int y);
     void SetSize(int width, int height);
     void UpdatePixel(int x, int y, unsigned char r, unsigned char g, unsigned char b, unsigned char a);
@@ -47,6 +48,7 @@ namespace TextureGenEngine
     int GetChannels() const { return m_channels; }
     std::vector<Pixel> GetPixels() const { return m_pixels; }
     unsigned char *GetRawData();
+    TAPI void MergeByFloat(TextureData *data1, TextureData *data2, float factor);
     bool Valid();
   };
 } // namespace TextureGenEngine

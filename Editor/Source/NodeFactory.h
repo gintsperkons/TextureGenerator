@@ -23,6 +23,7 @@ namespace NodeFactory
     PERLIN_GEN_IMAGE,
     CELLULAR_GEN_IMAGE,
     OUTPUT,
+    MERGE_IMAGE_BY_FLOAT
   };
   struct NodeTypeCompare
   {
@@ -59,4 +60,7 @@ namespace NodeFactory
   // pattern generation nodes
   TextureGenEngine::Node *PerlinGenImage(TextureGenEngine::Canvas2D *canvas, std::string title = "Divide Float", int x = 0, int y = 0);
   TextureGenEngine::Node *CellularGenImage(TextureGenEngine::Canvas2D *canvas, std::string title = "Divide Float", int x = 0, int y = 0);
+
+  // Image Manipulation nodes
+  TextureGenEngine::Node *MergeImageByFloat(TextureGenEngine::Canvas2D* canvas, std::string title = "Merge With Float",int x = 0, int y = 0);
 } // namespace NodeFactory

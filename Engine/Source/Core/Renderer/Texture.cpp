@@ -55,6 +55,7 @@ void TextureGenEngine::Texture::LoadTexture(TextureData *data)
 
 void TextureGenEngine::Texture::UpdateTexture(TextureData *data)
 {
+    
     if (data->Valid() == false) return;
     LOG_DEBUG("Updating texture with width %d and height %d size %d\n", data->GetWidth(), data->GetHeight(), data->GetPixels().size());
     m_Channels = data->GetChannels();

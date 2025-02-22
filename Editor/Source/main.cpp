@@ -24,6 +24,7 @@ enum class NodeCategory
   INPUT,
   PROCESS,
   OUTPUT,
+  IMAGE_PROCESS
 };
 
 struct NodeCatComare
@@ -54,6 +55,7 @@ NodeCategoryMap nodeCategoryMap = {
     {NodeCategory::INPUT, {nullptr, "Input"}},
     {NodeCategory::PROCESS, {nullptr, "Process"}},
     {NodeCategory::OUTPUT, {nullptr, "Output"}},
+    {NodeCategory::IMAGE_PROCESS, {nullptr, "Image Process"}}
 };
 
 NodeFunctionMap nodeFunctionMap = {
@@ -71,7 +73,8 @@ NodeFunctionMap nodeFunctionMap = {
     {NodeFactory::NodeType::SUBTRACT_FLOAT, {&NodeFactory::SubtractFloatNode, {"Subtract Float", NodeCategory::PROCESS}}},
     {NodeFactory::NodeType::MULTIPLY_FLOAT, {&NodeFactory::MultiplyFloatNode, {"Multiply Float", NodeCategory::PROCESS}}},
     {NodeFactory::NodeType::DIVIDE_FLOAT, {&NodeFactory::DivideFloatNode, {"Divide Float", NodeCategory::PROCESS}}},
-    {NodeFactory::NodeType::CELLULAR_GEN_IMAGE, {&NodeFactory::CellularGenImage, {"Cellular Gen", NodeCategory::GEN}}}};
+    {NodeFactory::NodeType::CELLULAR_GEN_IMAGE, {&NodeFactory::CellularGenImage, {"Cellular Gen", NodeCategory::GEN}}},
+    {NodeFactory::NodeType::MERGE_IMAGE_BY_FLOAT, {&NodeFactory::MergeImageByFloat, {"Merge Image By Float", NodeCategory::IMAGE_PROCESS}}}};
 
 int sideBarWidth = 300;
 std::string nodeSaveFile = "nodeSaveData.tgsn";

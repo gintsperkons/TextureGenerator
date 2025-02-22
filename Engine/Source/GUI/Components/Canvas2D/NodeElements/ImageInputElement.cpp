@@ -8,7 +8,7 @@ TextureGenEngine::ImageInputElement::ImageInputElement()
     m_y = 0;
     m_width = 100;
     m_height = 20;
-    m_dataType = NodeDataTypes::PATTERNGENERATOR;
+    m_dataType = NodeDataTypes::IMAGE;
     m_inputImage->SetDataType(m_dataType);
 }
 

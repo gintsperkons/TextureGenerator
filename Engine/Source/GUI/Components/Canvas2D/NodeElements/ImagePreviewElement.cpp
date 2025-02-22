@@ -23,7 +23,6 @@ TextureGenEngine::ImagePreviewElement::ImagePreviewElement()
 
     m_texture = new TextureGenEngine::Texture();
     m_textureData = new TextureData(m_imageSize[0], m_imageSize[1]);
-    m_imageData.resize(m_imageSize[0] * m_imageSize[1]);
     m_background->ChangeColor(1.0f, 1.0f, 1.0f, 1.0f);
     m_texture->LoadTexture(m_textureData);
     m_background->ChangeTexture(m_texture);
@@ -55,8 +54,9 @@ void TextureGenEngine::ImagePreviewElement::Draw()
 {
     NodeElement::Draw();
     if (m_needsUpdate)
-    {
-        UpdateImageBuffer();
+    {   
+        m_background->ChangeTexture(m_texture);
+        m_texture->UpdateTexture(m_textureData);
         m_needsUpdate = false;
     }
 }
@@ -67,34 +67,9 @@ TAPI void TextureGenEngine::ImagePreviewElement::SetImageSize(int width, int hei
     m_imageSize[0] = width;
     m_imageSize[1] = height;
     m_textureData->SetSize(m_imageSize[0], m_imageSize[1]);
-    m_imageData.resize(m_imageSize[0] * m_imageSize[1]);
     m_texture->UpdateTexture(m_textureData);
 }
 
-void TextureGenEngine::ImagePreviewElement::UpdateImageBuffer()
-{
-    LOG_DEBUG("Updating image\n");
-    m_background->ChangeTexture(m_texture);
-    LOG_DEBUG("Width %d Height %d\n", m_imageSize[0], m_imageSize[1]);
-    LOG_DEBUG("Data size %d\n", m_imageData.size());
-    for (int i = 0; i < m_imageSize[0]; i++)
-    {
-        for (int j = 0; j < m_imageSize[1]; j++)
-        {
-            if (i * m_imageSize[0] + j < m_imageData.size())
-            {
-                int color = static_cast<int>((m_imageData[i * m_imageSize[0] + j] + 1) * 127.5);
-                m_textureData->UpdatePixel(i, j, color, color, color, 255);
-            }
-        }
-    }
-    m_texture->UpdateTexture(m_textureData);
-
-    if (m_onImageChange)
-    {
-      m_onImageChange();
-    }
-}
 
  void TextureGenEngine::ImagePreviewElement::LoadingScreen()
 {
@@ -115,8 +90,10 @@ TextureGenEngine::TextureData *TextureGenEngine::ImagePreviewElement::GetImageDa
 
  void TextureGenEngine::ImagePreviewElement::SetTextureData(TextureData *data)
 {
+  
   m_textureData = data;
   m_texture->UpdateTexture(m_textureData);
+  UpdateImage();
   if (m_onImageChange)
   {
     m_onImageChange();
