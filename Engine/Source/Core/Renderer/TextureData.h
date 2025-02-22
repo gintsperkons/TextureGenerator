@@ -50,6 +50,9 @@ namespace TextureGenEngine
     unsigned char *GetRawData();
     TAPI void MergeByFloat(TextureData *data1, TextureData *data2, float factor);
     TAPI void BinaryThreshold(TextureData *data1, int threshold);
+    TAPI void Mask(TextureData *image, TextureData *mask);
+    TAPI void Invert(TextureData *image);
+    TAPI void Color(int r, int g, int b, int a);
     bool Valid();
   };
 } // namespace TextureGenEngine

@@ -581,3 +581,139 @@ TextureGenEngine::Node *NodeFactory::BinaryThreshold(TextureGenEngine::Canvas2D 
 
   return node;
 }
+
+TextureGenEngine::Node *NodeFactory::MaskImage(TextureGenEngine::Canvas2D *canvas, std::string title, int x, int y)
+{
+  TextureGenEngine::Node *node = SpawnNode(canvas, title, NodeType::MASK_IMAGE, x, y);
+
+  TextureGenEngine::ImageInputElement *imageInput = AddNodeElement<TextureGenEngine::ImageInputElement>(node);
+  TextureGenEngine::ImageInputElement *maskInput = AddNodeElement<TextureGenEngine::ImageInputElement>(node);
+  TextureGenEngine::ImagePreviewElement *imagePreview = AddNodeElement<TextureGenEngine::ImagePreviewElement>(node);
+
+  TextureGenEngine::OutputConnector *outElement = SetOutputConnector(node, TextureGenEngine::NodeDataTypes::IMAGE);
+
+  imagePreview->SetImageSize(c_imageSize, c_imageSize);
+
+  std::function maskImage = [imageInput, maskInput, imagePreview, node]()
+  {
+    imagePreview->LoadingScreen();
+    imageWorkerQueue.AddJob(node->GetUUID(), [imagePreview, imageInput, maskInput](std::shared_ptr<std::atomic<bool>> cancelFlag)
+                            {
+                              if (cancelFlag.get()->load())
+                                return;
+                              TextureGenEngine::TextureData *textureData = imagePreview->GetImageData();
+
+                              textureData->Mask(imageInput->GetData(), maskInput->GetData());
+                              if (cancelFlag.get()->load())
+                                return;
+                              imagePreview->SetTextureData(textureData);
+                            });
+  };
+
+  imageInput->SetOnDataChange([maskImage]()
+                              { maskImage(); });
+  maskInput->SetOnDataChange([maskImage]()
+                             { maskImage(); });
+
+  imagePreview->SetOnImageChange([outElement]()
+                                 { outElement->TriggerUpdate(); });   
+
+  outElement->SetOnUpdate([imagePreview, outElement]()
+                          { outElement->UpdateData(imagePreview->GetImageData()); }); 
+
+  return node;  
+}
+
+TextureGenEngine::Node *NodeFactory::InvertImage(TextureGenEngine::Canvas2D *canvas, std::string title, int x, int y)
+{
+  TextureGenEngine::Node *node = SpawnNode(canvas, title, NodeType::INVERT_IMAGE, x, y);
+
+  TextureGenEngine::ImageInputElement *imageInput = AddNodeElement<TextureGenEngine::ImageInputElement>(node);
+  TextureGenEngine::ImagePreviewElement *imagePreview = AddNodeElement<TextureGenEngine::ImagePreviewElement>(node);
+
+  TextureGenEngine::OutputConnector *outElement = SetOutputConnector(node, TextureGenEngine::NodeDataTypes::IMAGE);
+
+  imagePreview->SetImageSize(c_imageSize, c_imageSize);
+
+  std::function invertImage = [imageInput, imagePreview, node]()
+  {
+    imagePreview->LoadingScreen();
+    imageWorkerQueue.AddJob(node->GetUUID(), [imagePreview, imageInput](std::shared_ptr<std::atomic<bool>> cancelFlag)
+                            {
+                              if (cancelFlag.get()->load())
+                                return;
+                              TextureGenEngine::TextureData *textureData = imagePreview->GetImageData();
+
+                              textureData->Invert(imageInput->GetData());
+                              if (cancelFlag.get()->load())
+                                return;
+                              imagePreview->SetTextureData(textureData);
+                            });
+  };
+
+  imageInput->SetOnDataChange([invertImage]()
+                              { invertImage(); });          
+
+  imagePreview->SetOnImageChange([outElement]()
+                                 { outElement->TriggerUpdate(); });
+
+  outElement->SetOnUpdate([imagePreview, outElement]()
+                          { outElement->UpdateData(imagePreview->GetImageData()); });
+
+  return node;
+}
+
+TextureGenEngine::Node *NodeFactory::ColorNode(TextureGenEngine::Canvas2D *canvas, std::string title, int x, int y)
+{
+  TextureGenEngine::Node *node = SpawnNode(canvas, title, NodeType::COLOR_BASE, x, y);
+
+  TextureGenEngine::IntegerElement *redInput = AddNodeElement<TextureGenEngine::IntegerElement>(node);
+  TextureGenEngine::IntegerElement *greenInput = AddNodeElement<TextureGenEngine::IntegerElement>(node);
+  TextureGenEngine::IntegerElement *blueInput = AddNodeElement<TextureGenEngine::IntegerElement>(node);
+  TextureGenEngine::IntegerElement *alphaInput = AddNodeElement<TextureGenEngine::IntegerElement>(node);
+  TextureGenEngine::ImagePreviewElement *imagePreview = AddNodeElement<TextureGenEngine::ImagePreviewElement>(node);  
+
+  redInput->SetData(255);
+  greenInput->SetData(255);
+  blueInput->SetData(255);
+  alphaInput->SetData(255);
+
+  TextureGenEngine::OutputConnector *outElement = SetOutputConnector(node, TextureGenEngine::NodeDataTypes::IMAGE);
+
+  imagePreview->SetImageSize(c_imageSize, c_imageSize);
+
+  std::function colorImage = [redInput, greenInput, blueInput, alphaInput, imagePreview, node]()
+  {
+    imagePreview->LoadingScreen();
+    imageWorkerQueue.AddJob(node->GetUUID(), [imagePreview, redInput, greenInput, blueInput, alphaInput](std::shared_ptr<std::atomic<bool>> cancelFlag)
+                            {
+                              if (cancelFlag.get()->load())
+                                return;
+                              TextureGenEngine::TextureData *textureData = imagePreview->GetImageData();
+
+                              textureData->Color(redInput->GetData(), greenInput->GetData(), blueInput->GetData(), alphaInput->GetData());
+                              if (cancelFlag.get()->load())
+                                return;
+                              imagePreview->SetTextureData(textureData);                              
+                            });
+  };
+
+  redInput->SetOnDataChange([colorImage]()
+                            { colorImage(); });
+  greenInput->SetOnDataChange([colorImage]()
+                              { colorImage(); });
+  blueInput->SetOnDataChange([colorImage]()
+                             { colorImage(); });
+  alphaInput->SetOnDataChange([colorImage]()
+                              { colorImage(); });
+
+  imagePreview->SetOnImageChange([outElement]()
+                                 { outElement->TriggerUpdate(); });
+
+  outElement->SetOnUpdate([imagePreview, outElement]()
+                          { outElement->UpdateData(imagePreview->GetImageData()); });
+
+  colorImage();
+
+  return node;
+}

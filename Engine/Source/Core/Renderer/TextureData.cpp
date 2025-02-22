@@ -1,5 +1,6 @@
 #include "TextureData.h"
 #include "Core/Logger/Logger.h"
+#include <algorithm>
 
 TextureGenEngine::TextureData::TextureData(int width, int height)
     : m_width(width), m_height(height), m_channels(4), m_pixels(width * height)
@@ -113,6 +114,65 @@ void TextureGenEngine::TextureData::BinaryThreshold(TextureData *data1, int thre
       {
         SetPixel(x, y, 0, 0, 0, 255);
       }
+    }
+  }
+}
+
+void TextureGenEngine::TextureData::Mask(TextureData *image, TextureData *mask)
+{
+  if (!image || !mask)
+    return;
+  if (!image->Valid() || !mask->Valid() || image->GetWidth() != mask->GetWidth() || image->GetHeight() != mask->GetHeight() || image->GetChannels() != mask->GetChannels())
+  {
+    return;
+  }
+  m_pixels.resize(image->GetWidth() * image->GetHeight());
+  for (int x = 0; x < image->GetWidth(); x++)
+  {
+    for (int y = 0; y < image->GetHeight(); y++)
+    {
+      TextureGenEngine::Pixel pixel1 = image->GetPixel(x, y);
+      TextureGenEngine::Pixel pixel2 = mask->GetPixel(x, y);
+
+      int r = static_cast<int>(pixel1.GetR() * (1.0f - pixel2.GetR() / 255.0f) + 255.0f * pixel2.GetR() / 255.0f);
+      int g = static_cast<int>(pixel1.GetG() * (1.0f - pixel2.GetG() / 255.0f) + 255.0f * pixel2.GetG() / 255.0f);
+      int b = static_cast<int>(pixel1.GetB() * (1.0f - pixel2.GetB() / 255.0f) + 255.0f * pixel2.GetB() / 255.0f);
+      int a = 255;
+      SetPixel(x, y, r, g, b, a);
+    }
+  }
+}
+
+void TextureGenEngine::TextureData::Invert(TextureData *image)
+{
+  if (!image)
+    return;
+  if (!image->Valid())
+  {
+    return;
+  }
+  m_pixels.resize(image->GetWidth() * image->GetHeight());
+  for (int x = 0; x < image->GetWidth(); x++)
+  {
+    for (int y = 0; y < image->GetHeight(); y++)
+    {
+      TextureGenEngine::Pixel pixel1 = image->GetPixel(x, y);
+      SetPixel(x, y, 255 - pixel1.GetR(), 255 - pixel1.GetG(), 255 - pixel1.GetB(), pixel1.GetA());
+    }
+  }
+}
+
+void TextureGenEngine::TextureData::Color(int r, int g, int b, int a)
+{
+ r = std::clamp(r, 0, 255);
+ g = std::clamp(g, 0, 255);
+ b = std::clamp(b, 0, 255);
+ a = std::clamp(a, 0, 255);
+  for (int x = 0; x < m_width; x++)
+  {
+    for (int y = 0; y < m_height; y++)
+    {
+      SetPixel(x, y, r, g, b, a);
     }
   }
 }

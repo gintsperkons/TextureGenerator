@@ -24,7 +24,10 @@ namespace NodeFactory
     CELLULAR_GEN_IMAGE,
     OUTPUT,
     MERGE_IMAGE_BY_FLOAT,
-    BINARY_THRESHOLD
+    BINARY_THRESHOLD,
+    MASK_IMAGE,
+    INVERT_IMAGE,
+    COLOR_BASE
   };
   struct NodeTypeCompare
   {
@@ -65,4 +68,7 @@ namespace NodeFactory
   // Image Manipulation nodes
   TextureGenEngine::Node *MergeImageByFloat(TextureGenEngine::Canvas2D* canvas, std::string title = "Merge With Float",int x = 0, int y = 0);
   TextureGenEngine::Node *BinaryThreshold(TextureGenEngine::Canvas2D* canvas, std::string title = "Binary Threshold",int x = 0, int y = 0);
+  TextureGenEngine::Node *MaskImage(TextureGenEngine::Canvas2D* canvas, std::string title = "Mask Image",int x = 0, int y = 0);
+  TextureGenEngine::Node *InvertImage(TextureGenEngine::Canvas2D* canvas, std::string title = "Invert Image",int x = 0, int y = 0);
+  TextureGenEngine::Node *ColorNode(TextureGenEngine::Canvas2D* canvas, std::string title = "Color",int x = 0, int y = 0);
 } // namespace NodeFactory
