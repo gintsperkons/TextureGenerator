@@ -4,8 +4,9 @@ import os
 
 
 if __name__ == "__main__":
-    Utils.downloadFile("https://fontlibrary.org/assets/downloads/roboto-mono/fa85404374f790dace3a23ea31a1c175/roboto-mono.zip","Vendor/Temp/roboto-mono.zip")
-    Utils.extractZip("Vendor/Temp/roboto-mono.zip","Vendor/resources/fonts/")
+    if not os.path.exists("Vendor/Temp/roboto-mono.zip"):
+        Utils.downloadFile("https://fontlibrary.org/assets/downloads/roboto-mono/fa85404374f790dace3a23ea31a1c175/roboto-mono.zip","Vendor/Temp/roboto-mono.zip")
+        Utils.extractZip("Vendor/Temp/roboto-mono.zip","Vendor/resources/fonts/")
     if (os.path.exists("Vendor/Temp/")):
         shutil.rmtree("Vendor/Temp/")
 
