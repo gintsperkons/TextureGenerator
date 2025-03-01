@@ -9,6 +9,10 @@ TextureGenEngine::TextureData::TextureData(int width, int height)
 
 TextureGenEngine::TextureData::~TextureData()
 {
+  m_pixels.clear();
+  m_width = 0;
+  m_height = 0;
+  m_channels = 0;
 }
 
 void TextureGenEngine::TextureData::SetPixel(int x, int y, TextureGenEngine::Pixel pixel)
@@ -175,6 +179,14 @@ void TextureGenEngine::TextureData::Color(int r, int g, int b, int a)
       SetPixel(x, y, r, g, b, a);
     }
   }
+}
+
+void TextureGenEngine::TextureData::Delete()
+{
+	m_pixels.clear();
+	m_width = 0;
+	m_height = 0;
+	m_channels = 0;
 }
 
 bool TextureGenEngine::TextureData::Valid()

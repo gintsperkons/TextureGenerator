@@ -1,5 +1,6 @@
 #include "ImageInputElement.h"
 #include "InputConnector.h"
+#include "Core/Renderer/TextureData.h"
 
 TextureGenEngine::ImageInputElement::ImageInputElement()
 {
@@ -14,6 +15,9 @@ TextureGenEngine::ImageInputElement::ImageInputElement()
 
 TextureGenEngine::ImageInputElement::~ImageInputElement()
 {
+    if (m_textureData)
+        m_textureData->Delete();
+
 }
 
 void TextureGenEngine::ImageInputElement::Draw()

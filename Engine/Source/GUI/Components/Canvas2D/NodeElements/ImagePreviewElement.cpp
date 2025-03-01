@@ -65,7 +65,7 @@ void TextureGenEngine::ImagePreviewElement::Draw()
     }
 }
 
-TAPI void TextureGenEngine::ImagePreviewElement::SetImageSize(int width, int height)
+void TextureGenEngine::ImagePreviewElement::SetImageSize(int width, int height)
 {
     LOG_DEBUG("Setting image size %d %d\n", width, height);
     m_imageSize[0] = width;
@@ -94,6 +94,11 @@ TextureGenEngine::TextureData *TextureGenEngine::ImagePreviewElement::GetImageDa
 
  void TextureGenEngine::ImagePreviewElement::SetTextureData(TextureData *data)
 {
+    if (data != m_textureData)
+    {
+        delete m_textureData;
+        m_textureData = nullptr;
+    }
     m_textureData = data;
     m_needsUpdate = true;
 }

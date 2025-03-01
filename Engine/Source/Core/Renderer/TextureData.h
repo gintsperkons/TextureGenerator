@@ -53,6 +53,7 @@ namespace TextureGenEngine
     TAPI void Mask(TextureData *image, TextureData *mask);
     TAPI void Invert(TextureData *image);
     TAPI void Color(int r, int g, int b, int a);
+    void Delete();
     bool Valid();
   };
 } // namespace TextureGenEngine

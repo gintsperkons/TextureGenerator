@@ -287,6 +287,46 @@ TextureGenEngine::Node::~Node()
   {
     delete m_dataBackground;
   }
+  if (m_dataBackBackground)
+  {
+    delete m_dataBackBackground;
+  }
+  if (m_topLeft)
+  {
+    delete m_topLeft;
+  }
+  if (m_topRight)
+  {
+    delete m_topRight;
+  }
+  if (m_bottomCenter)
+  {
+    delete m_bottomCenter;
+  }
+  if (m_bottomLeft)
+  {
+    delete m_bottomLeft;
+  }
+  if (m_bottomRight)
+  {
+    delete m_bottomRight;
+  }
+  if (m_bottomCenterBackground)
+  {
+    delete m_bottomCenterBackground;
+  }
+  if (m_bottomLeftBackground)
+  {
+    delete m_bottomLeftBackground;
+  }
+  if (m_bottomRightBackground)
+  {
+    delete m_bottomRightBackground;
+  }
+  if (m_outputImage)
+  {
+    delete m_outputImage;
+  }
 }
 
 TextureGenEngine::InputConnector *TextureGenEngine::Node::GetInputConnector(float x, float y)
