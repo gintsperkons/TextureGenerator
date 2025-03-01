@@ -58,6 +58,10 @@ void TextureGenEngine::ImagePreviewElement::Draw()
         m_background->ChangeTexture(m_texture);
         m_texture->UpdateTexture(m_textureData);
         m_needsUpdate = false;
+        if (m_onImageChange)
+        {
+            m_onImageChange();
+        }
     }
 }
 
@@ -90,14 +94,8 @@ TextureGenEngine::TextureData *TextureGenEngine::ImagePreviewElement::GetImageDa
 
  void TextureGenEngine::ImagePreviewElement::SetTextureData(TextureData *data)
 {
-  
-  m_textureData = data;
-  m_texture->UpdateTexture(m_textureData);
-  UpdateImage();
-  if (m_onImageChange)
-  {
-    m_onImageChange();
-  }
+    m_textureData = data;
+    m_needsUpdate = true;
 }
 
 void TextureGenEngine::ImagePreviewElement::SetOnImageChange(std::function<void()> onImageChange)
