@@ -29,7 +29,8 @@ namespace NodeFactory
     INVERT_IMAGE,
     COLOR_BASE, 
     HORIZONTAL_LINES,
-    VERTICAL_LINES
+    VERTICAL_LINES,
+    CHECKER_BOARD
   };
   struct NodeTypeCompare
   {
@@ -57,6 +58,7 @@ namespace NodeFactory
   TextureGenEngine::Node *SubtractIntNode(TextureGenEngine::Canvas2D *canvas, std::string title = "Add Int", int x = 0, int y = 0);
   TextureGenEngine::Node *MultiplyIntNode(TextureGenEngine::Canvas2D *canvas, std::string title = "Subtract Int", int x = 0, int y = 0);
   TextureGenEngine::Node *DivideIntNode(TextureGenEngine::Canvas2D *canvas, std::string title = "Multiply Int", int x = 0, int y = 0);
+  TextureGenEngine::Node *ColorNode(TextureGenEngine::Canvas2D *canvas, std::string title = "Color", int x = 0, int y = 0);
 
   TextureGenEngine::Node *AddFloatNode(TextureGenEngine::Canvas2D *canvas, std::string title = "Divide Int", int x = 0, int y = 0);
   TextureGenEngine::Node *SubtractFloatNode(TextureGenEngine::Canvas2D *canvas, std::string title = "Add Float", int x = 0, int y = 0);
@@ -70,11 +72,11 @@ namespace NodeFactory
   //Math Pattern Generators
   TextureGenEngine::Node *HorizontalLine(TextureGenEngine::Canvas2D *canvas, std::string title = "Horizontal Line", int x = 0, int y = 0);
   TextureGenEngine::Node *VerticalLine(TextureGenEngine::Canvas2D *canvas, std::string title = "Vertical Line", int x = 0, int y = 0);
+  TextureGenEngine::Node *CheckerBoard(TextureGenEngine::Canvas2D *canvas, std::string title = "Checker Board", int x = 0, int y = 0);
 
   // Image Manipulation nodes
   TextureGenEngine::Node *MergeImageByFloat(TextureGenEngine::Canvas2D* canvas, std::string title = "Merge With Float",int x = 0, int y = 0);
   TextureGenEngine::Node *BinaryThreshold(TextureGenEngine::Canvas2D* canvas, std::string title = "Binary Threshold",int x = 0, int y = 0);
   TextureGenEngine::Node *MaskImage(TextureGenEngine::Canvas2D* canvas, std::string title = "Mask Image",int x = 0, int y = 0);
   TextureGenEngine::Node *InvertImage(TextureGenEngine::Canvas2D* canvas, std::string title = "Invert Image",int x = 0, int y = 0);
-  TextureGenEngine::Node *ColorNode(TextureGenEngine::Canvas2D* canvas, std::string title = "Color",int x = 0, int y = 0);
 } // namespace NodeFactory

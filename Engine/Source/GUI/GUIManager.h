@@ -48,5 +48,6 @@ namespace TextureGenEngine
         void GetMousePosition(float &x, float &y);
         void SetCursor(Cursor cursor);
         void Scroll(float x, float y);
+        float GetHeight() {return m_height;};
     };
 } // namespace TextureGenEngine

@@ -33,12 +33,12 @@ void TextureGenEngine::Panel::Resize(float width, float height)
     if (m_scalingTypeX == ScalingType::FILL)
     {
         xScale = (width-m_x) / m_width;
-        m_width = (width - m_x);
+        m_width*=xScale;
     }
     if (m_scalingTypeY == ScalingType::FILL)
     {
         yScale = (height - MenuComponent::height-m_y) / m_height;
-        m_height = (height - MenuComponent::height - m_y);
+        m_height *= yScale;
     }
     if (m_scalingTypeX == ScalingType::FIXED)
     {
@@ -55,9 +55,11 @@ void TextureGenEngine::Panel::Resize(float width, float height)
     }
     if (m_scalingTypeY == ScalingType::DYNAMIC)
     {
-        yScale = (newHeight - MenuComponent::height) / m_height;
-        m_height = newHeight - MenuComponent::height;
+      yScale = (m_manager->GetHeight() - MenuComponent::height) / m_height;
+      m_height = m_manager->GetHeight() - MenuComponent::height;
     }
+    LOG_DEBUG("Heigh:%f", m_height);
+
     m_background->Scale(xScale, yScale);
 }
 

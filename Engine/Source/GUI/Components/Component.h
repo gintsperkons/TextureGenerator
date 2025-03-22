@@ -40,6 +40,7 @@ namespace TextureGenEngine
         float GetY() { return m_y; }
         float GetWidth() { return m_width; }
         float GetHeight() { return m_height; }
+        virtual void Update() {}
         std::string GetType() { return m_type; }
         bool IsDraggable() { return m_draggable; }
         bool IsSelectable() { return m_selectable; }

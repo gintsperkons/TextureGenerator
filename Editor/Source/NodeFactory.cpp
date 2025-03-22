@@ -590,6 +590,53 @@ TextureGenEngine::Node *NodeFactory::VerticalLine(TextureGenEngine::Canvas2D *ca
   return node;
 }
 
+TextureGenEngine::Node *NodeFactory::CheckerBoard(TextureGenEngine::Canvas2D *canvas, std::string title, int x, int y)
+{
+  TextureGenEngine::Node *node = SpawnNode(canvas, title, NodeType::CHECKER_BOARD, x, y);
+
+  TextureGenEngine::ImagePreviewElement *imagePreview = AddNodeElement<TextureGenEngine::ImagePreviewElement>(node);
+  TextureGenEngine::FloatInputElement *frequencyInput = AddNodeElement<TextureGenEngine::FloatInputElement>(node);
+  TextureGenEngine::FloatInputElement *amplitudeInput = AddNodeElement<TextureGenEngine::FloatInputElement>(node);
+  TextureGenEngine::OutputConnector *outElement = SetOutputConnector(node, TextureGenEngine::NodeDataTypes::IMAGE);
+
+  frequencyInput->SetData(5.0f);
+  amplitudeInput->SetData(1.0f);
+
+  imagePreview->SetImageSize(c_imageSize, c_imageSize);
+
+  std::function generateImage = [imagePreview, node, frequencyInput, amplitudeInput]()
+  {
+    float frequancy, amplitude;
+    frequencyInput->GetData(frequancy);
+    amplitudeInput->GetData(amplitude);
+    imageWorkerQueue.AddJob(node->GetUUID(), [imagePreview, frequancy, amplitude](std::shared_ptr<std::atomic<bool>> cancelFlag)
+                            {
+                              if (cancelFlag.get()->load())
+                                return;
+                              std::vector<float> data(imagePreview->GetImageWidth() * imagePreview->GetImageHeight());
+
+                              TextureGenEngine::PatternGenerator::CheckerBoard::GenTileable2D(data.data(), imagePreview->GetImageWidth(), imagePreview->GetImageHeight(), frequancy, amplitude);
+                              if (cancelFlag.get()->load())
+                                return;
+                              ConvertNormalFloatToChar(data, imagePreview); });
+  };
+
+  frequencyInput->SetOnDataChange([generateImage]()
+                                  { generateImage(); });
+
+  amplitudeInput->SetOnDataChange([generateImage]()
+                                  { generateImage(); });
+
+  imagePreview->SetOnImageChange([outElement]()
+                                 { outElement->TriggerUpdate(); });
+
+  outElement->SetOnUpdate([imagePreview, outElement]()
+                          { outElement->UpdateData(imagePreview->GetImageData()); });
+
+  generateImage();
+  return node;
+}
+
 TextureGenEngine::Node *NodeFactory::MergeImageByFloat(TextureGenEngine::Canvas2D *canvas, std::string title, int x, int y)
 {
   TextureGenEngine::Node *node = SpawnNode(canvas, title, NodeType::MERGE_IMAGE_BY_FLOAT, x, y);

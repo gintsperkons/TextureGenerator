@@ -69,6 +69,7 @@ void TextureGenEngine::Dropdown::Click(float x, float y)
       }
 
       m_height = newHeight;
+      if (m_parent != nullptr) m_parent->Update();
     }
     if (!m_opened)
     {
@@ -79,10 +80,7 @@ void TextureGenEngine::Dropdown::Click(float x, float y)
       }
       m_height = m_titleHeight;
     }
-    if (dynamic_cast<ScrollView *>(m_parent) != nullptr)
-    {
-      static_cast<ScrollView *>(m_parent)->RecalculateMaxScroll();
-    }
+    if (m_parent != nullptr) m_parent->Update();
     return;
   }
   for (auto &element : m_elements)

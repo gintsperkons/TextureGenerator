@@ -20,7 +20,6 @@ void TextureGenEngine::MenuItem::Init(float width, float height)
   if (m_parent && dynamic_cast<Menu *>(m_parent))
   {
     float selftOffset = (float)dynamic_cast<Menu *>(m_parent)->GetElementOffset(this);
-    LOG_DEBUG("selftOffset: %f\n", selftOffset);
     m_y = m_parent->GetY() - selftOffset - m_parent->GetHeight();
     m_x = m_parent->GetX();
     m_background->SetPosition(m_x, m_y);
@@ -48,4 +47,12 @@ void TextureGenEngine::MenuItem::Click(float x, float y)
 
 void TextureGenEngine::MenuItem::OnHover(float x, float y)
 {
+}
+
+void TextureGenEngine::MenuItem::Resize(float width, float height)
+{
+  float selftOffset = (float)dynamic_cast<Menu *>(m_parent)->GetElementOffset(this);
+  m_y = m_parent->GetY() - selftOffset - m_parent->GetHeight();
+  m_x = m_parent->GetX();
+  m_background->SetPosition(m_x, m_y);
 }

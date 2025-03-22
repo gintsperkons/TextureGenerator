@@ -21,6 +21,7 @@ namespace TextureGenEngine
     void Draw() override;
     void Click(float x, float y) override;
     void OnHover(float x, float y) override;
+    void Resize(float width, float height) override;
   };
 
 } // namespace TextureGenEngine

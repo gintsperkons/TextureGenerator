@@ -13,6 +13,10 @@ namespace TextureGenEngine
     {
       TAPI void GenTileable2D(float *data, int width, int height, float frequency, float amplitude);
     }
+    namespace CheckerBoard
+    {
+      TAPI void GenTileable2D(float *data, int width, int height, float frequency, float amplitude);
+    }
   }
 
 } // namespace TextureGenEngine

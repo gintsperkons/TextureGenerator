@@ -80,7 +80,8 @@ NodeFunctionMap nodeFunctionMap = {
     {NodeFactory::NodeType::INVERT_IMAGE, {&NodeFactory::InvertImage, {"Invert Image", NodeCategory::IMAGE_PROCESS}}},
     {NodeFactory::NodeType::COLOR_BASE, {&NodeFactory::ColorNode, {"Color", NodeCategory::INPUT}}}, 
     {NodeFactory::NodeType::HORIZONTAL_LINES, {&NodeFactory::HorizontalLine, {"Horizontal Line", NodeCategory::GEN}}},
-    {NodeFactory::NodeType::VERTICAL_LINES, {&NodeFactory::VerticalLine, {"Vertical Line", NodeCategory::GEN}}}
+    {NodeFactory::NodeType::VERTICAL_LINES, {&NodeFactory::VerticalLine, {"Vertical Line", NodeCategory::GEN}}},
+    {NodeFactory::NodeType::CHECKER_BOARD, {&NodeFactory::CheckerBoard, {"Checker Board", NodeCategory::GEN}}}
     };
 
 int sideBarWidth = 300;
@@ -358,16 +359,16 @@ int main()
                                       { handleKeyPress(e, canvasNodeGraph); }, engine->GetMainWindow());
 
   // Create a scroll view for the clickable nodes spawners
-  TextureGenEngine::ScrollView *scrollView = new TextureGenEngine::ScrollView(0, sideBarWidth, sideBarWidth, 100, TextureGenEngine::ScalingType::FIXED, TextureGenEngine::ScalingType::FILL);
+  TextureGenEngine::ScrollView *scrollView = new TextureGenEngine::ScrollView(0, 0, sideBarWidth, 100, TextureGenEngine::ScalingType::FIXED, TextureGenEngine::ScalingType::DYNAMIC);
   scrollView->SetBackground(TextureGenEngine::Color(0.28125f, 0.25390625f, 0.25390625f, 1.0f));
   guiManager->AddComponent(scrollView);
 
   CreateClickables(nodeFunctionMap, scrollView, canvasNodeGraph);
 
-  // Create a preview panel
-  TextureGenEngine::Panel *panelPreview = new TextureGenEngine::Panel(0, 0, sideBarWidth, 300, TextureGenEngine::ScalingType::FIXED, TextureGenEngine::ScalingType::FIXED);
-  panelPreview->SetBackground(TextureGenEngine::Color(0.0f, 0.0f, 1.0f, 1.0f));
-  guiManager->AddComponent(panelPreview);
+  // // Create a preview panel
+  // TextureGenEngine::Panel *panelPreview = new TextureGenEngine::Panel(0, 0, sideBarWidth, 300, TextureGenEngine::ScalingType::FIXED, TextureGenEngine::ScalingType::FIXED);
+  // panelPreview->SetBackground(TextureGenEngine::Color(0.0f, 0.0f, 1.0f, 1.0f));
+  // guiManager->AddComponent(panelPreview);
 
   // Create a menu bar
   TextureGenEngine::MenuBar *menuBar = new TextureGenEngine::MenuBar();

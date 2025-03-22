@@ -38,3 +38,25 @@ void TextureGenEngine::PatternGenerator::VerticalLine::GenTileable2D(float *data
     }
   }
 }
+
+void TextureGenEngine::PatternGenerator::CheckerBoard::GenTileable2D(float *data, int width, int height, float frequency, float amplitude)
+{
+  if (!data || width <= 0 || height <= 0)
+    return;
+
+  frequency = frequency * M_PI; // Normalize for tiling
+
+  for (int y = 0; y < height; ++y)
+  {
+    for (int x = 0; x < width; ++x)
+    {
+      // Checker pattern using sine waves
+      float value = amplitude * sin(x * frequency / width) * sin(y * frequency / height);
+
+      // Convert to binary (-1 or 1)
+      value = std::clamp(value,-1.0f,1.0f);
+
+      data[y * width + x] = value;
+    }
+  }
+}

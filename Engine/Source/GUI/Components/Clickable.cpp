@@ -39,7 +39,11 @@ TextureGenEngine::Clickable::~Clickable()
 }
 
 void TextureGenEngine::Clickable::Click(float x, float y)
-{
+{   
+    if (m_parent != nullptr)
+    {
+      m_parent->Update();
+    }
     if (m_onClick)
     {
         m_onClick();
