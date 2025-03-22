@@ -79,6 +79,8 @@ NodeFunctionMap nodeFunctionMap = {
     {NodeFactory::NodeType::MASK_IMAGE, {&NodeFactory::MaskImage, {"Mask Image", NodeCategory::IMAGE_PROCESS}}},
     {NodeFactory::NodeType::INVERT_IMAGE, {&NodeFactory::InvertImage, {"Invert Image", NodeCategory::IMAGE_PROCESS}}},
     {NodeFactory::NodeType::COLOR_BASE, {&NodeFactory::ColorNode, {"Color", NodeCategory::INPUT}}}, 
+    {NodeFactory::NodeType::HORIZONTAL_LINES, {&NodeFactory::HorizontalLine, {"Horizontal Line", NodeCategory::GEN}}},
+    {NodeFactory::NodeType::VERTICAL_LINES, {&NodeFactory::VerticalLine, {"Vertical Line", NodeCategory::GEN}}}
     };
 
 int sideBarWidth = 300;

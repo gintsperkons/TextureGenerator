@@ -58,8 +58,6 @@ void TextureGenEngine::Menu::Click(float x, float y)
   if (CheckCollision(x, y))
   {
     m_opened = !m_opened;
-    LOG_DEBUG("ClickingMenu\n");
-    LOG_DEBUG("BB %f %f %f %f\n", m_x, m_y, m_width, m_height);
   }
 }
 
@@ -67,8 +65,6 @@ void TextureGenEngine::Menu::OnHover(float x, float y)
 {
   if (CheckCollision(x, y))
   {
-    LOG_DEBUG("HoveringMenu\n");
-    LOG_DEBUG("BB %f %f %f %f\n", m_x, m_y, m_width, m_height);
     m_manager->SetCursor(Cursor::PointingHand);
   }
 }

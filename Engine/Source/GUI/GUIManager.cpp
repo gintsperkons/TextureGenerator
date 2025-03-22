@@ -135,10 +135,8 @@ void TextureGenEngine::GUIManager::MouseMove(MouseMoveEvent e)
             child->OnHover((float)x, (float)y);
         }
     }
-    LOG_DEBUG("Mouse LOC %f %f\n", x, y);
     if (!m_cursorChanged)
     {
-        LOG_DEBUG("Setting arrow cursor\n");
         m_window->SetCursor(Cursor::Arrow);
     }
 }

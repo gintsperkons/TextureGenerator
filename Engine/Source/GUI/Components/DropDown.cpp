@@ -40,11 +40,8 @@ void TextureGenEngine::Dropdown::Init(float width, float height)
 void TextureGenEngine::Dropdown::OnHover(float x, float y)
 {
 
-  LOG_DEBUG("HoveringClickable\n");
   if (CheckCollision(x, y))
   {
-    LOG_DEBUG("HoveringClickablTRUEe\n");
-    LOG_DEBUG("BB %f %f %f %f\n", m_x, m_y, m_width, m_height);
     m_manager->SetCursor(TextureGenEngine::Cursor::PointingHand);
   }
   for (auto &element : m_elements)
@@ -55,17 +52,10 @@ void TextureGenEngine::Dropdown::OnHover(float x, float y)
 
 void TextureGenEngine::Dropdown::Click(float x, float y)
 {
-  LOG_DEBUG("Clicking %f %f\n", x, y);
-  LOG_DEBUG("BB %f %f %f %f\n", m_x, m_y, m_width, m_titleHeight);
-  LOG_DEBUG("test1 m_x < x %d\n", m_x < x);
-  LOG_DEBUG("test2 m_x + m_width > x %d\n", m_x + m_width > x);
-  LOG_DEBUG("test3 m_y < y %d\n", m_y < y);
-  LOG_DEBUG("test4 m_y + m_titleHeight > y %d\n", m_y + m_titleHeight > y);
+  // Test If Cliicked
   bool test = m_x < x && m_x + m_width > x && m_y < y && m_y + m_titleHeight > y;
-  LOG_DEBUG("testTOTAL %d\n", test);
   if (m_x < x && m_x + m_width > x && m_y < y && m_y + m_titleHeight > y)
   {
-    LOG_DEBUG("ClickingDropdown %d\n", m_opened);
     m_opened = !m_opened;
     if (m_opened)
     {
@@ -95,7 +85,6 @@ void TextureGenEngine::Dropdown::Click(float x, float y)
     }
     return;
   }
-  LOG_DEBUG("ClickingClickable\n");
   for (auto &element : m_elements)
   {
     if (element->CheckCollision(x, y))

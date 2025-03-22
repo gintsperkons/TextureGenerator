@@ -48,11 +48,8 @@ void TextureGenEngine::Clickable::Click(float x, float y)
 
 void TextureGenEngine::Clickable::OnHover(float x, float y)
 {
-    LOG_DEBUG("HoveringClickable\n");
     if (CheckCollision(x, y))
     {
-        LOG_DEBUG("HoveringClickablTRUEe\n");
-        LOG_DEBUG("BB %f %f %f %f\n", m_x, m_y, m_width, m_height);
         m_manager->SetCursor(TextureGenEngine::Cursor::PointingHand);
     }
 }

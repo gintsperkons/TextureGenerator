@@ -27,7 +27,9 @@ namespace NodeFactory
     BINARY_THRESHOLD,
     MASK_IMAGE,
     INVERT_IMAGE,
-    COLOR_BASE
+    COLOR_BASE, 
+    HORIZONTAL_LINES,
+    VERTICAL_LINES
   };
   struct NodeTypeCompare
   {
@@ -62,8 +64,12 @@ namespace NodeFactory
   TextureGenEngine::Node *DivideFloatNode(TextureGenEngine::Canvas2D *canvas, std::string title = "Multiply Float", int x = 0, int y = 0);
 
   // pattern generation nodes
-  TextureGenEngine::Node *PerlinGenImage(TextureGenEngine::Canvas2D *canvas, std::string title = "Divide Float", int x = 0, int y = 0);
-  TextureGenEngine::Node *CellularGenImage(TextureGenEngine::Canvas2D *canvas, std::string title = "Divide Float", int x = 0, int y = 0);
+  TextureGenEngine::Node *PerlinGenImage(TextureGenEngine::Canvas2D *canvas, std::string title = "Perlin Noise", int x = 0, int y = 0);
+  TextureGenEngine::Node *CellularGenImage(TextureGenEngine::Canvas2D *canvas, std::string title = "Cellular Noise", int x = 0, int y = 0);
+
+  //Math Pattern Generators
+  TextureGenEngine::Node *HorizontalLine(TextureGenEngine::Canvas2D *canvas, std::string title = "Horizontal Line", int x = 0, int y = 0);
+  TextureGenEngine::Node *VerticalLine(TextureGenEngine::Canvas2D *canvas, std::string title = "Vertical Line", int x = 0, int y = 0);
 
   // Image Manipulation nodes
   TextureGenEngine::Node *MergeImageByFloat(TextureGenEngine::Canvas2D* canvas, std::string title = "Merge With Float",int x = 0, int y = 0);

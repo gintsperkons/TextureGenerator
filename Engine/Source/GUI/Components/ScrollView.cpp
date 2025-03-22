@@ -33,7 +33,6 @@ void TextureGenEngine::ScrollView::Draw()
 
 void TextureGenEngine::ScrollView::OnHover(float x, float y)
 {
-    LOG_DEBUG("Hovering\n");
     for (auto &element : m_elements)
     {
         element->OnHover(x, y);
@@ -83,7 +82,7 @@ void TextureGenEngine::ScrollView::RecalculateMaxScroll()
     }
 
     m_minScroll = 0;
-    m_maxScroll = maxScroll;
+    m_maxScroll = maxScroll + m_direction * 20;
 }
 
 TextureGenEngine::Component *TextureGenEngine::ScrollView::SelectObject(float x, float y)

@@ -483,9 +483,108 @@ TextureGenEngine::Node *NodeFactory::CellularGenImage(TextureGenEngine::Canvas2D
 
   imagePreview->SetOnImageChange([outElement]()
                                  { outElement->TriggerUpdate(); });
+                                 
 
   outElement->SetOnUpdate([imagePreview, outElement]()
                           { outElement->UpdateData(imagePreview->GetImageData()); });
+
+  generateImage();
+  return node;
+}
+
+TextureGenEngine::Node *NodeFactory::HorizontalLine(TextureGenEngine::Canvas2D *canvas, std::string title, int x, int y)
+{
+  TextureGenEngine::Node *node = SpawnNode(canvas,title,NodeType::HORIZONTAL_LINES, x,y);
+
+  TextureGenEngine::ImagePreviewElement *imagePreview = AddNodeElement<TextureGenEngine::ImagePreviewElement>(node);
+  TextureGenEngine::FloatInputElement *frequencyInput = AddNodeElement<TextureGenEngine::FloatInputElement>(node);
+  TextureGenEngine::FloatInputElement *amplitudeInput = AddNodeElement<TextureGenEngine::FloatInputElement>(node);
+  TextureGenEngine::OutputConnector *outElement = SetOutputConnector(node, TextureGenEngine::NodeDataTypes::IMAGE);
+
+  frequencyInput->SetData(5.0f);
+  amplitudeInput->SetData(1.0f);
+
+  imagePreview->SetImageSize(c_imageSize, c_imageSize); 
+
+  std::function generateImage = [imagePreview, node, frequencyInput, amplitudeInput]()
+  {
+    float frequancy, amplitude;
+    frequencyInput->GetData(frequancy);
+    amplitudeInput->GetData(amplitude);
+    imageWorkerQueue.AddJob(node->GetUUID(),[imagePreview,frequancy,amplitude](std::shared_ptr<std::atomic<bool>> cancelFlag)
+    {
+      if (cancelFlag.get()->load())
+        return;
+      std::vector<float> data(imagePreview->GetImageWidth() * imagePreview->GetImageHeight());
+
+      TextureGenEngine::PatternGenerator::HorizontalLine::GenTileable2D(data.data(),imagePreview->GetImageWidth(), imagePreview->GetImageHeight(),frequancy,amplitude);
+      if (cancelFlag.get()->load())
+        return;
+      ConvertNormalFloatToChar(data, imagePreview);
+                              
+    });
+  };
+
+  frequencyInput->SetOnDataChange([generateImage]()
+                                  { generateImage(); });
+
+  amplitudeInput->SetOnDataChange([generateImage]()
+                             { generateImage(); });
+
+  imagePreview->SetOnImageChange([outElement]()
+                                 { outElement->TriggerUpdate(); });
+
+  outElement->SetOnUpdate([imagePreview, outElement]()
+                          { outElement->UpdateData(imagePreview->GetImageData()); 
+                          LOG_DEBUG("TEst");});
+
+  generateImage();
+  return node;
+}
+
+TextureGenEngine::Node *NodeFactory::VerticalLine(TextureGenEngine::Canvas2D *canvas, std::string title, int x, int y)
+{
+  TextureGenEngine::Node *node = SpawnNode(canvas, title, NodeType::VERTICAL_LINES, x, y);
+
+  TextureGenEngine::ImagePreviewElement *imagePreview = AddNodeElement<TextureGenEngine::ImagePreviewElement>(node);
+  TextureGenEngine::FloatInputElement *frequencyInput = AddNodeElement<TextureGenEngine::FloatInputElement>(node);
+  TextureGenEngine::FloatInputElement *amplitudeInput = AddNodeElement<TextureGenEngine::FloatInputElement>(node);
+  TextureGenEngine::OutputConnector *outElement = SetOutputConnector(node, TextureGenEngine::NodeDataTypes::IMAGE);
+
+  frequencyInput->SetData(5.0f);
+  amplitudeInput->SetData(1.0f);
+
+  imagePreview->SetImageSize(c_imageSize, c_imageSize);
+
+  std::function generateImage = [imagePreview, node, frequencyInput, amplitudeInput]()
+  {
+    float frequancy, amplitude;
+    frequencyInput->GetData(frequancy);
+    amplitudeInput->GetData(amplitude);
+    imageWorkerQueue.AddJob(node->GetUUID(), [imagePreview, frequancy, amplitude](std::shared_ptr<std::atomic<bool>> cancelFlag)
+                            {
+                              if (cancelFlag.get()->load())
+                                return;
+                              std::vector<float> data(imagePreview->GetImageWidth() * imagePreview->GetImageHeight());
+
+                              TextureGenEngine::PatternGenerator::VerticalLine::GenTileable2D(data.data(), imagePreview->GetImageWidth(), imagePreview->GetImageHeight(), frequancy, amplitude);
+                              if (cancelFlag.get()->load())
+                                return;
+                              ConvertNormalFloatToChar(data, imagePreview);
+                            });
+  };
+
+  frequencyInput->SetOnDataChange([generateImage]()
+                                  { generateImage(); });
+
+  amplitudeInput->SetOnDataChange([generateImage]()
+                                  { generateImage(); });
+
+  imagePreview->SetOnImageChange([outElement]()
+                                 { outElement->TriggerUpdate(); });
+
+  outElement->SetOnUpdate([imagePreview, outElement]()
+                          { outElement->UpdateData(imagePreview->GetImageData());  });
 
   generateImage();
   return node;
@@ -503,6 +602,8 @@ TextureGenEngine::Node *NodeFactory::MergeImageByFloat(TextureGenEngine::Canvas2
   TextureGenEngine::OutputConnector *outElement = SetOutputConnector(node, TextureGenEngine::NodeDataTypes::IMAGE);
 
   imagePreview->SetImageSize(c_imageSize, c_imageSize);
+
+
 
   std::function mergeImage = [imageInput1, imageInput2, floatInput, imagePreview, node]()
   {
@@ -537,6 +638,8 @@ TextureGenEngine::Node *NodeFactory::MergeImageByFloat(TextureGenEngine::Canvas2
 
   return node;
 }
+
+
 
 TextureGenEngine::Node *NodeFactory::BinaryThreshold(TextureGenEngine::Canvas2D *canvas, std::string title, int x, int y)
 {

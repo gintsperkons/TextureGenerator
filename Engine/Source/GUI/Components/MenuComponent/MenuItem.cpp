@@ -42,8 +42,6 @@ void TextureGenEngine::MenuItem::Click(float x, float y)
 
   if (CheckCollision(x, y))
   {
-    LOG_DEBUG("ClickingMenuItem\n");
-    LOG_DEBUG("BB %f %f %f %f\n", m_x, m_y, m_width, m_height);
     m_onClick();
   }
 }
