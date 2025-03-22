@@ -34,7 +34,11 @@ void TextureGenEngine::InputConnector::Draw()
 }
 
 TextureGenEngine::InputConnector::~InputConnector()
-{
+{ 
+    if (m_connector != nullptr)
+    {
+      m_connector->Disconnect();
+    }
     if (m_tempConnection != nullptr)
     {
         delete m_tempConnection;
@@ -82,7 +86,11 @@ void TextureGenEngine::InputConnector::MouseRelease()
     }
     OutputConnector *output = static_cast<Node *>(static_cast<NodeElement *>(m_parent)->GetNode())->GetCanvas()->GetOutputConnector(posX, posY);
     if (output != nullptr)
-    {
+    {   
+        if( m_connector != nullptr)
+        {
+          m_connector->Disconnect();
+        }
         m_connector = m_tempConnection;
         m_tempConnection = nullptr;
         m_connector->MakeConnection(output, this);
