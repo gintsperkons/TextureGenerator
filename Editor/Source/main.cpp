@@ -81,7 +81,10 @@ NodeFunctionMap nodeFunctionMap = {
     {NodeFactory::NodeType::COLOR_BASE, {&NodeFactory::ColorNode, {"Color", NodeCategory::INPUT}}}, 
     {NodeFactory::NodeType::HORIZONTAL_LINES, {&NodeFactory::HorizontalLine, {"Horizontal Line", NodeCategory::GEN}}},
     {NodeFactory::NodeType::VERTICAL_LINES, {&NodeFactory::VerticalLine, {"Vertical Line", NodeCategory::GEN}}},
-    {NodeFactory::NodeType::CHECKER_BOARD, {&NodeFactory::CheckerBoard, {"Checker Board", NodeCategory::GEN}}}
+    {NodeFactory::NodeType::CHECKER_BOARD, {&NodeFactory::CheckerBoard, {"Checker Board", NodeCategory::GEN}}},
+    {NodeFactory::NodeType::MERGE_IMAGE_BY_IMAGE, {&NodeFactory::MergeImageByImage, {"Merge Image By Image", NodeCategory::IMAGE_PROCESS}}},
+    {NodeFactory::NodeType::DIALATE, {&NodeFactory::DialateImage, {"Dialate Image", NodeCategory::IMAGE_PROCESS}}},
+    {NodeFactory::NodeType::ERODE, {&NodeFactory::ErodeImage, {"Erode Image", NodeCategory::IMAGE_PROCESS}}}
     };
 
 int sideBarWidth = 300;

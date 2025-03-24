@@ -96,6 +96,42 @@ void TextureGenEngine::TextureData::MergeByFloat(TextureData *data1, TextureData
   LOG_DEBUG("Merging by 333333\n");
 }
 
+void TextureGenEngine::TextureData::MergeByImage(TextureData *data1, TextureData *data2, TextureData *data3)
+{
+
+  if (!data1 || !data2 || !data3)
+    return;
+
+  if (!data1->Valid() || !data2->Valid() || !data3->Valid() ||
+      data1->GetWidth() != data2->GetWidth() || data1->GetWidth() != data3->GetWidth() ||
+      data1->GetHeight() != data2->GetHeight() || data1->GetHeight() != data3->GetHeight() ||
+      data1->GetChannels() != data2->GetChannels() || data1->GetChannels() != data3->GetChannels())
+  {
+    return;
+  }
+
+
+  m_pixels.resize(data1->GetWidth() * data1->GetHeight());
+
+  for (int x = 0; x < data1->GetWidth(); x++)
+  {
+    for (int y = 0; y < data1->GetHeight(); y++)
+    {
+      TextureGenEngine::Pixel pixel1 = data1->GetPixel(x, y);
+      TextureGenEngine::Pixel pixel2 = data2->GetPixel(x, y);
+      TextureGenEngine::Pixel pixel3 = data3->GetPixel(x, y);
+
+      float factor = ((int)pixel3.GetR() / 255.0f + (int)pixel3.GetG() / 255.0f + (int)pixel3.GetB() / 255.0f) / 3;
+
+      int r = (pixel2.GetR()) * factor + (pixel1.GetR()) * (1.0f - factor);
+      int g = (pixel2.GetG()) * factor + (pixel1.GetG()) * (1.0f - factor);
+      int b = (pixel2.GetB()) * factor + (pixel1.GetB()) * (1.0f - factor);
+      int a = (pixel2.GetA()) * factor + (pixel1.GetA()) * (1.0f - factor);
+      SetPixel(x, y, r, g, b, a);
+    }
+  }
+}
+
 void TextureGenEngine::TextureData::BinaryThreshold(TextureData *data1, int threshold)
 {
   if (!data1)
@@ -118,6 +154,185 @@ void TextureGenEngine::TextureData::BinaryThreshold(TextureData *data1, int thre
       {
         SetPixel(x, y, 0, 0, 0, 255);
       }
+    }
+  }
+}
+
+void TextureGenEngine::TextureData::Dialate(TextureData *data1, int size)
+{
+  if (!data1 || !data1->Valid())
+    return;
+
+  int width = data1->GetWidth();
+  int height = data1->GetHeight();
+  int channels = data1->GetChannels();
+
+  // Kernel size (Assume a square kernel with odd size, e.g., 3x3, 5x5, etc.)
+  int halfSize = size / 2;
+
+  // Intensity threshold for dilation (this can be adjusted based on how sensitive the dilation should be)
+  const unsigned char threshold = 32; // This assumes a range from 0 to 255 (grayscale)
+
+  // Iterate over all pixels of the image to apply dilation
+  for (int y = 0; y < height; ++y)
+  {
+    for (int x = 0; x < width; ++x)
+    {
+      bool dilated = false; // Flag to indicate whether the current pixel should be dilated
+
+      // Apply the kernel over the neighborhood of each pixel
+      for (int ky = -halfSize; ky <= halfSize; ++ky)
+      {
+        for (int kx = -halfSize; kx <= halfSize; ++kx)
+        {
+          int nx = x + kx;
+          int ny = y + ky;
+
+          // Check if the neighbor is within bounds
+          if (nx >= 0 && nx < width && ny >= 0 && ny < height)
+          {
+            // Calculate the intensity of the neighbor
+            Pixel neighborPixel = data1->GetPixel(nx, ny);
+            unsigned char intensity = (neighborPixel.GetR() + neighborPixel.GetG() + neighborPixel.GetB()) / 3;
+
+            // If any neighbor has an intensity above the threshold, dilate the current pixel
+            if (intensity > threshold)
+            {
+              dilated = true;
+              break; // No need to check further neighbors, the current pixel will be dilated
+            }
+          }
+        }
+
+        if (dilated)
+          break;
+      }
+
+      // Set the pixel to white if dilated, or keep it black if not
+      if (dilated)
+      {
+        SetPixel(x, y, 255, 255, 255, 255); // Set to white if dilated
+      }
+      else
+      {
+        SetPixel(x, y, 0, 0, 0, 255); // Set to black if not dilated
+      }
+    }
+  }
+}
+
+void TextureGenEngine::TextureData::Erode(TextureData *data1, int size)
+{
+  if (!data1 || !data1->Valid())
+    return;
+
+  int width = data1->GetWidth();
+  int height = data1->GetHeight();
+  int channels = data1->GetChannels();
+
+  // Kernel size (Assume a square kernel with odd size, e.g., 3x3, 5x5, etc.)
+  int halfSize = size / 2;
+
+  // Intensity threshold for erosion (this can be adjusted based on how sensitive the erosion should be)
+  const unsigned char threshold = 32; // This assumes a range from 0 to 255 (grayscale)
+
+  // Iterate over all pixels of the image to apply erosion
+  for (int y = 0; y < height; ++y)
+  {
+    for (int x = 0; x < width; ++x)
+    {
+      bool eroded = true; // Flag to indicate whether to erode the current pixel
+
+      // Apply the kernel over the neighborhood of each pixel
+      for (int ky = -halfSize; ky <= halfSize; ++ky)
+      {
+        for (int kx = -halfSize; kx <= halfSize; ++kx)
+        {
+          int nx = x + kx;
+          int ny = y + ky;
+
+          // Check if the neighbor is within bounds
+          if (nx >= 0 && nx < width && ny >= 0 && ny < height)
+          {
+            // Calculate the intensity of the neighbor
+            Pixel neighborPixel = data1->GetPixel(nx, ny);
+            unsigned char intensity = (neighborPixel.GetR() + neighborPixel.GetG() + neighborPixel.GetB()) / 3;
+
+            // If any neighbor has an intensity below the threshold, erode the current pixel
+            if (intensity < threshold)
+            {
+              eroded = false; // Set flag to erode pixel if any neighbor is below the threshold
+              break;
+            }
+          }
+        }
+
+        if (!eroded)
+          break;
+      }
+
+      // If eroded, set the pixel to black, otherwise keep it white
+      if (eroded)
+      {
+        SetPixel(x, y, 0, 0, 0, 255); // Set to black if eroded
+      }
+      else
+      {
+        SetPixel(x, y, 255, 255, 255, 255); // Set to white if not eroded
+      }
+    }
+  }
+}
+
+void TextureGenEngine::TextureData::WierdEffect(TextureData *data1, int size)
+{
+  if (!data1 || !data1->Valid())
+    return;
+
+  int width = data1->GetWidth();
+  int height = data1->GetHeight();
+  int channels = data1->GetChannels();
+
+  // Kernel size (Assume a square kernel with odd size, e.g., 3x3, 5x5, etc.)
+  int halfSize = size / 2;
+
+  // Intensity threshold for erosion (this can be adjusted based on how sensitive the erosion should be)
+  const unsigned char threshold = 128; // This assumes a range from 0 to 255 (grayscale)
+
+  // Iterate over all pixels of the image to apply erosion
+  for (int y = 0; y < height; ++y)
+  {
+    for (int x = 0; x < width; ++x)
+    {
+      int r = data1->GetPixel(x, y).GetR();
+      int g = data1->GetPixel(x, y).GetG();
+      int b = data1->GetPixel(x, y).GetB();
+
+      int totalIntensity = 0;
+      int count = 0;
+
+      // Apply the kernel over the neighborhood of each pixel
+      for (int ky = -halfSize; ky <= halfSize; ++ky)
+      {
+        for (int kx = -halfSize; kx <= halfSize; ++kx)
+        {
+          int nx = x + kx;
+          int ny = y + ky;
+
+          // Check if the neighbor is within bounds
+          if (nx >= 0 && nx < width && ny >= 0 && ny < height)
+          {
+            // Calculate the intensity of the neighbor
+            Pixel neighborPixel = data1->GetPixel(nx, ny);
+            unsigned char intensity = (neighborPixel.GetR() + neighborPixel.GetG() + neighborPixel.GetB()) / 3;
+
+            totalIntensity += intensity;
+            count++;
+          }
+        }
+      }
+
+      SetPixel(x, y, totalIntensity, totalIntensity, totalIntensity, 255);
     }
   }
 }

@@ -26,6 +26,11 @@ namespace TextureGenEngine
     unsigned char GetG() const { return (pixel >> 16) & 0xFF; }
     unsigned char GetB() const { return (pixel >> 8) & 0xFF; }
     unsigned char GetA() const { return pixel & 0xFF; }
+
+    void Copy(const Pixel &other)
+    {
+      this->pixel = other.pixel; // Copy the pixel data
+    }
   };
   class TextureData
   {
@@ -49,7 +54,11 @@ namespace TextureGenEngine
     std::vector<Pixel> GetPixels() const { return m_pixels; }
     unsigned char *GetRawData();
     TAPI void MergeByFloat(TextureData *data1, TextureData *data2, float factor);
+    TAPI void MergeByImage(TextureData *data1, TextureData *data2, TextureData *data3);
     TAPI void BinaryThreshold(TextureData *data1, int threshold);
+    TAPI void Dialate(TextureData *data1, int size);
+    TAPI void Erode(TextureData *data1, int size);
+    TAPI void WierdEffect(TextureData *data1, int size);
     TAPI void Mask(TextureData *image, TextureData *mask);
     TAPI void Invert(TextureData *image);
     TAPI void Color(int r, int g, int b, int a);

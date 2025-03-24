@@ -30,7 +30,11 @@ namespace NodeFactory
     COLOR_BASE, 
     HORIZONTAL_LINES,
     VERTICAL_LINES,
-    CHECKER_BOARD
+    CHECKER_BOARD,
+    MERGE_IMAGE_BY_IMAGE,
+    ERODE,
+    DIALATE
+
   };
   struct NodeTypeCompare
   {
@@ -75,8 +79,11 @@ namespace NodeFactory
   TextureGenEngine::Node *CheckerBoard(TextureGenEngine::Canvas2D *canvas, std::string title = "Checker Board", int x = 0, int y = 0);
 
   // Image Manipulation nodes
-  TextureGenEngine::Node *MergeImageByFloat(TextureGenEngine::Canvas2D* canvas, std::string title = "Merge With Float",int x = 0, int y = 0);
+  TextureGenEngine::Node *MergeImageByFloat(TextureGenEngine::Canvas2D *canvas, std::string title = "Merge With Float", int x = 0, int y = 0);
+  TextureGenEngine::Node *MergeImageByImage(TextureGenEngine::Canvas2D *canvas, std::string title = "Merge With Float", int x = 0, int y = 0);
   TextureGenEngine::Node *BinaryThreshold(TextureGenEngine::Canvas2D* canvas, std::string title = "Binary Threshold",int x = 0, int y = 0);
   TextureGenEngine::Node *MaskImage(TextureGenEngine::Canvas2D* canvas, std::string title = "Mask Image",int x = 0, int y = 0);
-  TextureGenEngine::Node *InvertImage(TextureGenEngine::Canvas2D* canvas, std::string title = "Invert Image",int x = 0, int y = 0);
+  TextureGenEngine::Node *InvertImage(TextureGenEngine::Canvas2D *canvas, std::string title = "Invert Image", int x = 0, int y = 0);
+  TextureGenEngine::Node *DialateImage(TextureGenEngine::Canvas2D *canvas, std::string title = "Dialate Image", int x = 0, int y = 0);
+  TextureGenEngine::Node *ErodeImage(TextureGenEngine::Canvas2D *canvas, std::string title = "Erode Image", int x = 0, int y = 0);
 } // namespace NodeFactory
