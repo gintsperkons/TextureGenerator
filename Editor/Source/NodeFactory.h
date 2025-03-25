@@ -27,13 +27,16 @@ namespace NodeFactory
     BINARY_THRESHOLD,
     MASK_IMAGE,
     INVERT_IMAGE,
-    COLOR_BASE, 
+    COLOR_BASE,
     HORIZONTAL_LINES,
     VERTICAL_LINES,
     CHECKER_BOARD,
     MERGE_IMAGE_BY_IMAGE,
     ERODE,
-    DIALATE
+    DIALATE,
+    MAP_TO_RED,
+    MAP_TO_GREEN,
+    MAP_TO_BLUE
 
   };
   struct NodeTypeCompare
@@ -86,4 +89,8 @@ namespace NodeFactory
   TextureGenEngine::Node *InvertImage(TextureGenEngine::Canvas2D *canvas, std::string title = "Invert Image", int x = 0, int y = 0);
   TextureGenEngine::Node *DialateImage(TextureGenEngine::Canvas2D *canvas, std::string title = "Dialate Image", int x = 0, int y = 0);
   TextureGenEngine::Node *ErodeImage(TextureGenEngine::Canvas2D *canvas, std::string title = "Erode Image", int x = 0, int y = 0);
+  TextureGenEngine::Node *MapRed(TextureGenEngine::Canvas2D *canvas, std::string title = "Map To Red", int x = 0, int y = 0);
+  TextureGenEngine::Node *MapGreen(TextureGenEngine::Canvas2D *canvas, std::string title = "Map To Green", int x = 0, int y = 0);
+  TextureGenEngine::Node *MapBlue(TextureGenEngine::Canvas2D *canvas, std::string title = "Map To Blue", int x = 0, int y = 0);
+
 } // namespace NodeFactory

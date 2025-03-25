@@ -941,6 +941,146 @@ TextureGenEngine::Node * NodeFactory::ErodeImage(TextureGenEngine::Canvas2D * ca
   return node;
 }
 
+TextureGenEngine::Node *NodeFactory::MapRed(TextureGenEngine::Canvas2D *canvas, std::string title, int x, int y)
+{
+  TextureGenEngine::Node *node = SpawnNode(canvas, title, NodeType::MAP_TO_RED, x, y);
+
+  TextureGenEngine::ImageInputElement *imageInput = AddNodeElement<TextureGenEngine::ImageInputElement>(node);
+  TextureGenEngine::ImagePreviewElement *imagePreview = AddNodeElement<TextureGenEngine::ImagePreviewElement>(node);
+
+  TextureGenEngine::OutputConnector *outElement = SetOutputConnector(node, TextureGenEngine::NodeDataTypes::IMAGE);
+
+  imagePreview->SetImageSize(c_imageSize, c_imageSize);
+
+  std::function mapImage = [imageInput, imagePreview, node]()
+  {
+    imagePreview->LoadingScreen();
+    imageWorkerQueue.AddJob(node->GetUUID(), [imagePreview, imageInput](std::shared_ptr<std::atomic<bool>> cancelFlag)
+                            {
+                                  LOG_DEBUG("red");
+                              if (cancelFlag.get()->load())
+                                return;
+                              TextureGenEngine::TextureData *textureData = imagePreview->GetImageData();
+                              TextureGenEngine::TextureData *inputData = imageInput->GetData();
+                                for (int x = 0; x<textureData->GetWidth(); x++)
+                                {
+                                  for (int y = 0; y<textureData->GetHeight(); y++)
+                                  {
+                                    textureData->SetPixel(x, y, (int)inputData->GetPixel(x, y).GetR(), 0, 0, 255);
+                                  }
+                                }
+
+                              if (cancelFlag.get()->load())
+                                return;
+                              imagePreview->SetTextureData(textureData); });
+  };
+
+  imageInput->SetOnDataChange([mapImage]()
+                              { mapImage(); });
+
+  imagePreview->SetOnImageChange([outElement]()
+                                 { outElement->TriggerUpdate(); });
+
+  outElement->SetOnUpdate([imagePreview, outElement]()
+                          { outElement->UpdateData(imagePreview->GetImageData()); });
+
+  return node;
+}
+
+TextureGenEngine::Node *NodeFactory::MapGreen(TextureGenEngine::Canvas2D *canvas, std::string title, int x, int y)
+{
+  TextureGenEngine::Node *node = SpawnNode(canvas, title, NodeType::MAP_TO_GREEN, x, y);
+
+  TextureGenEngine::ImageInputElement *imageInput = AddNodeElement<TextureGenEngine::ImageInputElement>(node);
+  TextureGenEngine::ImagePreviewElement *imagePreview = AddNodeElement<TextureGenEngine::ImagePreviewElement>(node);
+
+  TextureGenEngine::OutputConnector *outElement = SetOutputConnector(node, TextureGenEngine::NodeDataTypes::IMAGE);
+
+  imagePreview->SetImageSize(c_imageSize, c_imageSize);
+
+  std::function erodeImage = [imageInput, imagePreview, node]()
+  {
+    imagePreview->LoadingScreen();
+    imageWorkerQueue.AddJob(node->GetUUID(), [imagePreview, imageInput](std::shared_ptr<std::atomic<bool>> cancelFlag)
+                            {
+                              if (cancelFlag.get()->load())
+                                return;
+                              TextureGenEngine::TextureData *textureData = imagePreview->GetImageData();
+                              TextureGenEngine::TextureData *inputData = imageInput->GetData();
+
+                              for (int x = 0; x < textureData->GetWidth(); x++)
+                              {
+                                for (int y = 0; y < textureData->GetHeight(); y++)
+                                {
+                                  textureData->SetPixel(x, y, 0, 0, inputData->GetPixel(x, y).GetB(), 255);
+                                }
+                                }
+                              
+                              
+
+                              if (cancelFlag.get()->load())
+                                return;
+                              imagePreview->SetTextureData(textureData); });
+  };
+
+  imageInput->SetOnDataChange([erodeImage]()
+                              { erodeImage(); });
+
+  imagePreview->SetOnImageChange([outElement]()
+                                 { outElement->TriggerUpdate(); });
+
+  outElement->SetOnUpdate([imagePreview, outElement]()
+                          { outElement->UpdateData(imagePreview->GetImageData()); });
+
+  return node;
+}
+
+TextureGenEngine::Node *NodeFactory::MapBlue(TextureGenEngine::Canvas2D *canvas, std::string title, int x, int y)
+{
+  TextureGenEngine::Node *node = SpawnNode(canvas, title, NodeType::MAP_TO_BLUE, x, y);
+
+  TextureGenEngine::ImageInputElement *imageInput = AddNodeElement<TextureGenEngine::ImageInputElement>(node);
+  TextureGenEngine::ImagePreviewElement *imagePreview = AddNodeElement<TextureGenEngine::ImagePreviewElement>(node);
+
+  TextureGenEngine::OutputConnector *outElement = SetOutputConnector(node, TextureGenEngine::NodeDataTypes::IMAGE);
+
+  imagePreview->SetImageSize(c_imageSize, c_imageSize);
+
+  std::function erodeImage = [imageInput, imagePreview, node]()
+  {
+    imagePreview->LoadingScreen();
+    imageWorkerQueue.AddJob(node->GetUUID(), [imagePreview, imageInput](std::shared_ptr<std::atomic<bool>> cancelFlag)
+                            {
+                              if (cancelFlag.get()->load())
+                                return;
+                              TextureGenEngine::TextureData *textureData = imagePreview->GetImageData();
+                              TextureGenEngine::TextureData *inputData = imageInput->GetData();
+
+                              for (int x = 0; x < textureData->GetWidth(); x++)
+                              {
+                                for (int y = 0; y < textureData->GetHeight(); y++)
+                                {
+                                  textureData->SetPixel(x, y, 0, inputData->GetPixel(x, y).GetG(), 0, 255);
+                                }
+                              }
+
+                              if (cancelFlag.get()->load())
+                                return;
+                              imagePreview->SetTextureData(textureData); });
+  };
+
+  imageInput->SetOnDataChange([erodeImage]()
+                              { erodeImage(); });
+
+  imagePreview->SetOnImageChange([outElement]()
+                                 { outElement->TriggerUpdate(); });
+
+  outElement->SetOnUpdate([imagePreview, outElement]()
+                          { outElement->UpdateData(imagePreview->GetImageData()); });
+
+  return node;
+}
+
 TextureGenEngine::Node *NodeFactory::ColorNode(TextureGenEngine::Canvas2D *canvas, std::string title, int x, int y)
 {
   TextureGenEngine::Node *node = SpawnNode(canvas, title, NodeType::COLOR_BASE, x, y);

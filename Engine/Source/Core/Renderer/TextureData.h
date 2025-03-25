@@ -22,6 +22,10 @@ namespace TextureGenEngine
     {
       this->pixel = pixel;
     }
+    void Set(unsigned char r, unsigned char g, unsigned char b, unsigned char a)
+    {
+      pixel = (r << 24) | (g << 16) | (b << 8) | a;
+    }
     unsigned char GetR() const { return (pixel >> 24) & 0xFF; }
     unsigned char GetG() const { return (pixel >> 16) & 0xFF; }
     unsigned char GetB() const { return (pixel >> 8) & 0xFF; }
@@ -45,7 +49,7 @@ namespace TextureGenEngine
     ~TextureData();
     void SetPixel(int x, int y, TextureGenEngine::Pixel pixel);
     TAPI void SetPixel(int x, int y, unsigned char r, unsigned char g, unsigned char b, unsigned char a);
-    TextureGenEngine::Pixel GetPixel(int x, int y);
+    TAPI TextureGenEngine::Pixel GetPixel(int x, int y);
     void SetSize(int width, int height);
     void UpdatePixel(int x, int y, unsigned char r, unsigned char g, unsigned char b, unsigned char a);
     int GetWidth() const { return m_width; }
