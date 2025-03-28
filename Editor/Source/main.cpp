@@ -79,6 +79,8 @@ NodeFunctionMap nodeFunctionMap = {
     {NodeFactory::NodeType::MASK_IMAGE, {&NodeFactory::MaskImage, {"Mask Image", NodeCategory::IMAGE_PROCESS}}},
     {NodeFactory::NodeType::INVERT_IMAGE, {&NodeFactory::InvertImage, {"Invert Image", NodeCategory::IMAGE_PROCESS}}},
     {NodeFactory::NodeType::COLOR_BASE, {&NodeFactory::ColorNode, {"Color", NodeCategory::INPUT}}},
+    {NodeFactory::NodeType::ROTATE_LINE, {&NodeFactory::GenLine, {"Rotate Line", NodeCategory::GEN}}},
+    {NodeFactory::NodeType::CIRCLE_GRID, {&NodeFactory::GenCircleGrid, {"Circle Grid", NodeCategory::GEN}}},
     {NodeFactory::NodeType::HORIZONTAL_LINES, {&NodeFactory::HorizontalLine, {"Horizontal Line", NodeCategory::GEN}}},
     {NodeFactory::NodeType::VERTICAL_LINES, {&NodeFactory::VerticalLine, {"Vertical Line", NodeCategory::GEN}}},
     {NodeFactory::NodeType::CHECKER_BOARD, {&NodeFactory::CheckerBoard, {"Checker Board", NodeCategory::GEN}}},
@@ -87,8 +89,7 @@ NodeFunctionMap nodeFunctionMap = {
     {NodeFactory::NodeType::ERODE, {&NodeFactory::ErodeImage, {"Erode Image", NodeCategory::IMAGE_PROCESS}}},
     {NodeFactory::NodeType::MAP_TO_RED, {&NodeFactory::MapRed, {"Map To Red", NodeCategory::IMAGE_PROCESS}}},
     {NodeFactory::NodeType::MAP_TO_GREEN, {&NodeFactory::MapGreen, {"Map To Green", NodeCategory::IMAGE_PROCESS}}},
-    {NodeFactory::NodeType::MAP_TO_BLUE, {&NodeFactory::MapBlue, {"Map To Blue", NodeCategory::IMAGE_PROCESS}}}
-};
+    {NodeFactory::NodeType::MAP_TO_BLUE, {&NodeFactory::MapBlue, {"Map To Blue", NodeCategory::IMAGE_PROCESS}}}};
 
 int sideBarWidth = 300;
 std::string nodeSaveFile = "nodeSaveData.tgsn";

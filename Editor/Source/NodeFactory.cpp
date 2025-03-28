@@ -492,6 +492,132 @@ TextureGenEngine::Node *NodeFactory::CellularGenImage(TextureGenEngine::Canvas2D
   return node;
 }
 
+TextureGenEngine::Node *NodeFactory::GenLine(TextureGenEngine::Canvas2D *canvas, std::string title, int x, int y)
+{
+
+  TextureGenEngine::Node *node = SpawnNode(canvas, title, NodeType::ROTATE_LINE, x, y);
+
+  TextureGenEngine::FloatInputElement *angleEular = AddNodeElement<TextureGenEngine::FloatInputElement>(node);
+  TextureGenEngine::FloatInputElement *offsetInput = AddNodeElement<TextureGenEngine::FloatInputElement>(node);
+  TextureGenEngine::FloatInputElement *frequencyInput = AddNodeElement<TextureGenEngine::FloatInputElement>(node);
+  TextureGenEngine::FloatInputElement *amplitudeInput = AddNodeElement<TextureGenEngine::FloatInputElement>(node);
+  TextureGenEngine::ImagePreviewElement *imagePreview = AddNodeElement<TextureGenEngine::ImagePreviewElement>(node);
+  TextureGenEngine::OutputConnector *outElement = SetOutputConnector(node, TextureGenEngine::NodeDataTypes::IMAGE);
+
+  angleEular->SetData(90.0f);
+  offsetInput->SetData(0.0f);
+  frequencyInput->SetData(5.0f);
+  amplitudeInput->SetData(1.0f);
+
+  imagePreview->SetImageSize(c_imageSize, c_imageSize);
+
+  std::function generateImage = [imagePreview, node, frequencyInput,angleEular, amplitudeInput, offsetInput]()
+  {
+    float frequancy, amplitude,angle,offset;
+    frequencyInput->GetData(frequancy);
+    amplitudeInput->GetData(amplitude);
+    angleEular->GetData(angle);
+    offsetInput->GetData(offset);
+    imageWorkerQueue.AddJob(node->GetUUID(), [imagePreview, frequancy,angle, amplitude,offset](std::shared_ptr<std::atomic<bool>> cancelFlag)
+                            {
+                              if (cancelFlag.get()->load())
+                                return;
+                              std::vector<float> data(imagePreview->GetImageWidth() * imagePreview->GetImageHeight());
+
+                              TextureGenEngine::PatternGenerator::RotatableLine::GenTileable2D(data.data(), imagePreview->GetImageWidth(), imagePreview->GetImageHeight(), frequancy, amplitude,angle,offset);
+                              if (cancelFlag.get()->load())
+                                return;
+                              ConvertNormalFloatToChar(data, imagePreview);
+                            });
+  };
+
+  frequencyInput->SetOnDataChange([generateImage]()
+                                  { generateImage(); });
+
+  amplitudeInput->SetOnDataChange([generateImage]()
+                                  { generateImage(); });
+
+  angleEular->SetOnDataChange([generateImage]()
+                              { generateImage(); });
+
+  offsetInput->SetOnDataChange([generateImage]()
+                              { generateImage(); });
+
+  imagePreview->SetOnImageChange([outElement]()
+                                 { outElement->TriggerUpdate(); });
+
+  outElement->SetOnUpdate([imagePreview, outElement]()
+                          { outElement->UpdateData(imagePreview->GetImageData());  });
+
+  generateImage();
+  return node;
+}
+
+TextureGenEngine::Node *NodeFactory::GenCircleGrid(TextureGenEngine::Canvas2D *canvas, std::string title, int x, int y)
+{
+
+  TextureGenEngine::Node *node = SpawnNode(canvas, title, NodeType::CIRCLE_GRID, x, y);
+
+  // TextureGenEngine::FloatInputElement *angleEular = AddNodeElement<TextureGenEngine::FloatInputElement>(node);
+  // TextureGenEngine::FloatInputElement *offsetInput = AddNodeElement<TextureGenEngine::FloatInputElement>(node);
+  TextureGenEngine::IntegerElement *frequencyInput = AddNodeElement<TextureGenEngine::IntegerElement>(node);
+  TextureGenEngine::FloatInputElement *radiusInput = AddNodeElement<TextureGenEngine::FloatInputElement>(node);
+  TextureGenEngine::FloatInputElement *amplitudeInput = AddNodeElement<TextureGenEngine::FloatInputElement>(node);
+  TextureGenEngine::ImagePreviewElement *imagePreview = AddNodeElement<TextureGenEngine::ImagePreviewElement>(node);
+  TextureGenEngine::OutputConnector *outElement = SetOutputConnector(node, TextureGenEngine::NodeDataTypes::IMAGE);
+
+  // angleEular->SetData(90.0f);
+  // offsetInput->SetData(0.0f);
+  frequencyInput->SetData(5.0f);
+  amplitudeInput->SetData(1.0f);
+  radiusInput->SetData(c_imageSize / 5 / 2);
+
+  imagePreview->SetImageSize(c_imageSize, c_imageSize);
+
+  std::function generateImage = [imagePreview, node, frequencyInput, amplitudeInput, radiusInput]()
+  {
+    float  amplitude, radius;
+    int frequancy;
+    frequencyInput->GetData(frequancy);
+    amplitudeInput->GetData(amplitude);
+    radiusInput->GetData(radius);
+    // angleEular->GetData(angle);
+    // offsetInput->GetData(offset);
+    imageWorkerQueue.AddJob(node->GetUUID(), [imagePreview, frequancy, amplitude, radius](std::shared_ptr<std::atomic<bool>> cancelFlag)
+                            {
+                              if (cancelFlag.get()->load())
+                                return;
+                              std::vector<float> data(imagePreview->GetImageWidth() * imagePreview->GetImageHeight());
+
+                              TextureGenEngine::PatternGenerator::CircleGrid::GenTileable2D(data.data(), imagePreview->GetImageWidth(), imagePreview->GetImageHeight(), frequancy, amplitude,radius);
+                              if (cancelFlag.get()->load())
+                                return;
+                              ConvertNormalFloatToChar(data, imagePreview); });
+  };
+
+  frequencyInput->SetOnDataChange([generateImage, frequencyInput, radiusInput]()
+                                  { int circleCount;
+                                    frequencyInput->GetData(circleCount);
+                                    if (circleCount == 0) return;
+                                    radiusInput->SetData(c_imageSize / circleCount/2);
+                                    generateImage(); });
+
+  amplitudeInput->SetOnDataChange([generateImage]()
+                                  { generateImage(); });
+
+  radiusInput->SetOnDataChange([generateImage]()
+                                  { generateImage(); });  
+
+  imagePreview->SetOnImageChange([outElement]()
+                                 { outElement->TriggerUpdate(); });
+
+  outElement->SetOnUpdate([imagePreview, outElement]()
+                          { outElement->UpdateData(imagePreview->GetImageData()); });
+
+  generateImage();
+  return node;
+}
+
 TextureGenEngine::Node *NodeFactory::HorizontalLine(TextureGenEngine::Canvas2D *canvas, std::string title, int x, int y)
 {
   TextureGenEngine::Node *node = SpawnNode(canvas,title,NodeType::HORIZONTAL_LINES, x,y);

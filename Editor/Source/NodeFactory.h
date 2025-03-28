@@ -28,6 +28,7 @@ namespace NodeFactory
     MASK_IMAGE,
     INVERT_IMAGE,
     COLOR_BASE,
+    ROTATE_LINE,
     HORIZONTAL_LINES,
     VERTICAL_LINES,
     CHECKER_BOARD,
@@ -36,7 +37,8 @@ namespace NodeFactory
     DIALATE,
     MAP_TO_RED,
     MAP_TO_GREEN,
-    MAP_TO_BLUE
+    MAP_TO_BLUE,
+    CIRCLE_GRID
 
   };
   struct NodeTypeCompare
@@ -77,6 +79,8 @@ namespace NodeFactory
   TextureGenEngine::Node *CellularGenImage(TextureGenEngine::Canvas2D *canvas, std::string title = "Cellular Noise", int x = 0, int y = 0);
 
   //Math Pattern Generators
+  TextureGenEngine::Node *GenLine(TextureGenEngine::Canvas2D *canvas, std::string title = "Line", int x = 0, int y = 0);
+  TextureGenEngine::Node *GenCircleGrid(TextureGenEngine::Canvas2D *canvas, std::string title = "Hex Grid", int x = 0, int y = 0);
   TextureGenEngine::Node *HorizontalLine(TextureGenEngine::Canvas2D *canvas, std::string title = "Horizontal Line", int x = 0, int y = 0);
   TextureGenEngine::Node *VerticalLine(TextureGenEngine::Canvas2D *canvas, std::string title = "Vertical Line", int x = 0, int y = 0);
   TextureGenEngine::Node *CheckerBoard(TextureGenEngine::Canvas2D *canvas, std::string title = "Checker Board", int x = 0, int y = 0);
