@@ -1,3 +1,4 @@
+#define _USE_MATH_DEFINES // This must be defined before including <cmath>
 #include <cmath>
 #include <algorithm>
 #include "MathGen.h"

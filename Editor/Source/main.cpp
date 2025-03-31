@@ -241,8 +241,9 @@ void ExportImage(TextureGenEngine::Canvas2D *canvasNodeGraph, std::string folder
 void LoadNodes(TextureGenEngine::Canvas2D *canvasNodeGraph)
 {
   char const *filterPatterns[1] = {"*.tgsn"};
-  std::string filePath = TextureGenEngine::LoadFileDialog("Load File", "", 1, filterPatterns, "TexGen File Type", 0);
-  std::string saveData = TextureGenEngine::ReadFile(filePath);
+  char const *filePath = TextureGenEngine::LoadFileDialog("Load File", "", 1, filterPatterns, "TexGen File Type", 0);
+  if (!filePath) return;
+  std::string saveData = TextureGenEngine::ReadFile(std::string(filePath));
   try
   {
     LoadSaveString(saveData, canvasNodeGraph);
@@ -256,18 +257,20 @@ void LoadNodes(TextureGenEngine::Canvas2D *canvasNodeGraph)
 void SaveNodes(TextureGenEngine::Canvas2D *canvasNodeGraph)
 {
   char const *filterPatterns[1] = {"*.tgsn"};
-  std::string filePath = TextureGenEngine::SaveFileDialog("Select Save File", "nodeSaveData.tgsn", 1, filterPatterns, "TexGen File Type");
-  LOG_DEBUG("Key pressed ctrl + s %s\n", filePath);
+  char const *filePath = TextureGenEngine::SaveFileDialog("Select Save File", "nodeSaveData.tgsn", 1, filterPatterns, "TexGen File Type");
+  if (!filePath) return;
+  LOG_DEBUG("Key pressed ctrl + s %s\n", std::string(filePath));
   std::vector<TextureGenEngine::Node *> nodes(canvasNodeGraph->GetNodeCount());
   canvasNodeGraph->GetAllNodes(nodes);
   std::string saveData = CreateSaveData(nodes);
-  TextureGenEngine::WriteFile(filePath, saveData);
+  TextureGenEngine::WriteFile(std::string(filePath), saveData);
 }
 
 void ExportNodes(TextureGenEngine::Canvas2D *canvasNodeGraph)
 {
-  std::string folder = TextureGenEngine::SelectFolderDialog("Select Image Export Location", "");
-  ExportImage(canvasNodeGraph, folder);
+  char const *folder = TextureGenEngine::SelectFolderDialog("Select Image Export Location", "");
+  if (!folder) return;
+  ExportImage(canvasNodeGraph, std::string(folder));
 }
 
 void SetupMenu(TextureGenEngine::MenuBar *menuBar, TextureGenEngine::Canvas2D *canvasNodeGraph)
