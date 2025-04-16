@@ -66,6 +66,9 @@ namespace TextureGenEngine
     TAPI void Mask(TextureData *image, TextureData *mask);
     TAPI void Invert(TextureData *image);
     TAPI void Color(int r, int g, int b, int a);
+    TAPI void ColorToTransparent(TextureData*data, int r, int g, int b);
+    TAPI void Overlay(TextureData *image, TextureData *data);
+    TAPI void Multiply(TextureData *image, float factor);
     void Delete();
     bool Valid();
   };

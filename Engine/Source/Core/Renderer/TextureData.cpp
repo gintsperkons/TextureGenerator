@@ -1,6 +1,7 @@
 #include "TextureData.h"
 #include "Core/Logger/Logger.h"
 #include <algorithm>
+#include <cmath>
 
 TextureGenEngine::TextureData::TextureData(int width, int height)
     : m_width(width), m_height(height), m_channels(4), m_pixels(width * height)
@@ -392,6 +393,112 @@ void TextureGenEngine::TextureData::Color(int r, int g, int b, int a)
     for (int y = 0; y < m_height; y++)
     {
       SetPixel(x, y, r, g, b, a);
+    }
+  }
+}
+
+void TextureGenEngine::TextureData::ColorToTransparent(TextureData *data, int r, int g, int b)
+{
+  // Clamp target color
+  r = std::clamp(r, 0, 255);
+  g = std::clamp(g, 0, 255);
+  b = std::clamp(b, 0, 255);
+
+  // Max possible distance in RGB space
+  const float maxDistance = std::sqrt(255 * 255 * 3);
+
+  for (int x = 0; x < data->m_width; ++x)
+  {
+    for (int y = 0; y < data->m_height; ++y)
+    {
+      TextureGenEngine::Pixel pixel = data->GetPixel(x, y);
+
+      int pr = pixel.GetR();
+      int pg = pixel.GetG();
+      int pb = pixel.GetB();
+
+      int dr = pr - r;
+      int dg = pg - g;
+      int db = pb - b;
+
+      float distance = std::sqrt(float(dr * dr + dg * dg + db * db));
+      float transparencyFactor = std::clamp(1.0f - (distance / maxDistance), 0.0f, 1.0f);
+
+      // transparencyFactor is 1.0 when it's the same color => make it fully transparent
+      int newAlpha = static_cast<int>(pixel.GetA() * (1.0f - transparencyFactor));
+
+      SetPixel(x, y, pr, pg, pb, newAlpha);
+    }
+  }
+}
+
+void TextureGenEngine::TextureData::Overlay(TextureData *image, TextureData *data)
+{
+  if (!image || !data)
+    return;
+
+  if (!image->Valid() || !data->Valid() ||
+      image->GetWidth() != data->GetWidth() ||
+      image->GetHeight() != data->GetHeight() ||
+      image->GetChannels() != data->GetChannels())
+  {
+    return;
+  }
+
+  int width = image->GetWidth();
+  int height = image->GetHeight();
+
+  // Copy base image into this texture
+  SetSize(width, height);
+  for (int y = 0; y < height; ++y)
+  {
+    for (int x = 0; x < width; ++x)
+    {
+      TextureGenEngine::Pixel base = image->GetPixel(x, y);
+      SetPixel(x, y, base.GetR(), base.GetG(), base.GetB(), base.GetA());
+    }
+  }
+
+  // Apply overlay on top
+  for (int y = 0; y < height; ++y)
+  {
+    for (int x = 0; x < width; ++x)
+    {
+      TextureGenEngine::Pixel basePixel = GetPixel(x, y); // already copied
+      TextureGenEngine::Pixel overlayPixel = data->GetPixel(x, y);
+
+      float srcAlpha = overlayPixel.GetA() / 255.0f;
+      float invAlpha = 1.0f - srcAlpha;
+
+      int outR = static_cast<int>(overlayPixel.GetR() * srcAlpha + basePixel.GetR() * invAlpha);
+      int outG = static_cast<int>(overlayPixel.GetG() * srcAlpha + basePixel.GetG() * invAlpha);
+      int outB = static_cast<int>(overlayPixel.GetB() * srcAlpha + basePixel.GetB() * invAlpha);
+      int outA = static_cast<int>(overlayPixel.GetA() + basePixel.GetA() * invAlpha);
+
+      SetPixel(x, y, outR, outG, outB, outA);
+    }
+  }
+}
+
+void TextureGenEngine::TextureData::Multiply(TextureData *image, float factor)
+{
+  if (!image || !image->Valid())
+    return;
+
+  int width = image->GetWidth();
+  int height = image->GetHeight();
+
+  SetSize(width, height); // Assumes this resizes and prepares m_pixels correctly
+
+  for (int y = 0; y < height; ++y)
+  {
+    for (int x = 0; x < width; ++x)
+    {
+      TextureGenEngine::Pixel pixel = image->GetPixel(x, y);
+      int r = static_cast<int>(std::clamp(pixel.GetR() * factor, 0.0f, 255.0f));
+      int g = static_cast<int>(std::clamp(pixel.GetG() * factor, 0.0f, 255.0f));
+      int b = static_cast<int>(std::clamp(pixel.GetB() * factor, 0.0f, 255.0f));
+      SetPixel(x, y, r, g, b, pixel.GetA());
     }
   }
 }

@@ -38,7 +38,10 @@ namespace NodeFactory
     MAP_TO_RED,
     MAP_TO_GREEN,
     MAP_TO_BLUE,
-    CIRCLE_GRID
+    CIRCLE_GRID,
+    OVERLAY_IMAGE,
+    COLOR_TO_TRANSPARENT,
+    MULTIPLY_IMAGE,
 
   };
   struct NodeTypeCompare
@@ -96,5 +99,7 @@ namespace NodeFactory
   TextureGenEngine::Node *MapRed(TextureGenEngine::Canvas2D *canvas, std::string title = "Map To Red", int x = 0, int y = 0);
   TextureGenEngine::Node *MapGreen(TextureGenEngine::Canvas2D *canvas, std::string title = "Map To Green", int x = 0, int y = 0);
   TextureGenEngine::Node *MapBlue(TextureGenEngine::Canvas2D *canvas, std::string title = "Map To Blue", int x = 0, int y = 0);
-
+  TextureGenEngine::Node *OverlayImage(TextureGenEngine::Canvas2D *canvas, std::string title = "Overlay Image", int x = 0, int y = 0);
+  TextureGenEngine::Node *ColorToTransparent(TextureGenEngine::Canvas2D *canvas, std::string title = "Color To Transparent", int x = 0, int y = 0);
+  TextureGenEngine::Node *MultiplyImage(TextureGenEngine::Canvas2D *canvas, std::string title = "Multiply Image", int x = 0, int y = 0);
 } // namespace NodeFactory

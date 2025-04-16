@@ -814,7 +814,7 @@ TextureGenEngine::Node *NodeFactory::MergeImageByFloat(TextureGenEngine::Canvas2
 
 TextureGenEngine::Node *NodeFactory::MergeImageByImage(TextureGenEngine::Canvas2D *canvas, std::string title, int x, int y)
 {
-  TextureGenEngine::Node *node = SpawnNode(canvas, title, NodeType::MERGE_IMAGE_BY_FLOAT, x, y);
+  TextureGenEngine::Node *node = SpawnNode(canvas, title, NodeType::MERGE_IMAGE_BY_IMAGE, x, y);
 
   TextureGenEngine::ImageInputElement *imageInput1 = AddNodeElement<TextureGenEngine::ImageInputElement>(node);
   TextureGenEngine::ImageInputElement *imageInput2 = AddNodeElement<TextureGenEngine::ImageInputElement>(node);
@@ -1198,6 +1198,141 @@ TextureGenEngine::Node *NodeFactory::MapBlue(TextureGenEngine::Canvas2D *canvas,
   imageInput->SetOnDataChange([erodeImage]()
                               { erodeImage(); });
 
+  imagePreview->SetOnImageChange([outElement]()
+                                 { outElement->TriggerUpdate(); });
+
+  outElement->SetOnUpdate([imagePreview, outElement]()
+                          { outElement->UpdateData(imagePreview->GetImageData()); });
+
+  return node;
+}
+
+TextureGenEngine::Node *NodeFactory::OverlayImage(TextureGenEngine::Canvas2D *canvas, std::string title, int x, int y)
+{
+  TextureGenEngine::Node *node = SpawnNode(canvas, title, NodeType::OVERLAY_IMAGE, x, y);
+
+  TextureGenEngine::ImageInputElement *imageInput1 = AddNodeElement<TextureGenEngine::ImageInputElement>(node);
+  TextureGenEngine::ImageInputElement *imageInput2 = AddNodeElement<TextureGenEngine::ImageInputElement>(node);
+  TextureGenEngine::ImagePreviewElement *imagePreview = AddNodeElement<TextureGenEngine::ImagePreviewElement>(node);
+
+  TextureGenEngine::OutputConnector *outElement = SetOutputConnector(node, TextureGenEngine::NodeDataTypes::IMAGE);
+
+  imagePreview->SetImageSize(c_imageSize, c_imageSize);
+
+  std::function overlayImage = [imageInput1, imageInput2, imagePreview, node]()
+  {
+    imagePreview->LoadingScreen();
+    imageWorkerQueue.AddJob(node->GetUUID(), [imagePreview, imageInput1, imageInput2](std::shared_ptr<std::atomic<bool>> cancelFlag)
+                            {
+                              if (cancelFlag.get()->load())
+                                return;
+                              TextureGenEngine::TextureData *textureData = imagePreview->GetImageData();
+
+                              textureData->Overlay(imageInput1->GetData(), imageInput2->GetData());
+                              if (cancelFlag.get()->load())
+                                return;
+                              imagePreview->SetTextureData(textureData); });
+  };
+
+  imageInput1->SetOnDataChange([overlayImage]()
+                               { overlayImage(); });
+  imageInput2->SetOnDataChange([overlayImage]()
+                               { overlayImage(); });
+
+  imagePreview->SetOnImageChange([outElement]()
+                                 { outElement->TriggerUpdate(); });
+
+  outElement->SetOnUpdate([imagePreview, outElement]()
+                          { outElement->UpdateData(imagePreview->GetImageData()); });
+
+  return node;
+}
+
+TextureGenEngine::Node *NodeFactory::ColorToTransparent(TextureGenEngine::Canvas2D *canvas, std::string title, int x, int y)
+{
+  TextureGenEngine::Node *node = SpawnNode(canvas, title, NodeType::COLOR_TO_TRANSPARENT, x, y);
+
+  TextureGenEngine::ImageInputElement *imageInput = AddNodeElement<TextureGenEngine::ImageInputElement>(node);
+  TextureGenEngine::IntegerElement *redInput = AddNodeElement<TextureGenEngine::IntegerElement>(node);
+  TextureGenEngine::IntegerElement *greenInput = AddNodeElement<TextureGenEngine::IntegerElement>(node);
+  TextureGenEngine::IntegerElement *blueInput = AddNodeElement<TextureGenEngine::IntegerElement>(node);
+  TextureGenEngine::FloatInputElement *strengthInput = AddNodeElement<TextureGenEngine::FloatInputElement>(node);
+  TextureGenEngine::ImagePreviewElement *imagePreview = AddNodeElement<TextureGenEngine::ImagePreviewElement>(node);
+
+  TextureGenEngine::OutputConnector *outElement = SetOutputConnector(node, TextureGenEngine::NodeDataTypes::IMAGE);
+
+  imagePreview->SetImageSize(c_imageSize, c_imageSize);
+
+  std::function colorToTransparent = [imageInput, redInput, greenInput, blueInput, imagePreview, node]()
+  {
+    imagePreview->LoadingScreen();
+    imageWorkerQueue.AddJob(node->GetUUID(), [imagePreview, imageInput, redInput, greenInput, blueInput](std::shared_ptr<std::atomic<bool>> cancelFlag)
+                            {
+                              if (cancelFlag.get()->load())
+                                return;
+                              int red, green, blue;
+                              redInput->GetData(red);
+                              greenInput->GetData(green);
+                              blueInput->GetData(blue);
+                              TextureGenEngine::TextureData *textureData = imagePreview->GetImageData();
+
+                              textureData->ColorToTransparent(imageInput->GetData(), red, green, blue);
+                              if (cancelFlag.get()->load())
+                                return;
+                              imagePreview->SetTextureData(textureData); });
+  };
+
+  imageInput->SetOnDataChange([colorToTransparent]()
+                              { colorToTransparent(); });
+  redInput->SetOnDataChange([colorToTransparent]()
+                            { colorToTransparent(); });
+  greenInput->SetOnDataChange([colorToTransparent]()
+                              { colorToTransparent(); });
+  blueInput->SetOnDataChange([colorToTransparent]()
+                             { colorToTransparent(); });
+
+  imagePreview->SetOnImageChange([outElement]()
+                                 { outElement->TriggerUpdate(); });
+
+  outElement->SetOnUpdate([imagePreview, outElement]()
+                          { outElement->UpdateData  (imagePreview->GetImageData()); });
+
+  return node;
+}
+
+TextureGenEngine::Node *NodeFactory::MultiplyImage(TextureGenEngine::Canvas2D *canvas, std::string title, int x, int y)
+{
+  TextureGenEngine::Node *node = SpawnNode(canvas, title, NodeType::MULTIPLY_IMAGE, x, y);
+
+  TextureGenEngine::ImageInputElement *imageInput1 = AddNodeElement<TextureGenEngine::ImageInputElement>(node);
+  TextureGenEngine::FloatInputElement *floatInput = AddNodeElement<TextureGenEngine::FloatInputElement>(node);
+
+  TextureGenEngine::ImagePreviewElement *imagePreview = AddNodeElement<TextureGenEngine::ImagePreviewElement>(node);
+  TextureGenEngine::OutputConnector *outElement = SetOutputConnector(node, TextureGenEngine::NodeDataTypes::IMAGE);
+
+  imagePreview->SetImageSize(c_imageSize, c_imageSize);
+
+  std::function multiplyImage = [imageInput1, floatInput, imagePreview, node]()
+  {
+    imagePreview->LoadingScreen();
+    imageWorkerQueue.AddJob(node->GetUUID(), [imagePreview, imageInput1, floatInput](std::shared_ptr<std::atomic<bool>> cancelFlag)
+                            {
+                              if (cancelFlag.get()->load())
+                                return;
+                              float factor;
+                              floatInput->GetData(factor);
+                              TextureGenEngine::TextureData *textureData = imagePreview->GetImageData();
+
+                              textureData->Multiply(imageInput1->GetData(), factor);
+                              if (cancelFlag.get()->load())
+                                return;
+                              imagePreview->SetTextureData(textureData); });
+  };
+
+  imageInput1->SetOnDataChange([multiplyImage]()
+                               { multiplyImage(); });
+  floatInput->SetOnDataChange([multiplyImage]()
+                              { multiplyImage(); });
   imagePreview->SetOnImageChange([outElement]()
                                  { outElement->TriggerUpdate(); });
 

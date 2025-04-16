@@ -85,8 +85,11 @@ NodeFunctionMap nodeFunctionMap = {
     {NodeFactory::NodeType::VERTICAL_LINES, {&NodeFactory::VerticalLine, {"Vertical Line", NodeCategory::GEN}}},
     {NodeFactory::NodeType::CHECKER_BOARD, {&NodeFactory::CheckerBoard, {"Checker Board", NodeCategory::GEN}}},
     {NodeFactory::NodeType::MERGE_IMAGE_BY_IMAGE, {&NodeFactory::MergeImageByImage, {"Merge Image By Image", NodeCategory::IMAGE_PROCESS}}},
+    {NodeFactory::NodeType::MULTIPLY_IMAGE, {&NodeFactory::MultiplyImage, {"Multiply Image", NodeCategory::IMAGE_PROCESS}}},
     {NodeFactory::NodeType::DIALATE, {&NodeFactory::DialateImage, {"Dialate Image", NodeCategory::IMAGE_PROCESS}}},
     {NodeFactory::NodeType::ERODE, {&NodeFactory::ErodeImage, {"Erode Image", NodeCategory::IMAGE_PROCESS}}},
+    {NodeFactory::NodeType::OVERLAY_IMAGE, {&NodeFactory::OverlayImage, {"Overlay Image", NodeCategory::IMAGE_PROCESS}}},
+    {NodeFactory::NodeType::COLOR_TO_TRANSPARENT, {&NodeFactory::ColorToTransparent, {"Color To Transparent", NodeCategory::IMAGE_PROCESS}}},
     {NodeFactory::NodeType::MAP_TO_RED, {&NodeFactory::MapRed, {"Map To Red", NodeCategory::IMAGE_PROCESS}}},
     {NodeFactory::NodeType::MAP_TO_GREEN, {&NodeFactory::MapGreen, {"Map To Green", NodeCategory::IMAGE_PROCESS}}},
     {NodeFactory::NodeType::MAP_TO_BLUE, {&NodeFactory::MapBlue, {"Map To Blue", NodeCategory::IMAGE_PROCESS}}}};
