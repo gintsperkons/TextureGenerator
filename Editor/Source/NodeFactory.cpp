@@ -1263,10 +1263,15 @@ TextureGenEngine::Node *NodeFactory::ColorToTransparent(TextureGenEngine::Canvas
 
   imagePreview->SetImageSize(c_imageSize, c_imageSize);
 
-  std::function colorToTransparent = [imageInput, redInput, greenInput, blueInput, imagePreview, node]()
+  redInput->SetData(255);
+  greenInput->SetData(255);
+  blueInput->SetData(255);
+  strengthInput->SetData(1.0f);
+
+  std::function colorToTransparent = [imageInput, redInput, greenInput, blueInput, imagePreview, node, strengthInput]()
   {
     imagePreview->LoadingScreen();
-    imageWorkerQueue.AddJob(node->GetUUID(), [imagePreview, imageInput, redInput, greenInput, blueInput](std::shared_ptr<std::atomic<bool>> cancelFlag)
+    imageWorkerQueue.AddJob(node->GetUUID(), [imagePreview, imageInput, redInput, greenInput, blueInput,strengthInput](std::shared_ptr<std::atomic<bool>> cancelFlag)
                             {
                               if (cancelFlag.get()->load())
                                 return;
@@ -1274,9 +1279,11 @@ TextureGenEngine::Node *NodeFactory::ColorToTransparent(TextureGenEngine::Canvas
                               redInput->GetData(red);
                               greenInput->GetData(green);
                               blueInput->GetData(blue);
+                              float strength;
+                              strengthInput->GetData(strength);
                               TextureGenEngine::TextureData *textureData = imagePreview->GetImageData();
 
-                              textureData->ColorToTransparent(imageInput->GetData(), red, green, blue);
+                              textureData->ColorToTransparent(imageInput->GetData(), red, green, blue, strength);
                               if (cancelFlag.get()->load())
                                 return;
                               imagePreview->SetTextureData(textureData); });
@@ -1290,6 +1297,8 @@ TextureGenEngine::Node *NodeFactory::ColorToTransparent(TextureGenEngine::Canvas
                               { colorToTransparent(); });
   blueInput->SetOnDataChange([colorToTransparent]()
                              { colorToTransparent(); });
+  strengthInput->SetOnDataChange([colorToTransparent]()
+                                 { colorToTransparent(); });
 
   imagePreview->SetOnImageChange([outElement]()
                                  { outElement->TriggerUpdate(); });

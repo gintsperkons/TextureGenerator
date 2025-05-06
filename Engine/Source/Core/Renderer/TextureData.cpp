@@ -397,15 +397,16 @@ void TextureGenEngine::TextureData::Color(int r, int g, int b, int a)
   }
 }
 
-void TextureGenEngine::TextureData::ColorToTransparent(TextureData *data, int r, int g, int b)
+void TextureGenEngine::TextureData::ColorToTransparent(TextureData *data, int r, int g, int b, float strength)
 {
-  // Clamp target color
+  // Clamp input color and strength
   r = std::clamp(r, 0, 255);
   g = std::clamp(g, 0, 255);
   b = std::clamp(b, 0, 255);
+  strength = std::clamp(strength, 0.0001f, 10.0f); // Avoid divide-by-zero or overkill
 
-  // Max possible distance in RGB space
-  const float maxDistance = std::sqrt(255 * 255 * 3);
+  // Max distance in RGB space (sqrt(3 * 255^2))
+  const float maxRGBDistance = std::sqrt(3.0f * 255.0f * 255.0f);
 
   for (int x = 0; x < data->m_width; ++x)
   {
@@ -422,9 +423,12 @@ void TextureGenEngine::TextureData::ColorToTransparent(TextureData *data, int r,
       int db = pb - b;
 
       float distance = std::sqrt(float(dr * dr + dg * dg + db * db));
-      float transparencyFactor = std::clamp(1.0f - (distance / maxDistance), 0.0f, 1.0f);
 
-      // transparencyFactor is 1.0 when it's the same color => make it fully transparent
+      // Apply strength as a falloff multiplier (stronger = tighter fade)
+      float normalized = distance / (maxRGBDistance / strength);
+
+      float transparencyFactor = std::clamp(1.0f - normalized, 0.0f, 1.0f);
+
       int newAlpha = static_cast<int>(pixel.GetA() * (1.0f - transparencyFactor));
 
       SetPixel(x, y, pr, pg, pb, newAlpha);
